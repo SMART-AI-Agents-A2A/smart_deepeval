@@ -1,0 +1,5 @@
+Analise a condição atual do solo da fazenda Faz_NSAAB.
+Existe risco de chuva para a fazenda Faz_NSAAB?
+A radiação atual exige algum alerta operacional?
+Como está a condição do vento na fazenda Faz_NSAAB?
+Existe algum alerta importante para a operação agrícola agora?

@@ -1,0 +1,7 @@
+.venv/
+.env.local
+.deepeval/
+__pycache__/
+.pytest_cache/
+*.pyc
+.idea/
