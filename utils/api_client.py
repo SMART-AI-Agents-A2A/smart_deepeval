@@ -25,15 +25,14 @@ def _get_by_path(data: Any, path: str) -> Any:
 
 
 def _extract_output(data: Any) -> str:
-    preferred_path = os.getenv("SMART_RESPONSE_JSON_PATH", "data.answer").strip()
+    response_path = os.getenv("SMART_RESPONSE_JSON_PATH", "response").strip()
 
     candidate_paths = [
-        preferred_path,
-        "data.answer",
-        "data.response",
-        "data.message",
-        "answer",
+        response_path,
         "response",
+        "data.response",
+        "data.answer",
+        "answer",
         "message",
         "output",
         "result",
@@ -67,10 +66,10 @@ def ask_smart_api(
     method: str | None = None,
 ) -> tuple[str, dict[str, Any]]:
     base_url = os.getenv("SMART_API_BASE_URL", "http://127.0.0.1:8787").rstrip("/")
-    api_endpoint = endpoint or os.getenv("SMART_API_ENDPOINT", "/v1/orchestrator")
+    api_endpoint = endpoint or os.getenv("SMART_API_ENDPOINT", "/v1/ai/chat")
     http_method = (method or os.getenv("SMART_API_METHOD", "POST")).upper()
     timeout = int(os.getenv("SMART_API_TIMEOUT", "120"))
-    request_field = os.getenv("SMART_REQUEST_FIELD", "message")
+    conversation_id = os.getenv("SMART_CONVERSATION_ID", "deepeval-smart-test")
 
     url = f"{base_url}/{api_endpoint.lstrip('/')}"
 
@@ -78,26 +77,23 @@ def ask_smart_api(
         "Content-Type": "application/json",
     }
 
-    auth_token = os.getenv("SMART_AUTH_TOKEN", "").strip()
+    body = {
+        "conversationId": conversation_id,
+        "messages": [
+            {
+                "role": "user",
+                "content": question,
+            }
+        ],
+    }
 
-    if auth_token:
-        headers["Authorization"] = f"Bearer {auth_token}"
-
-    if http_method == "GET":
-        response = requests.get(
-            url,
-            params={request_field: question},
-            headers=headers,
-            timeout=timeout,
-        )
-    else:
-        response = requests.request(
-            http_method,
-            url,
-            json={request_field: question},
-            headers=headers,
-            timeout=timeout,
-        )
+    response = requests.request(
+        http_method,
+        url,
+        json=body,
+        headers=headers,
+        timeout=timeout,
+    )
 
     if not response.ok:
         raise RuntimeError(
