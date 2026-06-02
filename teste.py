@@ -1,3 +1,5 @@
+import json
+from dotenv import load_dotenv
 import os
 import requests
 from deepeval import evaluate
@@ -6,19 +8,18 @@ from deepeval.metrics import GoalAccuracyMetric, TaskCompletionMetric
 from deepeval.tracing import observe, update_current_span
 from deepeval.dataset import EvaluationDataset, Golden
 
-os.environ["OPENAI_API_KEY"]    = "sk-sua-chave-openai-aqui"
-os.environ["CONFIDENT_API_KEY"] = "sua-chave-confident-aqui"
+load_dotenv()
 
-BASE_URL  = "http://127.0.0.1:8787"
-TOKEN_API = "seu-token-jwt-local"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+CONFIDENT_API_KEY = os.getenv("CONFIDENT_API_KEY")
+BASE_URL = os.getenv("HONO_BASE_URL")
+TOKEN_API = os.getenv("HONO_TOKEN")
 
-PERGUNTAS = [
-    "Qual é a umidade atual do solo da Fazenda NSAAB?",
-    "Houve chuva acumulada nas últimas 6 horas na fazenda?",
-    "Qual a previsão de chuva para os próximos dias na Fazenda NSAAB?",
-    "Como está a velocidade e direção do vento agora na fazenda?",
-    "Gostaria de saber se a velocidade e a direção do vento aumentam o risco de deriva em uma aplicação agrícola hoje na Fazenda NSAAB.",
-]
+os.environ["OPENAI_API_KEY"]    = OPENAI_API_KEY
+os.environ["CONFIDENT_API_KEY"] = CONFIDENT_API_KEY
+
+with open("perguntas.json", encoding="utf-8") as f:
+    PERGUNTAS: list[str] = json.load(f)
 
 
 def extrair_tools_usadas(dados: dict) -> list[ToolCall]:
