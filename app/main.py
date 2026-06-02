@@ -7,15 +7,18 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from deepeval import evaluate
 from deepeval.dataset import EvaluationDataset, Golden
 from deepeval.test_case import ToolCall
 
 from app.api import (
+    ConfidentAiConfig,
     call_smart_chat,
+    configure_confident_ai_environment,
     configure_judge_environment,
+    evaluate_with_confident_ai,
     extract_agents_called,
     extract_tools_called,
+    load_confident_ai_config,
     load_api_config,
 )
 from app.tools import (
@@ -140,7 +143,7 @@ def _expected_tool_calls(sample: EvalSample) -> list[ToolCall] | None:
     return [ToolCall(name=tool_name) for tool_name in sample.expected_tools]
 
 
-def run_goal_accuracy(collected, judge_config) -> None:
+def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConfig) -> None:
     metric = build_goal_accuracy_metric(judge_config)
     test_cases = [
         build_goal_accuracy_case(
@@ -153,10 +156,20 @@ def run_goal_accuracy(collected, judge_config) -> None:
     ]
 
     print("\n[1/3] Avaliando Goal Accuracy...")
-    evaluate(test_cases=test_cases, metrics=[metric])
+    evaluate_with_confident_ai(
+        test_cases=test_cases,
+        metrics=[metric],
+        metric_name="goal_accuracy",
+        config=confident_config,
+        hyperparameters={
+            "judge_model": judge_config.model,
+            "threshold": judge_config.threshold,
+            "dataset_size": len(test_cases),
+        },
+    )
 
 
-def run_tool_correctness(collected, judge_config) -> None:
+def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiConfig) -> None:
     metric = build_tool_correctness_metric(judge_config)
     test_cases = [
         build_tool_correctness_case(
@@ -170,10 +183,21 @@ def run_tool_correctness(collected, judge_config) -> None:
     ]
 
     print("\n[2/3] Avaliando Tool Correctness...")
-    evaluate(test_cases=test_cases, metrics=[metric])
+    evaluate_with_confident_ai(
+        test_cases=test_cases,
+        metrics=[metric],
+        metric_name="tool_correctness",
+        config=confident_config,
+        hyperparameters={
+            "judge_model": judge_config.model,
+            "threshold": judge_config.threshold,
+            "dataset_size": len(test_cases),
+        },
+    )
 
 
-def run_task_completion(samples: list[EvalSample], judge_config) -> None:
+def run_task_completion(samples: list[EvalSample], judge_config, confident_config: ConfidentAiConfig) -> None:
+    configure_confident_ai_environment(confident_config)
     metric = build_task_completion_metric(judge_config)
     api_config = load_api_config()
     observed_smart_agent = build_observed_smart_agent(api_config, metric)
@@ -210,12 +234,13 @@ def main() -> None:
     args = parse_args()
     load_dotenv(ROOT_DIR / ".env")
     judge_config = configure_judge_environment()
+    confident_config = load_confident_ai_config()
     samples = load_dataset(args.dataset)
     collected = collect_smart_responses(samples)
 
-    run_goal_accuracy(collected, judge_config)
-    run_tool_correctness(collected, judge_config)
-    run_task_completion(samples, judge_config)
+    run_goal_accuracy(collected, judge_config, confident_config)
+    run_tool_correctness(collected, judge_config, confident_config)
+    run_task_completion(samples, judge_config, confident_config)
 
     print("\nAvaliacao concluida.")
 

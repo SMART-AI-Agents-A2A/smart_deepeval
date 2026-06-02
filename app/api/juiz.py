@@ -21,11 +21,8 @@ def load_judge_config() -> JudgeConfig:
 
 def configure_judge_environment() -> JudgeConfig:
     openai_api_key = os.getenv("OPENAI_API_KEY")
-    confident_api_key = os.getenv("CONFIDENT_API_KEY")
 
     if openai_api_key:
         os.environ["OPENAI_API_KEY"] = openai_api_key
-    if confident_api_key:
-        os.environ["CONFIDENT_API_KEY"] = confident_api_key
 
     return load_judge_config()
