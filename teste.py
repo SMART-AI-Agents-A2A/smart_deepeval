@@ -80,8 +80,8 @@ for idx, pergunta in enumerate(PERGUNTAS):
     resposta, dados = chamar_chat(pergunta, conversation_id)
 
     tools_usadas = extrair_tools_usadas(dados)
-    agentes      = extrair_agentes_acionados(dados)
-    route        = dados.get("trace", {}).get("route", "desconhecido")
+    agentes = extrair_agentes_acionados(dados)
+    route = dados.get("trace", {}).get("route", "desconhecido")
 
     print(f"         route={route} | agentes={agentes} | tools={[t.name for t in tools_usadas]}")
 
