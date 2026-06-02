@@ -1,2 +1,3 @@
 deepeval
-pytest
+python-dotenv
+requests
