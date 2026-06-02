@@ -1,0 +1,362 @@
+[
+  {
+    "pergunta_1": "Os dados de clima mostram ventos muito fortes na fase em que os frutos estão crescendo. Como devemos ajustar a adubação naquelas partes da lavoura que os mapas de saúde da planta indicam estar mais fracas?",
+    "resposta_1": "Suspenda as aplicações de adubo pelas folhas para o vento não levar o produto embora. O ideal é usar o sistema de gotejamento para aplicar o adubo direto na raiz, usando doses diferentes para cada área, focando em fortalecer as zonas mais fracas apontadas pelo mapa."
+  },
+  {
+    "pergunta_2": "A previsão indica ventos fortes o dia todo na fase de maturação do café. O que fazer nos talhões que os mapas de colheita mostram ter alta produtividade?",
+    "resposta_2": "O vento forte seca a planta muito rápido e pode murchar os frutos antes da hora, prejudicando a qualidade. Dê um tempo extra de irrigação por gotejamento apenas nessas partes de maior potencial para manter os frutos cheios e hidratados."
+  },
+  {
+    "pergunta_3": "O clima mostra que o vento parou e a temperatura vai cair muito na madrugada, bem na fase de preparação das flores. Como agir para proteger a lavoura?",
+    "resposta_3": "Existe o risco do ar frio descer e queimar a formação das flores. Use o mapa de relevo para identificar as partes mais baixas do terreno e ligue o gotejamento ali de madrugada, pois a água na terra ajuda a segurar o calor e protege a planta do frio extremo."
+  },
+  {
+    "pergunta_4": "O vento mudou e trouxe um ar muito seco na hora que as flores do café estão abrindo. Como devemos tratar os talhões que têm solo mais arenoso?",
+    "resposta_4": "O ar seco desidrata a flor e pode impedir o fruto de nascer. Como o solo arenoso não segura água por muito tempo, programe o gotejamento para fazer irrigações curtas e várias vezes ao dia apenas nessas áreas de areia identificadas no mapa, mantendo a umidade perto da raiz."
+  },
+  {
+    "pergunta_5": "Durante o período em que a planta descansa, ventos fortes estão quebrando e arrancando folhas nas bordas da lavoura. Como diminuir esse prejuízo?",
+    "resposta_5": "É preciso ajudar a planta a não gastar as reservas da próxima safra. Use as imagens feitas por drone para marcar exatamente onde o vento bateu mais e aplique um adubo rico em potássio pelo gotejamento só nessas beiradas para ajudar na cicatrização."
+  },
+  {
+    "pergunta_6": "Começou a ventar bastante logo depois que aplicamos nitrogênio pelo sistema de água, bem na fase de crescimento das folhas. Qual o risco e como corrigir?",
+    "resposta_6": "O vento quente seca a terra rápido e faz grande parte do nitrogênio evaporar. Verifique nos sensores se a terra secou por cima e ligue a irrigação por gotejamento um pouco mais, só com água limpa, para empurrar o adubo mais para o fundo, evitando que ele se perca pro ar."
+  },
+  {
+    "pergunta_7": "Os alertas avisam que teremos três dias de vento muito quente na fase de chumbinho do café. O que precisa ser mudado no fornecimento de água?",
+    "resposta_7": "O calor e o vento vão fazer a planta suar muito, o que seca os chumbinhos e faz eles caírem. Aumente o tempo de irrigação para repor tudo que a planta está perdendo, mandando um volume maior de água para as zonas que os mapas mostram ter plantas maiores e com mais folhas."
+  },
+  {
+    "pergunta_8": "O vento parou totalmente e o ar está úmido há vários dias, justo na época em que o grão está enchendo. O que muda na aplicação de adubo via gotejamento?",
+    "resposta_8": "Com o ar úmido e parado, a planta transpira pouco e quase não puxa a água e o adubo da terra. Diminua a quantidade de adubo no sistema e aplique apenas nas áreas que o mapa de fertilidade mostra que realmente estão deficientes, para não desperdiçar produto."
+  },
+  {
+    "pergunta_9": "O vento soprou herbicida da fazenda vizinha para as nossas mudas que acabaram de ser plantadas. Qual a ação mais rápida para salvar o cafezal novo?",
+    "resposta_9": "Você precisa dar força extra para as mudas se recuperarem e soltarem folhas novas rápido. Use o mapa para marcar a faixa exata que foi atingida pelo veneno e aplique produtos que estimulam o enraizamento pelo gotejamento apenas nas linhas afetadas."
+  },
+  {
+    "pergunta_10": "A temperatura está passando dos 33 graus por vários dias seguidos enquanto o café está florindo. Como a água ajuda a não perder essas flores?",
+    "resposta_10": "O calor extremo faz a planta abortar as flores se ela não tiver como se refrescar. Ligue o gotejamento no período da noite para deixar a terra bem úmida para o dia seguinte, dando prioridade para as áreas que o mapa indica ter solo mais fraco para reter água."
+  },
+  {
+    "pergunta_11": "Os sensores mostram que a terra está esquentando demais nas partes mais altas do morro durante a fase em que o fruto mais cresce. O que fazer?",
+    "resposta_11": "A terra fervendo queima as raízes mais rasas, que são as que mais puxam água e nutrientes para o fruto crescer. Olhe o mapa do terreno para isolar essa parte alta e faça irrigações curtas de dia pelo gotejamento para ajudar a resfriar o chão."
+  },
+  {
+    "pergunta_12": "Fez um frio brusco na fase que o grão está enchendo, e a lavoura tem partes bem altas e partes baixas. O que muda no manejo do adubo?",
+    "resposta_12": "No frio a planta praticamente para de trabalhar e não consegue puxar bem o adubo, então aplicar agora é jogar dinheiro na terra à toa. Interrompa a adubação pelo gotejamento nas áreas mais baixas mapeadas, onde o ar frio se acumula mais, até o tempo voltar a esquentar."
+  },
+  {
+    "pergunta_13": "Na fase de maturação, as folhas estão murchando muito no sol do meio-dia, mas os sensores mostram que a terra tem água. Devo irrigar mais?",
+    "resposta_13": "Não irrigue mais. O calor está tão forte que a raiz não dá conta de puxar a água na mesma velocidade que a folha perde pro ar, e molhar mais a terra pode lavar os nutrientes para o fundo. Mantenha a irrigação normal e use as imagens de drone para ver se as plantas se recuperam bem à noite."
+  },
+  {
+    "pergunta_14": "Está fazendo um calor atípico na época de descanso da planta, secando a terra muito mais rápido que o normal. O que fazer para não estragar a próxima florada?",
+    "resposta_14": "Deixar a planta passar um pouco de sede ajuda a florada a sair toda por igual, mas secar demais no calor pode matar os galhos de vez. Acompanhe a umidade da terra usando os mapas por setor e dê um banho muito rápido pelo gotejamento apenas nas partes que estiverem secando num nível perigoso."
+  },
+  {
+    "pergunta_15": "O tempo ficou muito nublado e frio durante a fase de enchimento do grão, e os dados mostram que está sobrando água na terra. Como resolver?",
+    "resposta_15": "Muita água na terra fria sufoca a raiz e impede o café de puxar o potássio, que é o que enche o grão. Reduza as horas de irrigação em toda a lavoura e confira os mapas feitos por drone para ter certeza de que as plantas não estão perdendo a saúde."
+  },
+  {
+    "pergunta_16": "O clima está agradável, mas a terra secou muito rápido por cima nas áreas onde as mudas acabaram de ser plantadas. Qual é a ação correta?",
+    "resposta_16": "A raiz da muda é muito curta e ela morre rápido se faltar água na parte de cima da terra. Faça irrigações curtas e várias vezes ao dia pelo gotejamento para molhar só os primeiros centímetros de terra, usando o mapa de solo para saber as áreas que exigem mais cuidado."
+  },
+  {
+    "pergunta_17": "A previsão avisa que vai fazer muito frio na fase de preparação das flores do café. Qual a melhor prevenção usando o sistema da fazenda?",
+    "resposta_17": "A prioridade é evitar que a geada queime os botões das flores, o que acabaria com a safra. Use o mapa de relevo para achar as áreas de fundo de vale onde a geada bate mais e ligue o gotejamento de madrugada, pois a água ajuda a segurar o calor na terra."
+  },
+  {
+    "pergunta_18": "Os dias estão começando gelados e terminando muito quentes bem na fase em que o chumbinho está se formando. O que deve ser ajustado?",
+    "resposta_18": "Essa mudança violenta de temperatura estressa a planta e faz cair muito chumbinho. Melhore o conforto da raiz atrasando a irrigação para o final da tarde e use os mapas de vigor para aplicar produtos que ajudam a segurar o fruto nas áreas que mais sofrem."
+  },
+  {
+    "pergunta_19": "O céu está limpo e o sol batendo muito forte por dias seguidos enquanto o fruto do café cresce. Como a água deve ser manejada?",
+    "resposta_19": "Muito sol faz a planta perder muita água e ela precisa de reposição completa, caso contrário o fruto fica pequeno e sem peso. Aumente a irrigação para o limite que a terra suporta, dando água primeiro para as zonas que os mapas mostram que têm maior carga de frutos."
+  },
+  {
+    "pergunta_20": "O tempo fechou e ficou escuro e nublado por um longo período bem na época em que o café está madurando. O que isso muda na rotina?",
+    "resposta_20": "Sem sol, o café demora mais para madurar e a água demora muito mais para sair da terra, o que atrai fungos e pode apodrecer a raiz. Pare as irrigações normais e use os mapas de umidade do solo para ter certeza de que a terra está secando antes de ligar a água de novo."
+  },
+  {
+    "pergunta_21": "Deu um veranico com muito sol de repente bem no meio do período de chuvas, quando a planta estava soltando muita folha. Deixo a planta sem água?",
+    "resposta_21": "Evite qualquer pausa no crescimento agora, pois essas folhas novas são as que vão alimentar a safra principal. Retome o gotejamento imediatamente, aplicando água e adubo em doses variadas conforme a necessidade mostrada nos mapas de saúde da planta."
+  },
+  {
+    "pergunta_22": "O sol forte está secando rapidamente os talhões que ficam em solo de areia, justo na fase em que o café prepara a florada. Como agir?",
+    "resposta_22": "Impeça que a areia seque completamente, o que pode paralisar a planta antes da hora e falhar as flores. Olhe os mapas que mostram o tipo de solo e ajuste o gotejamento para dar banhos bem curtos à noite só na areia, para manter as raízes vivas."
+  },
+  {
+    "pergunta_23": "O sensor de luz do clima estragou bem na semana que as flores do café estão abrindo. Como calculamos a água sem essa informação?",
+    "resposta_23": "O café com flor aberta não tolera falta de água; parar o sistema por falta de um sensor vai derrubar as flores. Pegue a previsão do tempo geral pela internet no sistema de agricultura de precisão para calcular uma estimativa e mantenha o gotejamento funcionando."
+  },
+  {
+    "pergunta_24": "O mapa do terreno mostra que um lado do morro recebe muito mais sol o dia todo durante a fase de chumbinho. Como tratar essa parte da lavoura?",
+    "resposta_24": "O lado que pega mais sol perde muito mais água e precisa de uma reposição maior para que os chumbinhos não sequem e caiam. Crie uma zona de manejo separada no computador para essa face do morro e programe a bomba para irrigar esse pedaço por mais tempo."
+  },
+  {
+    "pergunta_25": "Uma parte da lavoura fica mais na sombra das árvores vizinhas durante a fase em que o grão está enchendo. A irrigação deve ser a mesma?",
+    "resposta_25": "A sombra diminui o calor na planta e faz ela gastar menos água para encher o grão, comparado ao café no sol quente. Marque a área de sombra no mapa feito por drone e regule o gotejamento para jogar menos água nesse pedaço, economizando recursos."
+  },
+  {
+    "pergunta_26": "Imagens da lavoura depois da colheita mostram que pedaços isolados das plantas estão ficando muito quentes no meio do sol. O que isso significa?",
+    "resposta_26": "Planta muito quente significa que ela não está conseguindo puxar água da terra para suar e se refrescar, atrasando a recuperação das raízes pós-colheita. Cruze o mapa de calor com o desenho dos canos de irrigação e mande a equipe desentupir os gotejadores nas áreas que esquentaram demais."
+  },
+  {
+    "pergunta_27": "O sol está muito forte e a terra está secando rápido bem na semana que a flor do café está toda aberta. O que se deve fazer?",
+    "resposta_27": "A flor precisa da planta muito bem hidratada para vingar; se a terra secar rápido agora a flor morre no pé. Faça irrigações longas à noite pelo gotejamento, garantindo que a água desça bem fundo nas áreas onde a análise de solo mostrou raízes mais profundas."
+  },
+  {
+    "pergunta_28": "Caiu uma chuva moderada no meio do mês que deixamos a planta sem água para forçar uma florada igual. Qual é a ação rápida agora?",
+    "resposta_28": "Uma chuva assim acorda as plantas e elas vão começar a florir; tentar segurar a água agora não adianta mais e só vai machucar as flores. Cancele o período de seca e volte a ligar o gotejamento normal em todos os setores mapeados para garantir que a florada tenha força."
+  },
+  {
+    "pergunta_29": "A previsão indica muita chuva para os dias em que o café vai estar pronto para colher. Quais as decisões para não perder o café?",
+    "resposta_29": "O café muito molhado no pé fermenta, racha e cai no chão, piorando muito a qualidade e o preço de venda. Desligue toda a irrigação por gotejamento na fazenda e use os mapas de maturação para colocar as máquinas para colher as áreas mais prontas o mais rápido possível."
+  },
+  {
+    "pergunta_30": "Deu uma chuvinha muito fraca, tipo garoa, à tarde na fase em que os chumbinhos estão crescendo. Isso já serve para pular a irrigação do dia?",
+    "resposta_30": "Uma garoa fraca no café adulto costuma ficar só nas folhas e nem chega na terra para a raiz beber. Olhe os sensores debaixo da terra; se eles não mostrarem que a água desceu, mantenha a irrigação por gotejamento ligada do jeito que o mapa de zonas pediu."
+  },
+  {
+    "pergunta_31": "Depois de muito tempo seco, caiu a primeira chuva boa e encharcou a terra junto com a abertura das flores. Posso começar a jogar adubo na água?",
+    "resposta_31": "Sim, a terra molhada faz a planta soltar raízes novas bem finas, sendo a hora perfeita para ela puxar um adubo de arranque para segurar as flores. Aproveite e coloque fósforo e nitrogênio no gotejamento, mudando a dose de acordo com a necessidade de cada pedaço mostrada no mapa de solo."
+  },
+  {
+    "pergunta_32": "A previsão é de seca total por quase dois meses bem na época de encher o grão, e a represa da fazenda está com pouca água. Como não falir?",
+    "resposta_32": "Faltar água nessa hora deixa o grão oco e miúdo, então você precisa usar a pouca água onde ela dá mais lucro. Use os mapas de colheita do passado para cortar o gotejamento nas piores áreas e jogar toda a água que resta nas áreas que produzem café melhor."
+  },
+  {
+    "pergunta_33": "As estações de clima avisam que choveu muito forte em apenas um terço da fazenda, enquanto a planta estava soltando folhas novas. Como operar a água?",
+    "resposta_33": "Se você continuar irrigando tudo igual, o pedaço que choveu vai afogar as raízes e o resto vai secar. Marque no computador a área exata onde a chuva caiu usando o mapa e desligue o gotejamento apenas nos registros daquele pedaço."
+  },
+  {
+    "pergunta_34": "Choveu dias seguidos sem parar, encharcou a terra no crescimento do fruto e os sensores mostram que não tem mais nutriente no chão. E agora?",
+    "resposta_34": "O excesso de água lavou o adubo lá para o fundo onde a raiz não chega, e a planta vai passar fome bem na hora que mais precisa comer. Espere a terra secar um pouco para a raiz conseguir respirar, e depois jogue uma dose forte de adubo pelo gotejamento, regulando as quantias pelo mapa do solo."
+  },
+  {
+    "pergunta_35": "Está chovendo fraco na colheita e o trator teve que parar. Aproveito que a terra está úmida para já jogar o adubo do ano que vem pelo gotejo?",
+    "resposta_35": "A planta acabou de ser machucada pela colheita e está praticamente parada; jogar adubo na terra úmida agora é perder produto. Espere a planta se recuperar e começar a fase de pós-colheita, usando o mapa para calcular quanto a planta gastou para aí sim voltar a adubar."
+  },
+  {
+    "pergunta_36": "A chuva do mês foi um pouquinho menor que o ideal bem no final da época de maturação do café. Preciso ligar a bomba para repor esse pouco que faltou?",
+    "resposta_36": "Deixar o café passar um pouco de sede no finalzinho da maturação é bom, pois ajuda a secar o grão de forma mais igual no pé e melhora a qualidade final. Deixe o gotejamento desligado e vá acompanhando pelos mapas de drone se as folhas estão saudáveis."
+  },
+  {
+    "pergunta_37": "Os alertas climáticos avisam de muitos raios caindo muito perto da fazenda enquanto as bombas estão jogando adubo pro café encher o grão. Qual a prioridade?",
+    "resposta_37": "A vida dos funcionários e o risco de queimar os painéis da bomba são muito mais importantes que atrasar o adubo em um dia. Desligue as bombas do gotejamento de longe, tire o pessoal do campo e use o computador para anotar qual talhão ficou sem adubo para terminar amanhã."
+  },
+  {
+    "pergunta_38": "Temos um alerta de raio e tempestade em cima da fazenda, bem no dia marcado para o trator pulverizar boro nas folhas antes da florada. O que fazer?",
+    "resposta_38": "O boro ajuda as flores a vingarem, mas colocar trator no campo aberto com raio é muito perigoso e a chuva vai lavar o produto da folha. Cancele o trator e jogue o boro direto na água do gotejamento quando a tempestade passar, seguindo o mapa de necessidade das plantas."
+  },
+  {
+    "pergunta_39": "Um raio queimou o computador que lê os sensores da terra bem na fase de chumbinho, que é super delicada. Como não deixar o café secar até o conserto?",
+    "resposta_39": "Parar a água agora faz todo o café novo cair no chão, o que não pode acontecer de jeito nenhum. Olhe no programa do mapa quanto aquela área costuma gastar de água por dia nessa época do ano e ligue o gotejamento na mão todos os dias até arrumarem as peças."
+  },
+  {
+    "pergunta_40": "Os radares mostram uma tempestade elétrica forte se aproximando do centro da fazenda enquanto a irrigação automática joga adubo de crescimento. O que pode dar errado?",
+    "resposta_40": "Raios perto da fiação dão picos de energia que queimam ou desregulam as bombas, jogando adubo demais ou de menos no café. Desligue tudo antes da tempestade chegar para proteger os painéis, e quando o tempo limpar, retome o trabalho na mesma área do mapa que você parou."
+  },
+  {
+    "pergunta_41": "O perigo de raios passou, mas choveu tanto que atolou a terra, e tínhamos que passar o trator para jogar cálcio nas folhas para o fruto crescer. O que recomenda?",
+    "resposta_41": "O trator vai patinar e esmagar a terra molhada, estragando as raízes do café, e a folha úmida nem vai absorver direito. Troque a aplicação de trator pela injeção do cálcio direto na tubulação de gotejamento, ajustando a quantidade pela análise de solo que está no mapa."
+  },
+  {
+    "pergunta_42": "Uma tempestade pesada de granizo rasgou muito as folhas do café logo depois que terminou a colheita. Qual o foco principal agora para não perder a lavoura?",
+    "resposta_42": "Esses machucados nas folhas são a porta de entrada perfeita para fungos e bactérias destruírem a planta. Use o mapa feito por drone para marcar exatamente onde a chuva de pedra bateu e mande produtos à base de cobre pelo gotejamento apenas para cicatrizar aquela área machucada."
+  },
+  {
+    "pergunta_43": "Faltou luz na fazenda, a bomba desligou de soco e quando voltou, o medidor do cano mostra uma pressão muito esquisita bem na fase de maturação. Qual o defeito provável?",
+    "resposta_43": "O tranco da bomba parando do nada pode ter estourado os canos principais ou travado as válvulas que mandam a água. Feche a água do gotejamento e use o mapa do terreno para mandar o pessoal olhar primeiro as partes mais inclinadas da fazenda, que é onde o cano mais sofre."
+  },
+  {
+    "pergunta_44": "Está chovendo todo dia com risco de raios, e o trator não consegue entrar na roça para jogar o adubo de base na fase em que o café está descansando. E agora?",
+    "resposta_44": "Se você atrasar a comida agora, as flores não vão ter força para sair; como o trator não entra, a saída é usar a água. Pegue a receita que seria jogada na terra e coloque o adubo equivalente em forma líquida para ir pelo gotejamento, nas partes marcadas no mapa."
+  },
+  {
+    "pergunta_45": "O alerta de chuvas sem parar não deixa aplicar remédio com a máquina, mas estamos vendo a raiz adoecer por fungo com a terra muito úmida e a planta soltando folha.",
+    "resposta_45": "Deixar o fungo na raiz esperar a chuva passar vai matar a planta rápido. Mande remédio de raiz pelo próprio sistema de gotejamento, jogando a calda com o veneno apenas nas áreas do mapa onde o problema com a doença costuma ser mais forte."
+  },
+  {
+    "pergunta_46": "Os dados de solo mostram que o nível de sais na terra passou muito do normal nas áreas com mudas recém-plantadas. Qual a gravidade disso e como limpar?",
+    "resposta_46": "Sal demais na terra queima as raízes fininhas da muda e vai matar a planta nova muito rápido. Olhe no mapa onde o sal acumulou mais e deixe o gotejamento ligado bastante tempo apenas com água pura para lavar essa sujeira para longe das raízes."
+  },
+  {
+    "pergunta_47": "As leituras de sais no solo despencaram para zero depois de semanas de chuva forte, bem na fase da florada, e as folhas novas estão ficando pálidas. Por que?",
+    "resposta_47": "A chuva forte lavou a terra inteira e levou a comida da planta embora bem na hora que ela precisa de muita energia para abrir a flor. Volte a injetar adubo forte no gotejamento aos poucos, mudando as doses pelo mapa de áreas para repor o que a chuva tirou."
+  },
+  {
+    "pergunta_48": "O sensor da terra marca que secou perigosamente até a raiz no chumbinho, mas olhando as folhas de longe elas ainda parecem verdes. Devo esperar?",
+    "resposta_48": "Não espere. O café está abortando os chumbinhos por dentro para não morrer de sede, e a folha demora semanas para mostrar o estrago. Mande a bomba do gotejamento trabalhar no máximo para molhar toda a terra das áreas que o mapa de sensores indica estarem no vermelho."
+  },
+  {
+    "pergunta_49": "Durante a época que deixamos a planta sem água para descansar, o sensor de um pedaço da lavoura começou a mostrar que a terra está molhando sem ter chovido. O que é isso?",
+    "resposta_49": "A terra molhando sozinha significa que tem um cano quebrado vazando, e isso vai estragar a sua florada porque esse pedaço não vai descansar igual ao resto. Ache o local exato do sensor vazando no mapa, feche a torneira desse setor do gotejamento e conserte o cano na hora."
+  },
+  {
+    "pergunta_50": "Na fase de encher o grão, a área de terra barrenta está sempre encharcada, mas a área de areia seca de um dia para o outro irrigando no mesmo tempo. Como ajeitar?",
+    "resposta_50": "Irrigar os dois solos no mesmo relógio afoga as raízes no barro e mata a areia de sede, estragando a colheita dos dois lados. Separe a irrigação usando os mapas de tipo de solo, colocando a bomba para ligar o gotejamento várias vezes na areia e poucas vezes no barro."
+  },
+  {
+    "pergunta_51": "A terra está mostrando 100% de água acumulada há uma semana na fase que a planta mais puxa folha, e não chove fora. Qual o problema?",
+    "resposta_51": "Esse encharcamento direto arranca o oxigênio da terra, afoga a raiz e paralisa a planta. Pare o gotejamento desse pedaço no mesmo instante e olhe no mapa do morro se essa água não está escorrendo para um buraco e formando uma poça escondida que precisa ser drenada."
+  },
+  {
+    "pergunta_52": "Os números de umidade e sais do solo dão um salto rápido toda vez que a irrigação liga na época de fazer o grão crescer. Isso é bom ou ruim?",
+    "resposta_52": "Isso é perfeito, pois prova que a calda com o adubo está descendo direitinho e ficando presa no bolo de terra molhada onde a raiz costuma beber. Continue adubando em várias vezes pelo gotejamento e veja pelo mapa de crescimento se a planta está aproveitando bem o trato."
+  },
+  {
+    "pergunta_53": "Durante a maturação do café, a terra ainda está muito úmida, mas olhando o pé os frutos já estão secando no ponto certo. Devo continuar mandando adubo e água?",
+    "resposta_53": "Não. Terra muito molhada agora atrapalha o café a secar e mandar adubo vai fazer a planta soltar broto novo em vez de terminar a safra. Desligue todo o gotejamento até o fim do ciclo e gere mapas para ver quais pedaços vão estar prontos para a máquina colher primeiro."
+  },
+  {
+    "pergunta_54": "O sensor fundo mostra terra seca, mas o raso perto do chão mostra terra encharcada o tempo todo na fase de crescimento da planta. O que está segurando a água?",
+    "resposta_54": "A água não desce por causa de uma sola dura de terra compactada logo abaixo da superfície, sufocando as raízes nesse espaço pequeno. Mande passar uma máquina para quebrar o chão duro nas ruas usando os mapas e diminua a pressão do gotejamento para a água ir penetrando devagar."
+  },
+  {
+    "pergunta_55": "No começo da temporada de chuvas as noites estão virando neblina forte que não sai até as 10 horas da manhã. Qual o maior perigo para a roça nova?",
+    "resposta_55": "Muito tempo no nevoeiro molhado é prato cheio para o fungo da ferrugem comer as folhas do café bem rápido. Fique de olho no mapa que mostra a cor da planta caindo nas áreas piores e mande remédio pelo gotejamento para proteger a lavoura por dentro."
+  },
+  {
+    "pergunta_56": "A umidade do ar caiu quase para zero de tarde justo na época em que a flor do café está toda estourada, e nem venta. Tem como salvar as flores?",
+    "resposta_56": "O ar muito seco suga a água da flor tão rápido que o botão não consegue vingar para virar fruto. A única saída é ligar o gotejamento na pressão máxima nas partes que o mapa indica que sofrem mais com a seca, para entupir a planta de água e tentar bater o ar quente."
+  },
+  {
+    "pergunta_57": "O café está muito engalhado e fechado de folha, o tempo ficou abafado e úmido na época de encher o grão e a planta não respira direito. O que piora?",
+    "resposta_57": "Muita folha sufocada num clima úmido impede a planta de puxar cálcio da terra, fazendo o grão ficar mole por dentro e com facilidade para apodrecer. Diminua a quantidade de água no gotejamento e use o mapa de mato para guiar os peões a tirarem os brotos ruins e abrir as plantas para o vento."
+  },
+  {
+    "pergunta_58": "O ar na fazenda ficou muito seco de repente, fazendo a ponta das folhas nas mudas novas começarem a murchar. Por que a planta pequena sente mais rápido?",
+    "resposta_58": "A muda nova não tem raiz grande para puxar água rápida o bastante para repor o que o ar seco tira da folha, correndo risco de morte rápida. Mude a bomba do gotejamento para ligar e desligar rápido várias vezes ao dia e use o mapa de terra para jogar mais nas áreas arenosas."
+  },
+  {
+    "pergunta_59": "O clima promete neblina abafada e frio a semana inteira justo na fase em que seguramos a água para o café descansar e repousar para a florada. Isso atrapalha?",
+    "resposta_59": "Pelo contrário, esse ar muito úmido com frio é perfeito para a planta dormir tranquila sem secar as folhas, deixando os botões das flores fortes. Mantenha o gotejamento desligado sem medo e confira nos mapas de altitude se a lavoura inteira está respondendo bem ao tempo."
+  },
+  {
+    "pergunta_60": "O clima está uma bagunça de umidade na época da colheita e os grãos de café de um mesmo galho estão maduros e verdes tudo misturado. Isso atrapalha a colheita com a máquina?",
+    "resposta_60": "Sim, clima bagunçado faz os grãos madurarem fora de época, e passar a máquina vai misturar café verde com café bom, destruindo a qualidade da safra. Trave qualquer uso do gotejamento e mande a colhedora direto para os poucos pedaços que os mapas de drone mostram que maduraram por igual."
+  },
+  {
+    "pergunta_61": "O calor extremo com ar seco na fase do chumbinho está fazendo explodir o bicho-mineiro, que come as folhas do alto da planta. Por que isso é perigoso agora?",
+    "resposta_61": "Folha comida e rasgada pelo bicho não consegue fazer fotossíntese para mandar força para o chumbinho crescer, perdendo o fruto de bobeira. Jogue o veneno sistêmico misturado na água do gotejamento e aplique uma quantidade mais pesada nas zonas que o mapa de pragas apontou com mais ataque."
+  },
+  {
+    "pergunta_62": "Os sensores avisam que o ar está numa seca violenta, mas a terra está cheia d'água no período de soltar folha. A planta está crescendo?",
+    "resposta_62": "Não. Ar seco demais faz o café fechar as folhas como defesa e ele para de respirar e crescer, ignorando que a terra está molhada. Pare de bombear água à toa de dia pelo gotejamento e aplique nutrientes de noite só nas áreas que o mapa de vigor mostrar que podem aproveitar."
+  },
+  {
+    "pergunta_63": "A umidade do ar ficou muito baixa na fase de granação pesada e a minha bomba principal não aguenta tocar o volume de água que evaporou. Qual é a escolha dura a fazer?",
+    "resposta_63": "Faltar água para todo mundo faz a lavoura inteira dar grão miúdo. Corte a água do gotejamento de vez nas partes mais fracas da fazenda, baseando-se no mapa de produção passada, e jogue tudo o que a bomba consegue nas partes de terra melhor para garantir algum café graúdo."
+  },
+  {
+    "pergunta_64": "Olhando fotos velhas, notamos que o café caiu muito na fase de chumbinho nos anos anteriores justamente nos pedaços da fazenda onde a planta parecia mais verde e forte. O que causou isso?",
+    "resposta_64": "Planta verde demais e muito enfolhada gasta muita água à toa e faz muita sombra nela mesma, derrubando o fruto de baixo por não bater sol. Crie no mapa uma zona de restrição para esses pedaços superverdes e diminua muito o adubo nitrogenado neles no gotejamento desse ano."
+  },
+  {
+    "pergunta_65": "O mapa da colheita acusou uns pedaços redondos na roça que quase não deram café nenhum, mas o clima nessa fase de crescimento de ramos aponta que está tudo perfeito. De onde vem o problema?",
+    "resposta_65": "Se o tempo está bom e a adubação foi geral, esses buracos de produção sinalizam que a terra está travada ou tem verme (nematóide) matando a raiz. Faça a retirada de terra nesses buracos marcados no mapa e inicie tratamentos fortes e diretos por gotejamento apenas ali."
+  },
+  {
+    "pergunta_66": "As câmeras mostram um mapa verde escuro (NDVI) mas o outro mapa (NDRE) da mesma rua mostra que a planta está bem amarela por dentro na época de preparar a florada. Em quem eu confio?",
+    "resposta_66": "No café grande e fechado o mapa comum (NDVI) só enxerga a pontinha verde da planta, enquanto o mapa mais profundo (NDRE) atravessa a folhagem e mostra a saúde de verdade. Calcule a dose de adubo baseado no mapa profundo e jogue esse volume exato em cada válvula pelo gotejamento."
+  },
+  {
+    "pergunta_67": "O mapa do formato do chão mostra que a água da chuva está correndo e juntando lá no buraco da baixada, justo na época de deixar a planta com sede para florir tudo junto. Que problema isso traz?",
+    "resposta_67": "A água parada no fundo do morro quebra o estresse de sede da planta, fazendo as flores desse buraco abrirem todas fora de hora, misturando o café verde e o maduro. Feche as torneiras do gotejamento apenas das marcações dessas baixadas no mapa, esticando a seca nelas para ver se a florada alcança as demais."
+  },
+  {
+    "pergunta_68": "Varrendo o chão da fazenda descobrimos manchas enormes de areia pura escondidas no meio do barro bem na época que bloqueamos a água para a planta descansar. Qual o perigo na areia?",
+    "resposta_68": "A areia zera a umidade num pulo e secar ela igual se seca o barro vai torrar os galhos e matar a gema das flores antes da safra nascer. Mantenha as partes do barro sem água, mas configure a bomba para pingar o mínimo da sobrevivência no gotejamento só nas áreas de areia marcadas no mapa."
+  },
+  {
+    "pergunta_69": "Fizemos exames nas folhas bem no finzinho da maturação do café e a borda do lado leste deu muita deficiência de potássio. Adianta jogar adubo?",
+    "resposta_69": "A planta já esgotou suas energias para encher o grão que está quase pronto, então jogar adubo nessa hora não vai engordar mais nada e só atrasa a colheita. Abandone a adubação e espere a colhedora passar; quando a planta entrar no pós-colheita, inicie os reforços de potássio na mesma área marcada pelo mapa."
+  },
+  {
+    "pergunta_70": "O computador avisa que em alguns pedaços o café virou de vez e já tá todo avermelhado como cereja, enquanto o resto da lavoura segue aguentando muita água e toda verde. O que fazer?",
+    "resposta_70": "Deixar café maduro agarrado tomando água faz ele apodrecer ou cair, além de secar ruim e derrubar o preço do seu café. Desligue a torneira do gotejamento em todos os setores maduros acusados pelo mapa de drone e chame as máquinas de colher urgente para esses pedaços."
+  },
+  {
+    "pergunta_71": "A imagem de drone mostrou toda a lavoura amarelando forte e junto na época de encher os grãos de café, não importando o lado ou a terra. O que isso denuncia?",
+    "resposta_71": "Essa cor caindo rápido no meio da safra acusa que o pé de café soltou flor demais e agora a carga está literalmente sugando as folhas, ou então as raízes afogaram. Se a terra não tiver barro parado, abra muito mais a torneira do gotejamento e jogue o máximo de nitrogênio possível de forma igual no mapa inteiro."
+  },
+  {
+    "pergunta_72": "Pedaços da lavoura novinha, de mudas do primeiro ano, ficaram completamente travados há quatro meses, com água, adubo e clima excelente. Onde eu acho a resposta?",
+    "resposta_72": "Sem ser o clima e com tudo ótimo, o crescimento quebrado é raiz embuchada do plantio no buraco errado ou infestação de nematóide mastigando a base das mudas. Localize as falhas pelo GPS do mapa de precisão, vá nas mudas com o técnico, e sendo verme, prepare injeções concentradas no gotejamento travado dessas linhas mortas."
+  },
+  {
+    "pergunta_73": "A ladeira do morro da fazenda é bem inclinada e a fase de florada aberta pede a quantidade máxima de água na irrigação por dia. Que cuidado devo tomar para irrigar assim no morro?",
+    "resposta_73": "No barranco, se jogar água de uma vez, ela escorre por cima arrancando a terra e não molha a raiz da planta que vai abortar a flor de sede mesmo chovendo gotejador. Pegue o mapa de altitude para isolar esses morros no sistema e parta o tempo de irrigação deles em vários tiros rápidos pelo gotejamento para dar tempo da água sumir."
+  },
+  {
+    "pergunta_74": "Cruzando o mapa da bomba com a imagem da câmera, as plantas que estão muito ralhas, feias e sem vida são exatamente onde a bomba injeta as horas de rega mais pesadas da fazenda na fase de folha. Que excesso é esse?",
+    "resposta_74": "Isso aí é matança de raiz por afogamento direto; o volume excessivo de água lavou a comida pro buraco e afogou a planta que ficou sem oxigênio e raleou a copa para não morrer. Ajuste no computador e diminua muito o tempo das torneiras da irrigação do gotejamento cortando a sobra com base no pedido justo do mapa agrícola de umidade."
+  },
+  {
+    "pergunta_75": "Sempre no mesmo pedaço de roça, os registros mostram que todo ano cai muito mais a colheita, independente do trato, sendo que agora começamos a crescer os galhos do ano. Como agir nesse defeito?",
+    "resposta_75": "A queda anual fixa num quadrado não tem cura mudando folha ou clima, porque o subsolo lá embaixo encrostou de química velha ou calcificou duro não dando estrutura vital pra encher o fruto. Tire as medidas profundas do chão daquele limite demarcado no mapa do computador e prepare a adição hiper concentrada contínua de cálcio solúvel nas mangueiras do gotejamento ali."
+  },
+  {
+    "pergunta_76": "Os dados térmicos do clima marcaram um calor contínuo enorme estressando o ciclo, e acabaram encurtando e antecipando em semanas a época do fruto fechar a semente antes das chuvas acabarem de molhar a granação. Como salvar a peneira?",
+    "resposta_76": "O calor extremo cozinhou a granação forçando o grão fechar a dura da casca muito cedo cortando o crescimento de ganho de espaço que dá qualidade na classificação grande da peneira de vendas. Tente retardar esse fechamento da casca forçando banhos super longos da umidade pelo gotejamento de noite resfriando toda a raiz focando onde o mapa sempre mostra a superprodução gorda."
+  },
+  {
+    "pergunta_77": "Passamos a máquina lendo a folhagem e o café madurando na sombra no finalzinho do ciclo despencou assustador de verde ficando completamente amarelo oco sem força de sol na copa toda folhada. O que adiantou no meio da sombra na colheita pré?",
+    "resposta_77": "Sombra direto nas copas faz a planta roubar toda a força do resto da folha apressando velhinha a morte dos nutrientes numa corrida cega final pra sobreviver fechando semente fraca da sombra sombria escura. Cruze a marca de GPS apontando ruas com sombra da precisão botando pela ponta das mangueiras da irrigação pelo gotejamento só caldos concentradíssimos limitados ali para salvar e aguentar as pontas da folha aminoácida verde até fechar a passada das máquinas logo adiante."
+  },
+  {
+    "pergunta_78": "Tiramos tanto café que a máquina registrou safra maluca colossal quebrando todos os recordes. Mas olhando o mapa logo a seguir agora a palha do pasto aponta terra quase morrendo nua verde amarela exausta morta desmaiada acabada seca fraca magra e esgotada.",
+    "resposta_78": "Isso suga a última raspa óssea dos troncos acabando e liquidando a sobra basal fraca minando perigo extremo e imediato do ataque violento de morte repentina por seca de galhos pontas das estrias fracas esgotadas que tentaram amamentar carga colossal colhida pesada vermelha de cesto enorme final da colheita. Despache injeções gigantes rápidas potentes diretas líquidas agressivas contendo adubação focada em socorro total usando a distribuição da água da gotejadora para afundar o golpe certeiro nas falhas críticas acusadas do quadro do mapa colhedora agrícola morta depauperada finalizada recém cortada safra super colossal de alta base gasta."
+  },
+  {
+    "pergunta_79": "Os mapas do vizinho contaram para a gente que o café da variedade Catucaí ali do lado bebeu muito menos água e aguentou firme o sol se comparado ao tipo Mundo Novo espalhado junto misturado quando deu flor igual do meio seco no clima no passado.",
+    "resposta_79": "Botar a mesma garrafa e tempo das irrigações nas duas genéticas diferentes na lavoura vai matar de sede rápido murchando e derrubando as flores todas no sol e afogando enchendo a raiz de podridão molhada farta no resistente ao secar. Tire do desenho da terra do programa da tecnologia separando e cortando e abrindo em dois polígonos as águas colocando comandos divididos em duas batidas de gotejadores independentes soltas sozinhas em horários focados para o pedido vital do mapa hídrico ideal programando do tipo respectivo na roça sem cruzar águas mortais no campo de manejo diferente variado."
+  },
+  {
+    "pergunta_80": "Deu falta de grana e não espalhamos nenhum medidor na terra da lavoura e eu preciso estipular como vou matar a sede cortando as águas e trancando válvulas pro tal do estresse que antecede e aponta pra safra florida que desponta antes da chuvarada grossa final brotar na planta verde rala magra do descanso forçado seco da vida.",
+    "resposta_80": "Cavar água no tato cortando cego na lavoura cheia de partes diferentes faz dar flor adiantada, verde, passada ou morta misturando cesto perdendo qualidade derrubando cota da florada vital do futuro da bolsa boa do mercado quebrado sem régua nem compasso no molhado do escuro do campo. Faça o corte do tempo das válvulas das caixas olhando duro o mapa das texturas levantado da condutividade do barranco lá na agricultura apertando a corda mais fundo na terra dura gorda fechando tudo e regrando aos poucos as franjas ralas frouxas e moles por gotejamento regrando apertado na roça espalhada toda do mapa solto sem relógio local na cega da falta dos ferros da raiz da terra escondida ali no poço mudo cego de sensor do chumbado de água livre contínua amarrada dura cega sem marca ponteiro de ponte."
+  },
+  {
+    "pergunta_81": "A terra afundou lá pra 5 graus perto das raízes de madrugada e congelou a base logo no período de encher de água contínua os botões dos chumbinhos abrindo para inchar o grão na ponta. Com terra molhada eu jogo o adubo no frio escuro?",
+    "resposta_81": "Esse gelo mata a força do cano do pé e congela e paralisa a comida de subir matando de fome toda a rodada que tentava encher o chumbinho jovem que trava no susto sem água. Abandone de vez botar grana derretida e calda química lá pra raiz que nem se mexe no frio focando apenas usar o gotejo solto de água do final do dia pra fazer inércia só nas fendas cravadas de baixada desenhadas lá do programa de mapas das poças topográficas."
+  },
+  {
+    "pergunta_82": "Os números do fundo de 40 centímetros da terra marcam flutuação rápida pulando para muito calor todo meio dia durante o começo pesado de encher a folha nova no sol quente. Isso dói no café de verdade do chão duro ali plantado?",
+    "resposta_82": "Esses pulos violentos no fundo afirmam que você perdeu toda a capa de palha do mato ou sujeira do chão que isolava e deixava o chão seguro sem ferver estragando a biologia lá de dentro assada. Junte o comando para jogar água aos pulos no sol quente nos gotejadores pra fazer sombra na folha da muda buscando nos mapas feitos do drone onde que o buraco não tem mato em volta nenhum careca rasgado e aberto exposto na pele do pó amarelo queimando seco estriado."
+  },
+  {
+    "pergunta_83": "Tarde insuportável de quente nos 38 graus pesados acabando batendo as costas pra despencar gelado nos 10 frios e secos de calafrio da noite na maturação pura cheia grossa engordando do balão cheio pesando no grão. Que estrago é feito nessa batida louca de pancada climática quente na grana e seca fria no grão na ladeira?",
+    "resposta_83": "Toda essa força térmica tira a casca suada e o sangue e açúcar vital despencando o ganho de peso amarrando feio e cortando na raiz inteira minando todo quilo engordador de fruto forte pra encher e dar o prêmio bom graúdo do cesto classificador e torrador caro gigante bonito gordo. Bata sem dó todo dia banhos matinais fortíssimos na raiz pela gota injetora da calda molhada grossa em potássio folgado no gotejador na farta dose farta na raiz dos setores desenhados brilhando forte na colheita e marcados lá pesados ricos pelo software computadorizado inteligente no mapa produtivo rico."
+  },
+  {
+    "pergunta_84": "O frio matou e calcinou as saias e folhas lá embaixo congelando feio grande parte do chão nas costas da baixada e necrosando toda a banda que entra nas ruas bem na fase que vai madurar a cor do cereja caindo da ponta na safra pregressa final matando feio preta torta a roça do vale escondido ali na frente.",
+    "resposta_84": "A morte negra amarra o dreno tirando a água de subir, secando no pé inteiro o galho que não dá fruto e não tem jeito de limpar ou pintar de cor classificada da garrafa cara por falta contínua de puxar calda morta sem sol. Olhe no computador o mapa preto cruzado na foto da imagem achando o fundo do buraco calcinado mandando a trava para não botar uma gota de adubo pro buraco negro de baixo no gotejo focado apenas para a peãozada derrubar e cortar rápido pra botar toco novo duro de roça na tesoura pesada pra voltar folha brotar depois na cicatrização lá em baixo."
+  },
+  {
+    "pergunta_85": "Inverno fechou quente demais da conta cortando os ventos estragando o choque natural orgânico da vida cortando o ciclo frio não dando estresse e bagunçando a letargia de segurar a fase e repousar pra soltar as folhas e as flores parando a chuva limpa e adiantada das safras limpas na hora final das matas.",
+    "resposta_85": "Essa ausência tira da planta a trava biológica natural que puxa toda flor pra nascer igual fazendo flores soltas o ano inteiro que mistura fruto seco e fruto florido arruinando a cata final pra dar boa bebida final sem colhedora pra arrancar fácil a roça espalhada toda fina dura fora do balde de ouro e cota verde natural na lata final. Jogue você o estresse cortando a água sem dar colher fechando os setores e marcando os gotejadores lá no fundo segurando a água seca para o chão dar a trava nos relógios todos fechados puxando as contas pesadas nos limites da zona das cores feitas nos polígonos apertados lidos e limitados na tela dura agrícola mapeada."
+  },
+  {
+    "pergunta_86": "Deu chuva gelada de pancada batendo com tempo frio de supetão no miolo do dia, cortando sol forte, despencando 8 graus secos e cortando na hora em que toda a flor da roça da cara estava esbugalhada aberta no sol soltando pra fazer botão novo.",
+    "resposta_86": "Essa água torta com choque afoga o ovário e necrosa no frio secando matando afogada inviabilizando que nasça os chumbinhos jogando aborto grande na casca não dando fixação pra nascer grão bom na florada esbugalhada que apodrece na gota fria torta grossa torta na cabeça preta na ponta que afoga estigma e aborta. Rache as janelas do sistema tirando pra longe os jatos na fita da água da lavoura na hora paralisando tudo nos gotejos fechados para não botar umidade chamando a câmera para registrar feio e marcar perigoso onde quebrou a flor no mapa calculando na tela da agricultura onde vamos jogar no perigo e amargar lixo pra tentar remediar quebra do dreno do aborto sem fruto do chumbinho morto na cara das marcações das ilhas e perdas parciais dali avante da folha cega e do grão do chão rasgado cego no frio torto na flora murcha morta do estigma necrosado abortado torrado morto na ponta fria estragada na fita ali torto."
+  },
+  {
+    "pergunta_87": "O termômetro varou a máxima de todas no mês batendo todos os números feios assados secos seguidos por semanas forçando demais da planta exausta que descansou para arrumar de dar o botão na flor, que vai sair das estrelas escuras murchas ou explodir pro chumbinho se tudo fosse sol no calor de rachar mato de capim na roça no meio de tudo lá dentro de muito seco assando folha e mato grande sem capa da hora final na indução cega na ladeira forte fina e sem um pingo sem nuvem no céu sem fim.",
+    "resposta_87": "Esse calor desgraçado na madeira assa os botões queimando a murcha estrela de vez torrando cego tudo de flor de fundo não dando dreno seco matando toda a flor de sair na roça toda e minando na morte na falha abortada sem poder reaver na folha seca na grana do fundo estragado torrado morto no pé se não der de dar pra água. Faça pulso focado pra refrescar borrifando da ponta do gotejador em banhos curtos repetitivos no sol duro dando vida e água mirando a cara norte da fazenda toda mapeada pelo sistema de ladeira que toma sol duro na cara sem parar cruzado na tela do computador apontado sem falha pra molhar pesado onde fere mais os picos apontados na cara isolada do norte cruzado sem folha isolado na roça no mapa cego finado morto cego final sem nuvem rasgado lá em riba cruzado do norte seco fincado cravado lá no fim cruzado e do chão na agricultura apontado batido e checado lá sem nuvem assando fina de cruz cego e morto fina na seca final na indução calcinada seca forçada do norte batendo forte no sol rachador torrador fina."
+  },
+  {
+    "pergunta_88": "Uma geada de canela bem fininha passou varrendo só o capim e lascando a base mole das mudas do caule debaixo sem calças na fase em que acabaram de afundar no barro seco no inverno na hora da planta de sol sem a raiz curta ali no peão fino, mas sem pegar no mato sem proteção na saia da roça lisa lá de terra e folha viva, e na casca da lenha ali fincada rasgada de casca ali fina viva fina sem casca ali dura e fria na geada que pegou.",
+    "resposta_88": "O gelo de baixo trinca os canos finos do caule novo apertando a veia de vez quebrando as mudas na seca e matando no estrangulamento que não deixa o caldo correr e amamentar pra cima secando a cova matando na asfixia crônica inteira não importa quantas garrafas de água boa tu jogar lá debaixo que não sobe torta e amarra morrendo a muda curta. Tranque de vez a linha que passa fertilizante de injeção matando a água fina do gotejador na muda marcando correndo o trator para filmar onde falhou no buraco cego marcado pelas telas de imagens no sistema cruzando perdas com a folha e achando ali isolado do meio pra mandar replante manual na área da morte arrancando a casca seca do buraco falho de muda morta congelada morta cega sem base que furou morta de peão no fim gelado calcinado congelado na falha e arrancado limpo ali."
+  },
+  {
+    "pergunta_89": "Noite muito abafada e morna batendo quente em cima da hora atrapalha feio na planta, travando a folha na base do estresse escuro segurando calmaria quente tirando todo o freio sem parar de ofegar, consumindo toda a fase na hora pesada dos chumbinhos virando e dando no peso verde gordo acelerado forçado cego do ganho gigante e denso no meio sem fim da grana pesada de grão gordo novo e cheio que o galho empurra pra segurar no fim frouxo no peso do grão e da casca verde forte que amarra denso." ,
+    "resposta_89": "A noite assim de estufa faz a planta ofegar rápido gastando o açúcar no suadouro sem estocar sólido matando a força fina minguada deixando a grana chocha oca sem massa morta leve de cesto da bebida ruim e da peneira desclassificada na ponta do feijão oco da lata e folhosa que rouba o quilo bruto das sacas cegas miúdas leves na colheita. Bata e vire rápido as caldas misturadas botando na bomba de cálcio forte um magnésio pra dar escudo na injeção solta fina limpa lá do gotejador jogando na área restrita batida que os mapas mostram ter de aguentar flor mais amarrada na casca lida pelas telas de drones puxando forte cega sem peso do feijão cego e forçado restrito onde tem força no mapa cruzado cego e exportador do verde cheio no alvo da batida pontual ligada cheia sem falha da roça da agricultura de tela do verde puro focado na ponta da tela da máquina."
+  },
+  {
+    "pergunta_90": "Uma onda de calor absurda e torradora formou uma bolha quente parada matando a brisa secando a roça sem piedade puxando da terra pro ar direto tirando da ponta da folha e transformando rápido da maturação e seca as cerejas roxas gordinhas que se encolhem antes do verde do campo ali madurando antes do café se fechar torto encasulado ruim e se secando ali na pele agarrada fincada torta grudenta no pedaço lenhoso do pau verde duro sem poder de cair do cereja pronto liso e doce.",
+    "resposta_90": "Esse clima assador de mormaço murcha e prega feio amarrando o caldo bom transformando na passa dura que esmaga o licor do bago grudado dificultando tirar no rodo da máquina arruinando forte a garrafa boa fina de flor e do grão solto na máquina tirando os preços top de linha na lata fina da semente pronta boa da cata da cereja. Controle o assador no choque dando banhos bem mirados fracos pulsandos molhados por água leve via os bicos dos gotejamentos abrindo balizados de perto por cada fenda no mapa da saúde focado que acusar onde as plantas amadureceram precoce passadas na força para reidratar a cereja salva e não torrar e passar do ponto nas poucas ilhas marcadas secas de passa ruim amarrada grudada ali cruzada torrosa verde que virou passa forçada antecipada de vez murcha amarrada fina da vez focada em mapa torrado e verde seco."
+  }
+]

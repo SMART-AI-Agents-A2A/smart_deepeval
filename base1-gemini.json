@@ -1,0 +1,362 @@
+[
+  {
+    "pergunta_1": "Os dados climáticos indicam rajadas de vento intensas durante a fase fenológica de expansão dos frutos. Como o agrônomo deve adequar a nutrição nas áreas identificadas com baixo vigor foliar?",
+    "resposta_1": "Recomendação: Suspenda qualquer pulverização foliar para evitar a deriva de insumos, garantindo que o suprimento nutricional essencial para a expansão celular não seja perdido. Sugestão de tomada de decisão: Utilize o mapa de vigor (NDVI) da agricultura de precisão para delimitar as zonas críticas e aplique a suplementação nutricional a taxa variável diretamente via irrigação por gotejamento."
+  },
+  {
+    "pergunta_2": "Há previsão de ventos fortes e contínuos ao longo do dia na fase fenológica de maturação. Qual a melhor estratégia para os talhões com histórico de alta produtividade?",
+    "resposta_2": "Recomendação: Evite o déficit hídrico exacerbado pela alta demanda evaporativa causada pelo vento, o que pode murchar os frutos na fase final de maturação. Sugestão de tomada de decisão: Consulte as zonas de manejo de alto potencial na plataforma de agricultura de precisão e programe um turno extra na irrigação por gotejamento apenas nesses setores específicos."
+  },
+  {
+    "pergunta_3": "O sensor meteorológico registra ventos calmos (0 km/h) de madrugada durante a fase fenológica de indução floral. A temperatura está em declínio. Como intervir?",
+    "resposta_3": "Recomendação: Atenção ao risco de inversão térmica e acúmulo de ar frio, que podem causar danos às gemas florais latentes. Sugestão de tomada de decisão: Isole as áreas de baixada utilizando o modelo digital de elevação da agricultura de precisão e acione a irrigação por gotejamento para aumentar a umidade do solo e reter calor latente na zona radicular."
+  },
+  {
+    "pergunta_4": "Na fase fenológica de florada (antese), o vento muda bruscamente de direção, trazendo massas de ar muito secas. Como proceder nos talhões arenosos?",
+    "resposta_4": "Recomendação: Evite a dessecação dos tubos polínicos, que reduz drasticamente o pegamento das flores devido à baixa umidade atmosférica e do solo. Sugestão de tomada de decisão: Ative a irrigação por gotejamento com lâminas leves e contínuas exclusivamente nas zonas de manejo mapeadas com textura arenosa pela agricultura de precisão."
+  },
+  {
+    "pergunta_5": "Durante o período de repouso vegetativo, rajadas de vento estão causando desfolha excessiva nas bordaduras. Como o agrônomo pode mitigar esse dano?",
+    "resposta_5": "Recomendação: Compense o estresse mecânico e hídrico nas folhas remanescentes para não prejudicar o acúmulo de reservas para a próxima fase fenológica produtiva. Sugestão de tomada de decisão: Baseando-se nas imagens de VANT (agricultura de precisão), delimite as zonas de bordadura afetadas e aplique uma fertirrigação rica em potássio via irrigação por gotejamento localizada."
+  },
+  {
+    "pergunta_6": "Ventos fortes são registrados logo após uma fertirrigação nitrogenada na fase fenológica de desenvolvimento vegetativo. Qual o risco e a ação corretiva?",
+    "resposta_6": "Recomendação: Previna a volatilização da ureia aplicada na superfície úmida caso o bulbo molhado seque rapidamente pela ação do vento intenso. Sugestão de tomada de decisão: Avalie os mapas de condutividade elétrica da agricultura de precisão e aplique um pulso adicional de água limpa via irrigação por gotejamento para incorporar o nitrogênio profundamente nas zonas tratadas."
+  },
+  {
+    "pergunta_7": "O agrônomo nota pelo monitoramento climático que ventos quentes predominarão por três dias na fase fenológica de chumbinho. O que ajustar no manejo?",
+    "resposta_7": "Recomendação: Suporte a altíssima evapotranspiração para evitar o murchamento temporário e o abortamento da carga pendente (chumbinho). Sugestão de tomada de decisão: Ajuste o tempo de rega da irrigação por gotejamento para suprir 100% da evapotranspiração da cultura, direcionando volumes maiores para as zonas de manejo com maior índice de área foliar mapeadas na agricultura de precisão."
+  },
+  {
+    "pergunta_8": "O vento parou e a umidade do ar estabilizou em 95% na fase fenológica de granação. Como isso afeta a estratégia de fertirrigação?",
+    "resposta_8": "Recomendação: Em condições de calmaria e alta umidade, a transpiração da planta cai, reduzindo a absorção de água e nutrientes solúveis por fluxo de massa. Sugestão de tomada de decisão: Reduza a concentração da solução nutritiva na irrigação por gotejamento e aplique apenas nas zonas de manejo com comprovada deficiência nos mapas de fertilidade da agricultura de precisão."
+  },
+  {
+    "pergunta_9": "A direção do vento indica possível deriva de herbicidas de propriedades vizinhas sobre plantas na fase fenológica inicial (pós-plantio). Qual a intervenção rápida?",
+    "resposta_9": "Recomendação: Maximize o vigor da muda para acelerar a desintoxicação e emissão de folhas novas, garantindo a sobrevivência na fase de estabelecimento. Sugestão de tomada de decisão: Utilize ferramentas de agricultura de precisão para demarcar a faixa de exposição e inicie a injeção de bioestimulantes enraizadores via irrigação por gotejamento estritamente na zona afetada."
+  },
+  {
+    "pergunta_10": "A temperatura do ar excede 33°C por vários dias consecutivos durante a fase fenológica de floração. Qual a conduta no manejo de água?",
+    "resposta_10": "Recomendação: Evite o abortamento floral causado por estresse térmico extremo, garantindo que a planta tenha água suficiente para transpirar e se resfriar. Sugestão de tomada de decisão: Ative a irrigação por gotejamento nas horas de menor evaporação (noturno) para elevar a umidade do bulbo, priorizando as zonas de manejo identificadas pela agricultura de precisão com menor capacidade de retenção hídrica."
+  },
+  {
+    "pergunta_11": "Sensores térmicos indicam aquecimento excessivo do solo (acima de 30°C) no terço superior da lavoura na fase fenológica de expansão de frutos. O que fazer?",
+    "resposta_11": "Recomendação: Proteja as raízes superficiais absorventes da morte por escaldadura, o que paralisaria a expansão celular e o calibre dos frutos. Sugestão de tomada de decisão: Utilize o mapa de relevo e altimetria da agricultura de precisão para setorizar o terço superior e acione pulsos diurnos de irrigação por gotejamento para promover o resfriamento evaporativo do solo."
+  },
+  {
+    "pergunta_12": "Houve uma queda brusca de temperatura (abaixo de 10°C) durante a fase fenológica de granação. Os talhões estão em diferentes altitudes.",
+    "resposta_12": "Recomendação: Quedas de temperatura reduzem o metabolismo e a absorção de nutrientes, exigindo adequação na oferta de insumos para não desperdiçar produtos. Sugestão de tomada de decisão: Suspenda temporariamente a fertirrigação via irrigação por gotejamento nas zonas de manejo de menor altitude mapeadas pela agricultura de precisão (onde o ar frio se acumula) até o aquecimento do microclima."
+  },
+  {
+    "pergunta_13": "As plantas na fase fenológica de maturação apresentam murcha fisiológica diurna por calor extremo, mas o sensor de solo marca umidade adequada. Como intervir?",
+    "resposta_13": "Recomendação: Entenda que a demanda atmosférica superou a capacidade de absorção radicular; adicionar mais água no solo não reverterá a murcha imediatamente e pode causar lixiviação. Sugestão de tomada de decisão: Mantenha o turno de rega normal da irrigação por gotejamento e utilize imagens multiespectrais (agricultura de precisão) para identificar se alguma zona de manejo não está se recuperando durante a noite."
+  },
+  {
+    "pergunta_14": "Ondas de calor na fase fenológica de repouso vegetativo estão acelerando o esgotamento hídrico das plantas. Qual a medida correta?",
+    "resposta_14": "Recomendação: O estresse hídrico controlado é benéfico nesta fase, mas o esgotamento severo por calor pode causar desfolha irreversível e secamento de ramos. Sugestão de tomada de decisão: Acompanhe a curva de secagem por zonas de manejo (agricultura de precisão) e aplique uma lâmina de salvação via irrigação por gotejamento apenas nos setores que se aproximarem do ponto de murcha permanente."
+  },
+  {
+    "pergunta_15": "Durante o enchimento de grãos (granação), a temperatura do ar permanece atípica e amena. O balanço hídrico aponta sobra de água. O que o agrônomo decide?",
+    "resposta_15": "Recomendação: Ajuste a oferta de água para não asfixiar as raízes e prejudicar a absorção de potássio, vital na fase fenológica de granação. Sugestão de tomada de decisão: Reduza o tempo de acionamento do sistema de irrigação por gotejamento de acordo com o recálculo da evapotranspiração, validando o estado da biomassa pelas imagens de satélite da agricultura de precisão."
+  },
+  {
+    "pergunta_16": "A umidade e a temperatura do ar estão ótimas, mas o solo superficial secou rápido na fase fenológica inicial de mudas. Como proceder?",
+    "resposta_16": "Recomendação: Garanta que o sistema radicular em formação não sofra ressecamento na camada superficial (0-10 cm), vital para o enraizamento da fase inicial. Sugestão de tomada de decisão: Aplique a técnica de pulsos curtos e repetidos de irrigação por gotejamento para focar a umidade na superfície, baseando-se no mapa de textura do solo (agricultura de precisão) para determinar a frequência."
+  },
+  {
+    "pergunta_17": "Frente fria prevista traz temperaturas próximas a 3°C para a fase fenológica de indução floral. Qual a estratégia preventiva?",
+    "resposta_17": "Recomendação: Prevenir danos por geada radiativa que destruiriam as gemas recém-formadas e comprometeriam a safra seguinte. Sugestão de tomada de decisão: Cruzando mapas topográficos (agricultura de precisão), ative preventivamente a irrigação por gotejamento durante a madrugada nas áreas de baixada para aumentar a capacidade térmica do solo."
+  },
+  {
+    "pergunta_18": "Alta amplitude térmica (frio de manhã, muito calor à tarde) na fase fenológica de chumbinho. O que monitorar na lavoura?",
+    "resposta_18": "Recomendação: Amplitudes severas estressam o balanço hormonal da planta, aumentando o risco de queda precoce de frutos recém-fixados. Sugestão de tomada de decisão: Otimize o conforto radicular ajustando a irrigação por gotejamento ao final da tarde e use mapas de NDVI (agricultura de precisão) para aplicar reguladores de crescimento nas zonas mais estressadas."
+  },
+  {
+    "pergunta_19": "Dias consecutivos de céu limpo com radiação solar máxima durante a fase fenológica de expansão de frutos. Como ajustar o manejo?",
+    "resposta_19": "Recomendação: A radiação máxima acelera a evapotranspiração, exigindo reposição hídrica total para sustentar a turgidez celular e o crescimento da peneira do grão. Sugestão de tomada de decisão: Eleve o volume da irrigação por gotejamento ao teto da capacidade de campo, priorizando as zonas de manejo identificadas com maior carga pendente de frutos pelos mapas de colheita da agricultura de precisão."
+  },
+  {
+    "pergunta_20": "A radiação solar está atipicamente baixa por excesso de nebulosidade na fase fenológica de maturação. Qual o impacto?",
+    "resposta_20": "Recomendação: Baixa radiação prolonga o ciclo de maturação e reduz a demanda evaporativa, aumentando o risco de excesso de umidade prolongada na raiz. Sugestão de tomada de decisão: Interrompa ou espace drasticamente os turnos da irrigação por gotejamento, utilizando os mapas de umidade do solo espacializados (agricultura de precisão) para garantir que não haja encharcamento."
+  },
+  {
+    "pergunta_21": "No início do período chuvoso (fase fenológica de vegetação), ocorre um 'veranico' com altíssima insolação. O que decidir?",
+    "resposta_21": "Recomendação: Evitar a quebra no ritmo de emissão de novas folhas (vegetação), que sustentam a fotossíntese para a safra atual. Sugestão de tomada de decisão: Retome imediatamente o programa de irrigação por gotejamento, empregando taxas variáveis de água conforme os mapas de vigor vegetativo NDRE gerados por agricultura de precisão."
+  },
+  {
+    "pergunta_22": "Radiação intensa associada a solo arenoso está causando murcha diária acelerada na fase fenológica de indução floral. Qual a ação agronômica?",
+    "resposta_22": "Recomendação: Evite o déficit agudo que induziria uma dormência precoce e desuniforme, afetando a iniciação das gemas florais. Sugestão de tomada de decisão: Utilize o mapa textural do solo da agricultura de precisão e configure a irrigação por gotejamento para realizar dois a três micropulsos diários, mantendo a água na zona absorvente das áreas arenosas."
+  },
+  {
+    "pergunta_23": "O sensor de radiação falha temporariamente. O agrônomo precisa calcular a reposição de água na fase fenológica de florada. O que usar?",
+    "resposta_23": "Recomendação: A antese é a fase mais sensível à seca; a irrigação não pode parar por falta de um único parâmetro instrumental. Sugestão de tomada de decisão: Acesse a previsão meteorológica externa (dados de fallback) integrada à plataforma de agricultura de precisão para estimar a evapotranspiração e manter a lâmina basal no sistema de irrigação por gotejamento."
+  },
+  {
+    "pergunta_24": "A face Norte da montanha recebe radiação solar direta o dia todo na fase fenológica de chumbinho. Como tratar esse talhão?",
+    "resposta_24": "Recomendação: Faces com maior exposição solar transpiram consideravelmente mais, necessitando de uma lâmina de irrigação superior para não haver abortamento de frutos. Sugestão de tomada de decisão: Estabeleça essa face como uma zona de manejo independente via agricultura de precisão e aumente o tempo de rega da irrigação por gotejamento especificamente para esse setor."
+  },
+  {
+    "pergunta_25": "Um sombreamento excessivo (agrossilvicultura) reduz a radiação no sub-bosque na fase fenológica de granação. Como o manejo difere da área a pleno sol?",
+    "resposta_25": "Recomendação: O sombreamento diminui o estresse fotossintético e o consumo de água, exigindo menos irrigação para o enchimento dos grãos em comparação à área aberta. Sugestão de tomada de decisão: Mapeie o nível de sombreamento usando imagens de VANT (agricultura de precisão) e crie um polígono de aplicação com lâmina reduzida no software da irrigação por gotejamento."
+  },
+  {
+    "pergunta_26": "Imagens aéreas térmicas mostram anomalias de temperatura do dossel sob alta radiação na fase fenológica de pós-colheita. Qual a conduta?",
+    "resposta_26": "Recomendação: Temperaturas foliares elevadas indicam falha na transpiração por déficit hídrico radicular, atrasando a recuperação de raízes da fase pós-colheita. Sugestão de tomada de decisão: Identifique obstruções ou falhas hidráulicas na irrigação por gotejamento sobrepondo o mapa de anomalia térmica da agricultura de precisão ao projeto de irrigação."
+  },
+  {
+    "pergunta_27": "Durante a fase fenológica de florada (abertura do botão), os sensores apontam máxima insolação e o solo superficial seca rapidamente. Qual a ação?",
+    "resposta_27": "Recomendação: A abertura e o pegamento da flor dependem de hidratação total; o ressecamento agudo aborta o botão floral ('estrela'). Sugestão de tomada de decisão: Acione irrigações noturnas volumosas via irrigação por gotejamento, assegurando que o bulbo úmido atinja a profundidade total de raízes indicada pelos mapas de solo da agricultura de precisão."
+  },
+  {
+    "pergunta_28": "O monitoramento local e a previsão apontam precipitação de 30 mm na fase fenológica de estresse hídrico controlado (repouso). O que o agrônomo deve fazer?",
+    "resposta_28": "Recomendação: Chuvas de 30 mm quebram o repouso hídrico e iniciam o intumescimento das gemas, exigindo o encerramento imediato do período de estresse. Sugestão de tomada de decisão: Retome a irrigação por gotejamento em carga total (capacidade de campo) em todas as zonas de manejo mapeadas pela agricultura de precisão para suportar a florada que se abrirá."
+  },
+  {
+    "pergunta_29": "Previsão alerta para 100 mm de chuva na fase fenológica de maturação dos grãos. Quais são os riscos e manejos?",
+    "resposta_29": "Recomendação: Excesso hídrico severo induzirá a queda prematura e fermentação dos frutos maduros (cereja), depreciando a qualidade da bebida. Sugestão de tomada de decisão: Desligue completamente a irrigação por gotejamento e utilize mapas de índice de maturação (agricultura de precisão) para acelerar a colheita dos setores mais avançados antes da chuva."
+  },
+  {
+    "pergunta_30": "Houve uma chuva leve de 5 mm durante a fase fenológica de expansão de frutos (chumbinho). Devo cancelar a irrigação do dia?",
+    "resposta_30": "Recomendação: Chuvas de 5 mm raramente ultrapassam a interceptação do dossel foliar do cafeeiro adulto, não reabastecendo o sistema radicular adequadamente. Sugestão de tomada de decisão: Consulte a leitura dos sensores de umidade no bulbo; se não houver elevação, mantenha a lâmina programada na irrigação por gotejamento conforme as zonas de manejo da agricultura de precisão."
+  },
+  {
+    "pergunta_31": "Após longo período seco, ocorre a primeira chuva de 20 mm na fase fenológica de floração. Posso iniciar a fertirrigação no dia seguinte?",
+    "resposta_31": "Recomendação: A chuva restabelece a umidade difusa, favorecendo o crescimento de raízes absorventes, o que torna o momento ideal para nutrição de arranque. Sugestão de tomada de decisão: Aproveite o solo úmido e injete adubos fosfatados e nitrogenados via irrigação por gotejamento, distribuindo as doses em taxa variável conforme mapas de fertilidade da agricultura de precisão."
+  },
+  {
+    "pergunta_32": "A previsão indica estiagem absoluta pelos próximos 45 dias na fase fenológica de granação, e o reservatório está baixo. Qual a decisão?",
+    "resposta_32": "Recomendação: A fase de granação não suporta estresse severo sem perda de peneira; a água escassa deve ser direcionada para garantir o maior retorno econômico. Sugestão de tomada de decisão: Aplique a técnica de irrigação por gotejamento com déficit hídrico regulado (RDI), cortando a água nas zonas de manejo marginais e priorizando os talhões de alta produtividade (mapas de agricultura de precisão)."
+  },
+  {
+    "pergunta_33": "Sensores de chuva marcam precipitação intensa localizada em apenas um terço da fazenda na fase fenológica vegetativa. Como agir?",
+    "resposta_33": "Recomendação: A variabilidade espacial da chuva altera o balanço hídrico do campo, exigindo manejo setorizado para evitar excesso ou falta de água. Sugestão de tomada de decisão: Crie um polígono correspondente à área molhada no sistema de agricultura de precisão e suspenda a irrigação por gotejamento exclusivamente nessa zona de manejo."
+  },
+  {
+    "pergunta_34": "O solo encharcou após 150 mm de chuva na fase fenológica de expansão de frutos. A leitura de condutividade elétrica caiu a zero. Qual a ação agronômica?",
+    "resposta_34": "Recomendação: A forte lixiviação lavou os nutrientes solúveis (como N e K) da zona radicular, paralisando o metabolismo na fase crítica de crescimento celular. Sugestão de tomada de decisão: Assim que o solo drenar e o oxigênio retornar, inicie uma fertirrigação corretiva intensiva via irrigação por gotejamento, dosada pelas análises de solo recentes da agricultura de precisão."
+  },
+  {
+    "pergunta_35": "Durante a colheita, chove periodicamente, o que impede a secagem no terreiro. É seguro antecipar a adubação da próxima safra na lavoura?",
+    "resposta_35": "Recomendação: A planta ainda sofre o trauma da colheita e a absorção é mínima; adubar agora, especialmente com solo muito úmido, causará perdas. Sugestão de tomada de decisão: Aguarde a planta entrar na fase fenológica de recuperação pós-colheita; use a agricultura de precisão para mapear a extração de nutrientes e programe a irrigação por gotejamento para quando a umidade estabilizar."
+  },
+  {
+    "pergunta_36": "A chuva acumulada mensal é inferior à evapotranspiração na fase fenológica de maturação final. Devo repor essa diferença?",
+    "resposta_36": "Recomendação: Um déficit hídrico leve no fim da maturação acelera e uniformiza a transformação do fruto verde para cereja, otimizando a qualidade. Sugestão de tomada de decisão: Mantenha a irrigação por gotejamento desligada para favorecer o estresse positivo, monitorando a perda foliar extrema através de imagens multiespectrais da agricultura de precisão."
+  },
+  {
+    "pergunta_37": "Os dados climáticos registram grande incidência de raios próximos à fazenda durante uma operação de fertirrigação na fase fenológica de granação. Qual a prioridade?",
+    "resposta_37": "Recomendação: O risco de fatalidade humana e queima do painel elétrico da automação supera qualquer necessidade hídrica ou nutricional momentânea da planta. Sugestão de tomada de decisão: Desligue remotamente as bombas de irrigação por gotejamento, evacue a área e use a agricultura de precisão para registrar qual zona de manejo precisará de reposição nutricional amanhã."
+  },
+  {
+    "pergunta_38": "O alerta de tempestade elétrica (raios) coincidiu com o cronograma de fertirrigação com boro e zinco na fase fenológica de pré-florada. Como proceder?",
+    "resposta_38": "Recomendação: A nutrição é vital para a formação do tubo polínico, mas operar injetores sob tempestade elétrica é letal. Sugestão de tomada de decisão: Atrase a operação por 24 horas; quando seguro, aplique a solução concentrada via irrigação por gotejamento usando as dosagens recomendadas pelos mapas de análise foliar em grade da agricultura de precisão."
+  },
+  {
+    "pergunta_39": "Ocorreram falhas de comunicação nos sensores de solo após forte tempestade com raios na fase fenológica de chumbinho. Como manter a rega?",
+    "resposta_39": "Recomendação: A fase de chumbinho é altamente sensível ao estresse; a interrupção da rega causará queda de frutos mesmo se a chuva não tiver sido efetiva no bulbo. Sugestão de tomada de decisão: Acione a irrigação por gotejamento com base no balanço hídrico histórico da zona de manejo (agricultura de precisão) até o conserto dos equipamentos de campo."
+  },
+  {
+    "pergunta_40": "Durante a noite, o monitoramento ambiental capta descargas elétricas a 15 km, deslocando-se para a fazenda. O sistema está fertirrigando a fase fenológica vegetativa.",
+    "resposta_40": "Recomendação: Raios podem induzir surtos de tensão que danificam o controlador eletrônico da injeção de insumos, alterando a dosagem de NPK. Sugestão de tomada de decisão: Paralise a irrigação por gotejamento preventivamente. Retome o ciclo no ponto exato da zona de manejo (agricultura de precisão) após o sistema confirmar a passagem completa da tempestade."
+  },
+  {
+    "pergunta_41": "Risco de raios alto cessa, mas choveu pesado. O trator iria pulverizar cálcio foliar na fase fenológica de expansão foliar. E agora?",
+    "resposta_41": "Recomendação: A pulverização será ineficiente pela lavagem da folha, e o solo encharcado impede a entrada do trator (compactação). Sugestão de tomada de decisão: Substitua a aplicação foliar pela injeção do nutriente via irrigação por gotejamento, utilizando os mapas de saturação por bases da agricultura de precisão para adequar a dose por talhão."
+  },
+  {
+    "pergunta_42": "Tempestades elétricas severas acompanhadas de granizo atingem a lavoura na fase fenológica de pós-colheita. Qual o foco agronômico?",
+    "resposta_42": "Recomendação: Os ferimentos causados pelo granizo abrem portas para patógenos; a cicatrização rápida da folhagem residual é prioritária. Sugestão de tomada de decisão: Delimite as zonas de maior desfolha por meio de imagens aéreas (agricultura de precisão) e aplique uma fertirrigação com cobre sistêmico via irrigação por gotejamento para desinfecção e recuperação do tecido."
+  },
+  {
+    "pergunta_43": "Após incidência de raios que desarmou o sistema, o operador religa a bomba, mas nota pressão anormal na rede gotejadora (fase fenológica de maturação).",
+    "resposta_43": "Recomendação: Alterações de pressão indicam tubulação estourada ou válvula travada pela queda de energia, podendo causar falta ou excesso crônico de água. Sugestão de tomada de decisão: Feche as válvulas mestras da irrigação por gotejamento temporariamente; utilize mapas topográficos (agricultura de precisão) para identificar áreas de risco e inspecionar a rede física."
+  },
+  {
+    "pergunta_44": "Tempestades frequentes com descargas elétricas impedem tratos culturais manuais por dias na fase fenológica de repouso. O que fazer com o manejo de adubação orgânica?",
+    "resposta_44": "Recomendação: Atrasar a nutrição na fase de repouso prejudica a floração iminente; a segurança da equipe impede a entrada manual. Sugestão de tomada de decisão: Transfira a carga de fertilizantes minerais substitutos para a linha de irrigação por gotejamento totalmente automatizada, aplicando as taxas calculadas pelos mapas de manejo da agricultura de precisão."
+  },
+  {
+    "pergunta_45": "O alerta contínuo de raios e chuvas diárias impossibilita o uso de máquinas. Há indícios fitossanitários críticos na fase fenológica de vegetação ativa.",
+    "resposta_45": "Recomendação: O controle de fungos de solo não pode esperar a secagem do terreno, sob risco de morte de raízes e desfolha total. Sugestão de tomada de decisão: Injete fungicidas sistêmicos registrados para uso em solo diretamente via irrigação por gotejamento, priorizando as zonas de manejo com maior histórico de doença (mapas de agricultura de precisão)."
+  },
+  {
+    "pergunta_46": "A leitura de condutividade elétrica no solo ultrapassou 3 dS/m no talhão de café jovem (fase fenológica inicial). Qual o problema?",
+    "resposta_46": "Recomendação: A salinidade acima de 2.5 dS/m causa intoxicação e queima do sistema radicular tenro, matando as mudas recém-transplantadas. Sugestão de tomada de decisão: Com base nos dados espaciais de EC (agricultura de precisão), acione a irrigação por gotejamento com água pura nas zonas de manejo críticas para promover a rápida lixiviação dos sais acumulados no bulbo."
+  },
+  {
+    "pergunta_47": "Os dados de salinidade do solo caem a zero após longo ciclo de chuvas na fase fenológica de floração. A planta apresenta sintomas visuais de clorose.",
+    "resposta_47": "Recomendação: Leituras nulas de condutividade confirmam a lavagem extrema de nutrientes, induzindo fome na planta em um momento de alto dreno energético (flores). Sugestão de tomada de decisão: Inicie ciclos de fertirrigação imediata via irrigação por gotejamento, distribuindo doses variáveis de NPK de acordo com as zonas de amostragem de solo na agricultura de precisão."
+  },
+  {
+    "pergunta_48": "O agrônomo nota pelo monitoramento de solo que o perfil atinge o ponto de murcha permanente na fase fenológica de chumbinho. O índice vegetativo está normal.",
+    "resposta_48": "Recomendação: A planta está em iminente colapso hídrico celular; o índice foliar demora a mostrar o dano que já está ocorrendo no abortamento de frutos internos. Sugestão de tomada de decisão: Emita ordem de irrigação de resgate imediata; configure a irrigação por gotejamento em carga máxima para saturar as zonas de manejo identificadas pelos mapas hídricos da agricultura de precisão."
+  },
+  {
+    "pergunta_49": "Durante a fase fenológica de repouso (estresse hídrico controlado), o teor de umidade do solo sobe repentinamente sem registro de chuva pelos pluviômetros.",
+    "resposta_49": "Recomendação: Umidade subindo sem chuva indica vazamento na linha cega da tubulação ou rompimento de válvulas, quebrando o estresse hídrico essencial da fase. Sugestão de tomada de decisão: Utilize as coordenadas do sensor de solo (agricultura de precisão) para localizar a falha na rede de irrigação por gotejamento e efetue o bloqueio e reparo mecânico imediato."
+  },
+  {
+    "pergunta_50": "Na fase fenológica de granação (enchimento de grãos), talhões argilosos mantêm alta umidade, mas talhões arenosos secam em 24h. Como equilibrar o manejo?",
+    "resposta_50": "Recomendação: A textura do solo dita a capacidade de armazenamento de água; o manejo unificado causa encharcamento na argila e seca na areia, prejudicando o calibre do grão em ambos. Sugestão de tomada de decisão: Separe a operação da irrigação por gotejamento usando as zonas de manejo texturais da agricultura de precisão, aplicando alta frequência na areia e baixa frequência na argila."
+  },
+  {
+    "pergunta_51": "Umidade volumétrica do solo estabiliza em 100% por uma semana na fase fenológica vegetativa. O clima externo tem previsão de seca.",
+    "resposta_51": "Recomendação: Saturação contínua expulsa o ar do perfil, causando asfixia e apodrecimento radicular, paralisando a emissão de folhas novas. Sugestão de tomada de decisão: Interrompa qualquer acionamento da irrigação por gotejamento. Cruze os dados com mapas de declividade da agricultura de precisão para identificar pontos de empoçamento e realizar drenagem mecânica se necessário."
+  },
+  {
+    "pergunta_52": "A condutividade elétrica e a umidade do solo apresentam picos cíclicos a cada rega na fase fenológica de expansão rápida dos frutos. Isso é adequado?",
+    "resposta_52": "Recomendação: Sim, picos sincronizados indicam que a solução nutritiva está sendo perfeitamente incorporada ao volume de solo úmido disponível para as raízes absorventes. Sugestão de tomada de decisão: Mantenha o protocolo de fertirrigação parcelada via irrigação por gotejamento, validando o acúmulo de biomassa nos frutos através de amostragem georreferenciada (agricultura de precisão)."
+  },
+  {
+    "pergunta_53": "Na fase fenológica de maturação, a umidade do solo está muito alta, mas os frutos já estão perdendo hidratação adequadamente. Como manejar a nutrição?",
+    "resposta_53": "Recomendação: A maturação exige redução hídrica, e o excesso de água no solo atrasa esse processo. A aplicação de fertilizantes agora estimularia rebrota indesejada. Sugestão de tomada de decisão: Suspenda definitivamente a fertirrigação via irrigação por gotejamento e foque em gerar mapas de pré-colheita (agricultura de precisão) para guiar o maquinário."
+  },
+  {
+    "pergunta_54": "O sensor mais profundo (40 cm) mostra solo seco, enquanto o raso (15 cm) mostra saturação contínua na fase fenológica de desenvolvimento vegetativo.",
+    "resposta_54": "Recomendação: A água não está infiltrando, possivelmente devido à compactação subsuperficial (pé-de-grade) que impede o aprofundamento do sistema radicular do café. Sugestão de tomada de decisão: Baseado nos mapas de resistência à penetração da agricultura de precisão, programe uma subsolagem na entrelinha e aumente o tempo de permanência da gota na irrigação por gotejamento para forçar a descida da umidade."
+  },
+  {
+    "pergunta_55": "Durante o início do período de chuvas (fase fenológica vegetativa), a umidade do ar noturna passa de 95% frequentemente, gerando neblina intensa.",
+    "resposta_55": "Recomendação: Neblina e alta umidade contínua formam o microclima perfeito para surtos epidêmicos de Ferrugem e Mancha-de-phoma, desfolhando a planta. Sugestão de tomada de decisão: Monitore o índice de clorofila (NDRE) nas zonas de manejo críticas (agricultura de precisão); aplique fungicidas sistêmicos preventivos via irrigação por gotejamento caso as condições de aspersão não sejam possíveis."
+  },
+  {
+    "pergunta_56": "Umidade relativa despenca para 15% na tarde durante a fase fenológica de floração (antese). Não há vento significativo.",
+    "resposta_56": "Recomendação: Ar extremamente seco desidrata o estigma da flor do café, impossibilitando a fecundação do óvulo e reduzindo drasticamente o pegamento da safra. Sugestão de tomada de decisão: Embora a irrigação por gotejamento não altere o ar diretamente, acione-a na capacidade máxima para manter a turgescência total da planta, mitigando o dano ambiental nas zonas de manejo mapeadas (agricultura de precisão)."
+  },
+  {
+    "pergunta_57": "Umidade do ar permanentemente alta e temperaturas amenas limitam a evapotranspiração na fase fenológica de enchimento de grãos. Há excesso de folhas.",
+    "resposta_57": "Recomendação: Dossel denso com baixa transpiração favorece doenças e não movimenta o cálcio necessário para o desenvolvimento da parede celular do fruto. Sugestão de tomada de decisão: Reduza substancialmente a lâmina da irrigação por gotejamento; consulte mapas de NDVI (agricultura de precisão) para planejar podas de arejamento (desbrota) nas zonas muito vigorosas."
+  },
+  {
+    "pergunta_58": "Ar muito seco (alta demanda atmosférica) causa murchamento precoce das folhas do topo na fase fenológica inicial de mudas recém-plantadas.",
+    "resposta_58": "Recomendação: Mudas novas não possuem volume radicular para suprir a perda de água foliar sob ar muito seco, correndo risco de estresse letal crônico. Sugestão de tomada de decisão: Aumente a frequência dos ciclos de rega diários na irrigação por gotejamento (pulsos curtos), priorizando as zonas de manejo identificadas com solo menos retentivo pelos mapas da agricultura de precisão."
+  },
+  {
+    "pergunta_59": "Clima com inversão térmica e ar saturado de umidade está previsto para toda a semana na fase fenológica de repouso vegetativo. Como intervir?",
+    "resposta_59": "Recomendação: Condições de saturação do ar combinadas com frio estabilizam a dormência hídrica e térmica de forma segura, sem risco de desidratação foliar. Sugestão de tomada de decisão: Mantenha a restrição hídrica da irrigação por gotejamento para aprofundar o repouso fisiológico das gemas florais, validando a uniformidade do talhão com o cruzamento de mapas altimétricos da agricultura de precisão."
+  },
+  {
+    "pergunta_60": "O monitoramento indica pressão atmosférica instável e variação brusca de umidade na fase fenológica de colheita. Os grãos secam de forma desuniforme.",
+    "resposta_60": "Recomendação: Flutuações atmosféricas dificultam a perda de água do grão na planta, atrasando as operações de colheita mecânica e aumentando grãos verdes. Sugestão de tomada de decisão: Aborte qualquer injeção residual no sistema de irrigação por gotejamento; direcione a colheita primeiramente para as zonas de manejo com maturação superior comprovada por imagens espectrais da agricultura de precisão."
+  },
+  {
+    "pergunta_61": "Alta umidade do ar combinada com temperaturas quentes na fase fenológica de chumbinho acelera o aparecimento de Bicho-mineiro.",
+    "resposta_61": "Recomendação: O bicho-mineiro causa lesões foliares que reduzem a área fotossintética, exatamente quando o chumbinho precisa de alta energia para expandir. Sugestão de tomada de decisão: Empregue inseticidas sistêmicos via irrigação por gotejamento, concentrando as maiores dosagens nos setores apontados com maior infestação pelas amostragens de campo da agricultura de precisão."
+  },
+  {
+    "pergunta_62": "Os sensores apontam déficit de pressão de vapor alto (ar seco) com boa umidade de solo na fase fenológica de vegetação plena. A fotossíntese para?",
+    "resposta_62": "Recomendação: Sim, a planta fecha os estômatos como defesa contra a perda de água para a atmosfera, paralisando a fotossíntese mesmo com o solo úmido. Sugestão de tomada de decisão: Não acione a irrigação por gotejamento de forma excessiva; ajuste o fornecimento nutricional baseando-se no potencial de biomassa de cada zona de manejo (NDRE, agricultura de precisão) apenas nos horários noturnos."
+  },
+  {
+    "pergunta_63": "Umidade do ar baixa constante na fase fenológica de granação (enchimento de grãos). A bomba tem limitação de capacidade.",
+    "resposta_63": "Recomendação: O ar seco eleva o consumo de água, e a incapacidade de repor a evapotranspiração plena causará grãos menores (peneira baixa). Sugestão de tomada de decisão: Utilize o mapa de rentabilidade (agricultura de precisão) para aplicar a água restrita da irrigação por gotejamento apenas nos talhões mais produtivos, sacrificando o enchimento nas zonas marginais."
+  },
+  {
+    "pergunta_64": "Imagens históricas da fase de expansão de frutos (chumbinho) mostraram quebra de safra nas áreas mapeadas com maior vigor no ano anterior. O que corrigir hoje?",
+    "resposta_64": "Recomendação: Alto vigor (muita folha) causa autossombreamento interno e aumenta drasticamente o consumo de água, gerando estresse e aborto oculto de frutos. Sugestão de tomada de decisão: Utilize a agricultura de precisão para criar zonas de restrição de Nitrogênio e reduza significativamente a oferta desse nutriente via irrigação por gotejamento nas parcelas supervegetadas."
+  },
+  {
+    "pergunta_65": "O mapa de colheita revela baixa produtividade em reboleiras na fase fenológica atual de formação de ramos vegetativos. Os sensores locais marcam clima ótimo.",
+    "resposta_65": "Recomendação: Se o clima e o manejo padrão estão bons, a limitação é física ou química do solo pontual (como nematóides ou pH extremamente ácido). Sugestão de tomada de decisão: Realize amostragem de solo em grade nas reboleiras (agricultura de precisão) e faça a correção do perfil injetando ácidos ou nematicidas localizados via irrigação por gotejamento."
+  },
+  {
+    "pergunta_66": "Dados de NDVI e NDRE divergem severamente na lavoura adulta durante a fase fenológica de indução floral. Qual métrica seguir para nutrir?",
+    "resposta_66": "Recomendação: Em café adulto e denso, o NDVI satura rapidamente e não reflete as deficiências internas; o NDRE penetra no dossel e acusa o real status da clorofila (Nitrogênio). Sugestão de tomada de decisão: Baseie a aplicação de fertilizante na leitura de NDRE (agricultura de precisão) e forneça doses a taxa variável pelo sistema automatizado de irrigação por gotejamento."
+  },
+  {
+    "pergunta_67": "Modelos digitais de elevação mostram acúmulo hídrico nas baixadas. A fase fenológica é pré-florada (estresse). O que deve ser feito com a água?",
+    "resposta_67": "Recomendação: A umidade acumulada na baixada impede o estresse hídrico obrigatório para a sincronização da florada, causando florescimentos esporádicos e indesejados. Sugestão de tomada de decisão: Feche totalmente os registros da irrigação por gotejamento correspondentes às zonas de baixada (agricultura de precisão) estendendo o período de secagem até a emissão uniforme dos botões."
+  },
+  {
+    "pergunta_68": "O mapa de condutividade elétrica aparente aponta grande mancha de areia na fazenda. Estamos na fase fenológica de repouso.",
+    "resposta_68": "Recomendação: Solos arenosos atingem o ponto de murcha permanente muito mais rápido. O estresse para repouso na areia pode evoluir para secamento letal de ramos. Sugestão de tomada de decisão: Mantenha as zonas argilosas sem água, mas configure uma irrigação por gotejamento de manutenção estrita e com micro doses na zona arenosa (agricultura de precisão)."
+  },
+  {
+    "pergunta_69": "Mapas de análise foliar mostram grave deficiência de Potássio na borda leste na fase fenológica de maturação avançada.",
+    "resposta_69": "Recomendação: A maturação já é a fase final de dreno para o fruto; tentar recuperar deficiência aguda com os frutos quase prontos não terá efeito na safra atual. Sugestão de tomada de decisão: Prepare o planejamento para a fase pós-colheita; use a agricultura de precisão para aplicar forte adubação potássica corretiva via irrigação por gotejamento após a saída das máquinas."
+  },
+  {
+    "pergunta_70": "Agricultura de precisão detecta zona de alta taxa de maturação precoce (frutos cereja). Como a climatologia apoia o produtor?",
+    "resposta_70": "Recomendação: Identificar manchas de maturação antecipada permite otimizar a qualidade da bebida colhendo no ponto ideal antes que passem do ponto (passa/seco). Sugestão de tomada de decisão: Corte definitivamente a irrigação por gotejamento dessa zona de maturação e inicie a colheita seletiva manual ou mecânica baseada no mapa georreferenciado."
+  },
+  {
+    "pergunta_71": "Monitoramento aéreo detecta plantas amarelando generalizadamente, independentemente das zonas de manejo, na fase fenológica de enchimento de grãos.",
+    "resposta_71": "Recomendação: O amarelecimento rápido na granação, apesar da nutrição correta, indica carga pendente excessiva consumindo as folhas ou ataque radical agudo. Sugestão de tomada de decisão: Valide a ausência de secamento no perfil de solo; incremente os turnos de fertirrigação foliar/solo via irrigação por gotejamento, distribuindo doses máximas de forma equitativa na plataforma de agricultura de precisão."
+  },
+  {
+    "pergunta_72": "Durante a fase fenológica inicial de mudas (primeiro ano), dados de satélite mostram reboleiras sem crescimento. O clima local foi perfeito.",
+    "resposta_72": "Recomendação: A estagnação de mudas aponta para bloqueio físico da raiz (adensamento de cova) ou pragas de solo, uma vez que a água não foi fator limitante. Sugestão de tomada de decisão: Cruze o local exato (agricultura de precisão) e aplique inspeção física no sistema de raízes; se patógeno, injete tratamento sanitário via irrigação por gotejamento."
+  },
+  {
+    "pergunta_73": "A topografia da fazenda tem talhões com 20% de declividade. Estamos na fase fenológica de florada e a rega está no volume máximo.",
+    "resposta_73": "Recomendação: Em alta declividade, volumes pesados de água escorrem superficialmente, causando erosão e deixando a raiz absorvente em déficit durante o florescimento. Sugestão de tomada de decisão: Empregue zonas de manejo por altitude (agricultura de precisão) e fracione a lâmina total em três ou quatro irrigações por gotejamento diárias curtas, melhorando a infiltração."
+  },
+  {
+    "pergunta_74": "O cruzamento do balanço hídrico com os mapas de VANT mostra dossel ralo nas áreas super irrigadas. Fase fenológica de expansão de ramos.",
+    "resposta_74": "Recomendação: Irrigação excessiva lixivia o nitrogênio e asfixia as raízes, reduzindo o vigor vegetativo e o Índice de Área Foliar (IAF) drasticamente. Sugestão de tomada de decisão: Reprograme imediatamente o software da irrigação por gotejamento para reduzir em 40% a oferta hídrica nestas zonas de manejo deprimidas, conforme apontamento na agricultura de precisão."
+  },
+  {
+    "pergunta_75": "Queda contínua na produtividade mapeada em talhão específico por 3 anos seguidos. O ciclo fenológico atual recém-iniciou (vegetativo).",
+    "resposta_75": "Recomendação: Um padrão crônico de queda indica esgotamento estrutural do solo ou adequação varietal incorreta para o clima do talhão. Sugestão de tomada de decisão: Realize amostragem profunda de solo (agricultura de precisão) nesta zona de manejo; recupere quimicamente injetando fontes solúveis de Cálcio e Fósforo via irrigação por gotejamento contínuo."
+  },
+  {
+    "pergunta_76": "Os dados das estações apontam acúmulo térmico de graus-dia atípico, encurtando a fase fenológica de granação precocemente. O grão ficará pequeno?",
+    "resposta_76": "Recomendação: Sim, o calor extremo acelera a fenologia. O grão solidifica antes de expandir o endosperma, causando perda brutal de peneira. Sugestão de tomada de decisão: Mitigue o estresse térmico mantendo o bulbo úmido ao máximo; use irrigação por gotejamento constante noturna, focando as maiores lâminas nas zonas de alta produtividade (agricultura de precisão)."
+  },
+  {
+    "pergunta_77": "Sensor de planta (IRC - Índice de Clorofila) cai na fase fenológica de pré-colheita nos talhões sombreados, mas os talhões a pleno sol estão verdes.",
+    "resposta_77": "Recomendação: O sombreamento tardio induz senescência e migração de nutrientes mais rápido em busca de luz, além da exaustão pela safra iminente. Sugestão de tomada de decisão: Integre o mapa de clorofila (agricultura de precisão) e aplique via irrigação por gotejamento uma dose final de aminoácidos para manutenção foliar exclusivamente na zona de sombra."
+  },
+  {
+    "pergunta_78": "A safra atual tem superprodução (alta bienalidade positiva). O mapa aponta exaustão da biomassa (NDVI baixo). A fase é pós-colheita.",
+    "resposta_78": "Recomendação: A superprodução suga todas as reservas de carboidratos e minerais; a planta corre risco de morte de ponteiros e atrofia severa no próximo ciclo. Sugestão de tomada de decisão: Realize uma fertilização hiper-concentrada com foco em nitrogênio via irrigação por gotejamento nas zonas de alta extração (mapas de colheita da agricultura de precisão)."
+  },
+  {
+    "pergunta_79": "Os mapas do ano passado provam que talhões do tipo 'Catucaí' demandaram menos água que 'Mundo Novo'. A fase fenológica atual é floração plena.",
+    "resposta_79": "Recomendação: Ignorar as diferenças genéticas resultará em afogamento de uma variedade e estresse na outra, afetando o pegamento da flor de ambas. Sugestão de tomada de decisão: Configure a plataforma de agricultura de precisão para isolar as variedades em zonas de manejo diferentes, aplicando o coeficiente hídrico exato para cada uma na irrigação por gotejamento."
+  },
+  {
+    "pergunta_80": "Faltam sensores de umidade para cobrir todo o campo. O agrônomo precisa definir o déficit para a fase fenológica de repouso.",
+    "resposta_80": "Recomendação: A extrapolação de dados de um único sensor para a fazenda toda causará falhas severas de indução floral nas áreas desiguais. Sugestão de tomada de decisão: Utilize o mapa de condutividade elétrica aparente da agricultura de precisão para inferir a textura do solo e aplique restrição de água variável no sistema de irrigação por gotejamento."
+  },
+  {
+    "pergunta_81": "A temperatura do solo afundou para 5°C após uma madrugada sem vento na fase fenológica de chumbinho. O perfil tem água.",
+    "resposta_81": "Recomendação: O frio intenso no sistema radicular trava o transporte ativo de nutrientes vitais, paralisando o metabolismo e a expansão celular do fruto jovem. Sugestão de tomada de decisão: Não aplique fertirrigação agora, será perdida. Mantenha o bulbo hídrico na capacidade de campo via irrigação por gotejamento em zonas de baixada da agricultura de precisão."
+  },
+  {
+    "pergunta_82": "As raízes a 40 cm de profundidade registram constante oscilação de temperatura brusca na fase fenológica vegetativa. Isso afeta o café?",
+    "resposta_82": "Recomendação: Temperaturas radiculares que oscilam fortemente indicam perda da cobertura morta (mulching) e exposição solar do solo, estressando o microbioma. Sugestão de tomada de decisão: Empregue a irrigação por gotejamento em modo de micropulsos nas horas críticas para controle térmico, mapeando as áreas de solo exposto com imagens espectrais da agricultura de precisão."
+  },
+  {
+    "pergunta_83": "Temperatura ambiente de 38°C persistente durante o dia, mas a noite cai para 10°C. Fase fenológica: granação pesada.",
+    "resposta_83": "Recomendação: O extremo estresse oxidativo diurno seguido de paralisação metabólica noturna prejudica fortemente a translocação de carboidratos e o calibre do grão. Sugestão de tomada de decisão: Forneça água irrestritamente nas horas iniciais da manhã via irrigação por gotejamento e utilize mapas VRT (agricultura de precisão) para repor potássio intensamente nas zonas produtivas."
+  },
+  {
+    "pergunta_84": "Geada severa afetou o terço inferior do cafezal. A planta adulta perdeu 70% das folhas na fase fenológica de maturação inicial.",
+    "resposta_84": "Recomendação: A queima letal pela geada impede a maturação correta do fruto e mata os ramos ortotrópicos, destruindo o potencial dos anos seguintes. Sugestão de tomada de decisão: Delimite a zona morta com sobrevoo de drone (agricultura de precisão); bloqueie totalmente a fertirrigação via irrigação por gotejamento nesse polígono e programe recepa drástica."
+  },
+  {
+    "pergunta_85": "O aquecimento anormal do inverno impede a indução do estresse térmico natural necessário para o repouso fenológico da planta de arábica.",
+    "resposta_85": "Recomendação: A ausência de frio compromete a paralisação do crescimento e induz a floração desuniforme; a ferramenta restritiva da água se torna imperativa. Sugestão de tomada de decisão: Imponha um estresse hídrico agudo e contínuo, zerando a irrigação por gotejamento de maneira forçada e espacializada pelas zonas de vigor da agricultura de precisão."
+  },
+  {
+    "pergunta_86": "Chuva gelada contínua derrubou as temperaturas da folhagem para 8°C em pleno dia durante a fase fenológica de floração (antese).",
+    "resposta_86": "Recomendação: O choque térmico diurno com excesso de água inibe o desenvolvimento do tubo polínico e fomenta podridão generalizada nas flores. Sugestão de tomada de decisão: Cancele a irrigação por gotejamento até o aquecimento total do perfil do solo e gere mapas de dano visual (agricultura de precisão) para prever a quebra de safra nas áreas atingidas."
+  },
+  {
+    "pergunta_87": "A temperatura do ar medida pela estação excede sistematicamente a temperatura máxima histórica na fase fenológica de indução floral.",
+    "resposta_87": "Recomendação: O calor extremo induz a formação de estrelas falsas e botões secos (aborto), destruindo o dreno floral e comprometendo a safra. Sugestão de tomada de decisão: Crie um resfriamento evaporativo acionando a irrigação por gotejamento nos horários críticos da tarde, direcionando maiores volumes às encostas Norte mapeadas pela agricultura de precisão."
+  },
+  {
+    "pergunta_88": "Geadas de canela (congelamento apenas próximo ao chão) causaram rachadura de caule em mudas novas na fase fenológica inicial.",
+    "resposta_88": "Recomendação: A rachadura no caule das mudas impede a passagem da seiva; as plantas entrarão em senescência rápida por estrangulamento vascular, não importando a umidade. Sugestão de tomada de decisão: Interrompa qualquer emissão de nutriente via irrigação por gotejamento e identifique precisamente as zonas de falha com agricultura de precisão para planejamento do replantio."
+  },
+  {
+    "pergunta_89": "Monitoramento indica noites atipicamente quentes (acima de 25°C) impedindo o descanso respiratório noturno na fase fenológica de expansão rápida de frutos.",
+    "resposta_89": "Recomendação: Noites quentes causam alto consumo de açúcar pela respiração acelerada, diminuindo a matéria seca acumulada e gerando grãos chochos. Sugestão de tomada de decisão: Otimize o equilíbrio eletrolítico aumentando a oferta de Magnésio e Potássio em taxas variáveis via irrigação por gotejamento nas zonas de maior potencial (agricultura de precisão)."
+  },
+  {
+    "pergunta_90": "Um bloqueio atmosférico causou elevação térmica severa sem ventos. O solo perde rapidamente a umidade na fase fenológica de maturação avançada.",
+    "resposta_90": "Recomendação: Calor escaldante sem umidade no final da maturação transformará rapidamente a cereja em passa desidratada, endurecendo a polpa na planta. Sugestão de tomada de decisão: Mapeie o Índice de Vegetação (NDVI, agricultura de precisão) e aplique pulsos compensatórios leves através da irrigação por gotejamento para reidratar os frutos apenas nos talhões que se adiantaram."
+  }
+]

@@ -1,0 +1,362 @@
+[
+  {
+    "pergunta_1": "Como devemos adequar a suplementação nutricional se os dados climáticos locais indicam rajadas de vento intensas durante a fase de expansão dos frutos, associadas a áreas de baixo vigor foliar identificadas na lavoura?",
+    "resposta_1": "Suspenda qualquer pulverização foliar para evitar a deriva dos insumos e garantir que a nutrição chegue à planta. Utilize os mapas de vigor (NDVI) da agricultura de precisão para delimitar exatamente as zonas críticas e aplique a suplementação a taxa variável diretamente via sistema de irrigação por gotejamento, garantindo a expansão celular adequada."
+  },
+  {
+    "pergunta_2": "Diante da previsão de ventos fortes e contínuos ao longo do dia na fase fenológica de maturação, qual é a intervenção hídrica correta para os talhões com histórico de alta produtividade?",
+    "resposta_2": "Evite o déficit hídrico exacerbado pela alta demanda evaporativa causada pelo vento, o que pode murchar os frutos precocemente. Consulte as zonas de manejo de alto potencial na plataforma de agricultura de precisão e programe um turno extra na irrigação por gotejamento exclusivamente nesses setores para manter a turgidez."
+  },
+  {
+    "pergunta_3": "Considerando que o monitoramento meteorológico registra calmaria total de ventos de madrugada durante a fase de indução floral e a temperatura está em forte declínio, como devemos intervir para proteger o cafezal?",
+    "resposta_3": "Preste atenção ao risco de inversão térmica e acúmulo de ar frio que podem inviabilizar as gemas florais latentes. Isole as áreas de baixada utilizando o modelo digital de elevação da agricultura de precisão e acione a irrigação por gotejamento para aumentar a umidade do bulbo e reter calor latente na zona radicular."
+  },
+  {
+    "pergunta_4": "Se houver uma mudança brusca na direção do vento trazendo massas de ar extremamente secas durante a florada (antese), qual deve ser a conduta operacional nos talhões de textura arenosa?",
+    "resposta_4": "Mitigue o risco de dessecação dos tubos polínicos, que reduz drasticamente o pegamento das flores sob baixa umidade atmosférica. Ative a irrigação por gotejamento com lâminas leves e contínuas estritamente nas zonas de manejo mapeadas com textura arenosa pela agricultura de precisão, mantendo a evaporação local."
+  },
+  {
+    "pergunta_5": "Durante o período de repouso vegetativo, rajadas de vento severas estão causando desfolha mecânica excessiva nas bordaduras. Como podemos mitigar o impacto fisiológico nessas plantas?",
+    "resposta_5": "Compense o estresse mecânico e hídrico nas folhas remanescentes para não esgotar as reservas da próxima fase fenológica produtiva. Baseando-se nas imagens aéreas da agricultura de precisão, demarque os polígonos das bordaduras afetadas e aplique uma fertirrigação rica em potássio de forma localizada via irrigação por gotejamento."
+  },
+  {
+    "pergunta_6": "Ao identificarmos ventos fortes logo após uma fertirrigação nitrogenada na fase de desenvolvimento vegetativo, qual o risco imediato e a ação corretiva a ser tomada?",
+    "resposta_6": "Previna a volatilização severa da ureia caso a superfície do bulbo molhado seque rapidamente pela ação do vento quente. Avalie os mapas de condutividade elétrica da agricultura de precisão para confirmar a presença do adubo e aplique um pulso adicional de água limpa via irrigação por gotejamento, incorporando o nitrogênio em profundidade."
+  },
+  {
+    "pergunta_7": "Se as estações apontam que ventos quentes predominarão por três dias consecutivos na fase de chumbinho, de que forma o manejo da água deve ser reajustado?",
+    "resposta_7": "Suporte a altíssima evapotranspiração para evitar o murchamento temporário da planta e o abortamento da carga pendente. Eleve o tempo de rega da irrigação por gotejamento para suprir 100% da demanda, direcionando volumes maiores para as zonas de manejo com maior índice de área foliar mapeadas pela agricultura de precisão."
+  },
+  {
+    "pergunta_8": "A velocidade do vento caiu a zero e a umidade do ar estabilizou em 95% por vários dias na fase fenológica de granação. Como esse cenário altera a estratégia de fertirrigação?",
+    "resposta_8": "Em condições de calmaria e alta umidade, a transpiração da planta cai, reduzindo severamente a absorção radicular por fluxo de massa. Reduza a concentração da solução nutritiva injetada na irrigação por gotejamento e destine as aplicações apenas para as zonas de manejo com deficiência já comprovada nos mapas de fertilidade da agricultura de precisão."
+  },
+  {
+    "pergunta_9": "Os dados de direção do vento indicam deriva confirmada de herbicidas de propriedades vizinhas sobre nossas plantas na fase inicial pós-plantio. Qual a intervenção agronômica mais rápida e eficaz?",
+    "resposta_9": "Acelere a desintoxicação da planta maximizando o vigor para garantir a emissão de folhas novas e a sobrevivência das mudas nesta fase crítica. Utilize ferramentas de agricultura de precisão (como drones) para demarcar a faixa exata de exposição e inicie a injeção de bioestimulantes enraizadores via irrigação por gotejamento estritamente nessa zona."
+  },
+  {
+    "pergunta_10": "Considerando temperaturas do ar excedendo 33°C por múltiplos dias consecutivos durante a fase fenológica de floração, qual deve ser a conduta hídrica para minimizar o abortamento?",
+    "resposta_10": "Evite o abortamento floral causado por estresse térmico extremo, garantindo que o cafeeiro tenha água abundante para transpirar e resfriar seus tecidos. Ative a irrigação por gotejamento no período noturno para elevar a umidade do bulbo, priorizando as zonas de manejo identificadas pela agricultura de precisão com menor capacidade de retenção de água."
+  },
+  {
+    "pergunta_11": "Se os sensores de solo apontam aquecimento excessivo na camada superficial do terço superior da lavoura durante a fase de expansão dos frutos, o que deve ser feito?",
+    "resposta_11": "Proteja as raízes superficiais absorventes da morte por escaldadura, o que paralisaria imediatamente o ganho de calibre dos frutos. Recorra ao mapa de declividade da agricultura de precisão para setorizar a face mais exposta ao sol e acione pulsos diurnos curtos de irrigação por gotejamento para promover o resfriamento por evaporação."
+  },
+  {
+    "pergunta_12": "Diante de uma queda brusca de temperatura ambiente para menos de 10°C durante a fase de granação em uma fazenda com forte variação altimétrica, como ajustar a nutrição?",
+    "resposta_12": "Entenda que o frio reduz o metabolismo e paralisa a absorção radicular, gerando desperdício se a adubação for mantida. Suspenda temporariamente a fertirrigação via irrigação por gotejamento nas zonas de manejo de menor altitude, mapeadas pela agricultura de precisão como áreas de acúmulo de ar frio, até o reaquecimento do microclima."
+  },
+  {
+    "pergunta_13": "As plantas na fase de maturação apresentam murcha severa ao meio-dia sob calor extremo, mas as sondas indicam que o solo está no nível ideal de umidade. Qual a decisão agronômica?",
+    "resposta_13": "Reconheça que a demanda evaporativa atmosférica superou a capacidade física de bombeamento das raízes, e que adicionar água causará lixiviação desnecessária. Mantenha o turno padrão da irrigação por gotejamento e utilize imagens térmicas da agricultura de precisão para monitorar se as zonas de manejo recuperam a turgidez durante o período noturno."
+  },
+  {
+    "pergunta_14": "Ondas de calor atípicas durante a fase de repouso vegetativo estão acelerando a secagem do perfil de solo de maneira desigual. Qual a medida correta para não quebrar a dormência?",
+    "resposta_14": "Embora o estresse hídrico seja necessário para uniformizar a florada, o esgotamento letal causará a seca definitiva dos ramos ortotrópicos. Acompanhe a curva de secagem individualizada por zonas de manejo da agricultura de precisão e aplique uma micro lâmina de salvação via irrigação por gotejamento apenas nos setores que atingirem o ponto de murcha permanente."
+  },
+  {
+    "pergunta_15": "Durante o enchimento de grãos, a temperatura permanece anormalmente fria e nublada, e o balanço hídrico das estações aponta sobra de umidade. Como o agrônomo deve atuar?",
+    "resposta_15": "Ajuste a oferta de água para prevenir a asfixia radicular, que trava a absorção de potássio, nutriente fundamental para o enchimento dos grãos. Reduza o tempo de acionamento do sistema de irrigação por gotejamento em toda a área e valide o estado de vigor da biomassa através dos mapas de satélite da agricultura de precisão."
+  },
+  {
+    "pergunta_16": "A umidade e a temperatura do ar estão favoráveis, mas notou-se que a camada superficial do solo secou muito rápido nos talhões de mudas em fase inicial de estabelecimento. Como proceder?",
+    "resposta_16": "Assegure que o sistema radicular incipiente não sofra desidratação nos primeiros 10 centímetros, vitais para o arranque da cultura jovem. Empregue a técnica de pulsos curtos e repetitivos na irrigação por gotejamento para concentrar a água na superfície, utilizando o mapa textural da agricultura de precisão para definir os tempos de pausa em áreas arenosas."
+  },
+  {
+    "pergunta_17": "Uma forte massa de ar polar traz previsão de temperaturas de 3°C durante a fase fenológica de indução floral. Qual a estratégia preventiva mais indicada para o manejo da água?",
+    "resposta_17": "Atue para prevenir a geada radiativa que destruiria as gemas reprodutivas recém-formadas, comprometendo totalmente a próxima safra. Sobreponha o mapa de fluxo de ar frio da agricultura de precisão e ligue preventivamente a irrigação por gotejamento durante a madrugada nas baixadas, elevando a inércia térmica do solo úmido."
+  },
+  {
+    "pergunta_18": "Havendo registro de alta amplitude térmica diária (frio extremo de manhã e calor forte à tarde) na fase de chumbinho, o que o agrônomo deve monitorar e ajustar?",
+    "resposta_18": "Amplitudes térmicas severas desequilibram os hormônios da planta, elevando drasticamente a taxa de abortamento dos frutos em expansão. Otimize o conforto hídrico deslocando o acionamento da irrigação por gotejamento para o final da tarde e use mapas de NDVI da agricultura de precisão para guiar a aplicação foliar corretiva de reguladores nas zonas mais afetadas."
+  },
+  {
+    "pergunta_19": "Dias ininterruptos de céu claro com incidência máxima de radiação solar ocorrem na fase de expansão rápida dos frutos. Como devemos adequar o volume de rega?",
+    "resposta_19": "A alta carga radiativa potencializa a evapotranspiração, exigindo reposição irrestrita para manter a expansão celular e evitar a perda de peneira do café. Eleve a lâmina da irrigação por gotejamento até a capacidade de campo, priorizando o suprimento nas zonas de manejo que apresentaram maior carga pendente de frutos no mapa de estimativa da agricultura de precisão."
+  },
+  {
+    "pergunta_20": "As medições apontam radiação solar atipicamente baixa devido à densa nebulosidade prolongada durante a fase de maturação. Qual o impacto operacional e a ação a tomar?",
+    "resposta_20": "A falta de sol estende o ciclo de maturação e zera a demanda evaporativa, elevando o risco de doenças fúngicas e excesso de água no sistema radicular. Interrompa as rotinas programadas da irrigação por gotejamento e utilize os mapas de umidade do solo espacializados da agricultura de precisão para atestar que o perfil iniciou a secagem."
+  },
+  {
+    "pergunta_21": "No início do período de águas, na fase de vegetação ativa, ocorre um longo 'veranico' com altíssima insolação. Qual a decisão para não perder o crescimento do ano?",
+    "resposta_21": "Evite qualquer quebra no ritmo de emissão de novos internódios e folhas, estruturas que vão sustentar a fotossíntese para a granação da safra. Retome de imediato a reposição hídrica diária pelo sistema de irrigação por gotejamento, distribuindo taxas variáveis de água e nitrogênio baseadas nos mapas de vigor vegetativo da agricultura de precisão."
+  },
+  {
+    "pergunta_22": "Radiação severa associada a áreas de solo muito arenoso está induzindo murcha diária acelerada durante a fase de indução floral. Como intervir tecnicamente?",
+    "resposta_22": "Impeça o déficit agudo não planejado que pode induzir uma dormência desuniforme e falha na iniciação das gemas florais. Consulte a grade textural do solo na plataforma de agricultura de precisão e reconfigure a irrigação por gotejamento para efetuar três micropulsos noturnos, evitando a percolação profunda e mantendo a água na rizosfera da areia."
+  },
+  {
+    "pergunta_23": "Se houver falha de comunicação nos piranômetros locais durante a fase crítica de floração (antese), que base de dados o agrônomo deve usar para calcular a reposição de água?",
+    "resposta_23": "A abertura floral não tolera estresse hídrico; a parada do sistema por falta de um sensor causará o aborto massivo dos botões. Extraia a evapotranspiração estimada das APIs meteorológicas de contingência vinculadas à plataforma de agricultura de precisão e garanta a lâmina basal de segurança em todas as zonas de manejo via irrigação por gotejamento."
+  },
+  {
+    "pergunta_24": "O mapeamento topográfico mostra que os talhões com face Norte recebem muito mais radiação solar diária durante a fase de chumbinho. Como o sistema de rega deve tratar esse setor?",
+    "resposta_24": "Faces de exposição Norte sofrem evapotranspiração significativamente maior, demandando volumes hídricos superiores para impedir o estresse e o aborto dos chumbinhos. Consolide essa face como uma zona de manejo independente na agricultura de precisão e aumente o fator de tempo de rega do sistema de irrigação por gotejamento especificamente para essas válvulas."
+  },
+  {
+    "pergunta_25": "Um sombreamento provocado por renques florestais reduziu a radiação solar em uma parte do talhão na fase de granação. Como o manejo dessa mancha difere da área a pleno sol?",
+    "resposta_25": "O sombreamento reduz o estresse térmico e a taxa de transpiração foliar, diminuindo o consumo global de água para o enchimento do grão nessa faixa. Mapeie os limites exatos da sombra utilizando imagens de VANT da agricultura de precisão e configure uma lâmina hídrica restrita para esses emissores específicos no software da irrigação por gotejamento."
+  },
+  {
+    "pergunta_26": "Avaliando imagens térmicas do dossel sob alta radiação na fase de pós-colheita, nota-se anomalias de superaquecimento em setores isolados. Qual a conduta corretiva?",
+    "resposta_26": "O superaquecimento foliar indica falha transpiratória por falta de água na raiz, atrasando a fase de recuperação pós-colheita essencial para o enraizamento. Sobreponha o mapa de anomalia térmica da agricultura de precisão sobre o layout hidráulico da irrigação por gotejamento e despache a equipe para desobstruir emissores ou corrigir vazamentos na zona afetada."
+  },
+  {
+    "pergunta_27": "Durante a fase fenológica de floração plena, os dados apontam máxima insolação e rápida secagem dos primeiros centímetros de solo. Qual a intervenção?",
+    "resposta_27": "O turgor completo da planta é indispensável para a viabilidade do pólen e fixação da flor; o ressecamento do bulbo gera abortamento imediato. Execute irrigações noturnas com lâminas pesadas via irrigação por gotejamento, assegurando que o molhamento atinja a profundidade total efetiva das raízes demarcada nas análises de solo da agricultura de precisão."
+  },
+  {
+    "pergunta_28": "O monitoramento local capta uma precipitação de 30 mm durante o período de estresse hídrico controlado (fase de repouso). Qual deve ser a ação imediata do agrônomo?",
+    "resposta_28": "Reconheça que uma chuva desse volume quebra de forma irreversível a dormência e inicia o intumescimento fisiológico das gemas reprodutivas. Encerre o estresse imediatamente e retome os ciclos contínuos de irrigação por gotejamento em carga total em todas as zonas de manejo da agricultura de precisão para sustentar a florada iminente."
+  },
+  {
+    "pergunta_29": "A previsão climática emite alerta para 100 mm de chuva na fase final de maturação dos grãos. Quais os riscos agronômicos e as decisões logísticas a tomar?",
+    "resposta_29": "O encharcamento induzirá fermentação na casca e queda massiva do café cereja, depreciando irreversivelmente a qualidade da bebida na xícara. Cancele integralmente o uso da irrigação por gotejamento e utilize mapas de índice de maturação da agricultura de precisão para direcionar a frota de colheita imediatamente para as zonas mais maduras antes do evento."
+  },
+  {
+    "pergunta_30": "Houve o registro de uma chuva leve de 5 mm durante a fase de expansão rápida de frutos (chumbinho). Essa chuva justifica o cancelamento da rega noturna?",
+    "resposta_30": "Chuvas de baixa volumetria não superam a interceptação das folhas no cafeeiro adulto denso, não chegando a infiltrar no sistema radicular profundo. Avalie as sondas locais; caso a umidade radicular permaneça inalterada, mantenha rigorosamente a lâmina programada da irrigação por gotejamento prescrita para cada zona de manejo na agricultura de precisão."
+  },
+  {
+    "pergunta_31": "Após meses de seca, cai a primeira chuva efetiva (20 mm) coincidindo com a abertura da florada. É o momento técnico para iniciar a fertirrigação do ciclo?",
+    "resposta_31": "A umidade difusa da chuva estimula a emissão de raízes finas absorventes, tornando o solo perfeitamente favorável para a adubação de arranque e fixação floral. Aproveite a condição e injete fontes ricas em fósforo e nitrogênio através da irrigação por gotejamento, aplicando doses a taxa variável ditadas pelos mapas de fertilidade em grade da agricultura de precisão."
+  },
+  {
+    "pergunta_32": "Os modelos apontam seca absoluta para os próximos 45 dias na fase de granação, e o reservatório da fazenda está criticamente baixo. Qual a decisão para minimizar o dano financeiro?",
+    "resposta_32": "A fase de granação não admite falta de água sem perda severa de peneira, exigindo o direcionamento da água escassa para onde o retorno financeiro é garantido. Implemente o déficit hídrico regulado cortando a irrigação por gotejamento nas áreas marginais e garantindo a dotação total exclusivamente nas zonas de manejo de alta rentabilidade apontadas pela agricultura de precisão."
+  },
+  {
+    "pergunta_33": "A rede de pluviômetros registra precipitação intensa em apenas um terço da propriedade durante a fase fenológica vegetativa ativa. Como o agrônomo deve operar o sistema de água?",
+    "resposta_33": "A variabilidade da chuva distorce o balanço hídrico do campo, e a manutenção do turno global provocará asfixia radicular na área molhada e seca no restante. Desenhe um polígono sobre a área precipitada dentro do software de agricultura de precisão e suspenda o acionamento da irrigação por gotejamento exclusivamente no conjunto de válvulas dessa zona de manejo."
+  },
+  {
+    "pergunta_34": "O solo sofreu encharcamento por 150 mm de chuva na fase de expansão de frutos, e as sondas mostram condutividade elétrica caindo a zero no perfil. Qual a correção agronômica necessária?",
+    "resposta_34": "O excesso de água causou lixiviação extrema, varrendo cátions essenciais (K, Mg) da zona de absorção num momento de máxima extração celular pelos frutos. Imediatamente após a drenagem gravitacional, inicie uma fertirrigação de choque e reposição via irrigação por gotejamento, readequando as concentrações com base nas últimas análises da agricultura de precisão."
+  },
+  {
+    "pergunta_35": "O período de colheita está sendo interrompido por chuvas esporádicas. Seria viável tecnicamente antecipar a adubação da próxima safra na lavoura enquanto o solo está úmido?",
+    "resposta_35": "A planta está fisicamente traumatizada pela colheita mecânica e com metabolismo paralisado; injetar adubo em solo saturado nesta fase resultará em perda total por lavagem. Aguarde o início pleno da fase fenológica de recuperação pós-colheita; use a agricultura de precisão para calcular o balanço de exportação e forneça os sais via irrigação por gotejamento sob clima estável."
+  },
+  {
+    "pergunta_36": "Se a chuva mensal for levemente inferior à evapotranspiração ao longo de toda a fase de maturação final, o agrônomo deve repor esse déficit pontual?",
+    "resposta_36": "Um déficit hídrico leve e persistente no final do ciclo acelera positivamente a conversão do fruto verde em cereja, homogeneizando a safra e otimizando a qualidade. Mantenha a irrigação por gotejamento desligada para favorecer o metabolismo de maturação, acompanhando a saúde geral do dossel pelas imagens do índice NDRE da agricultura de precisão."
+  },
+  {
+    "pergunta_37": "Os dados climáticos registram altíssima incidência de raios tocando o solo próximos à fazenda durante uma fertirrigação crítica na fase de granação. Qual a prioridade?",
+    "resposta_37": "A preservação da vida humana e a prevenção da queima de painéis eletrônicos de automação suplantam qualquer prejuízo nutricional momentâneo no cafezal. Interrompa remotamente as motobombas da irrigação por gotejamento, evacue os funcionários do talhão e use a agricultura de precisão para documentar qual zona de manejo precisará concluir a receita de fertirrigação posteriormente."
+  },
+  {
+    "pergunta_38": "Um forte alerta de tempestade elétrica coincide exatamente com o início da aplicação de boro e zinco foliar exigida na fase de pré-florada. Como proceder?",
+    "resposta_38": "Nutrientes como boro são vitais para a viabilidade polínica, mas a operação de máquinas expostas em campo aberto sob descargas elétricas é um erro primário de segurança. Adie a operação até o fim do alerta e aplique essas formulações sistêmicas altamente solúveis através do sistema de irrigação por gotejamento, respeitando os mapas foliares da agricultura de precisão."
+  },
+  {
+    "pergunta_39": "Um raio destruiu o roteador principal dos sensores de umidade do solo durante a sensível fase de chumbinho. Como garantir que a lavoura não sofra até o conserto?",
+    "resposta_39": "A interrupção da reposição na fase de chumbinho gera queda irreversível dos frutos jovens, o que torna inaceitável paralisar a rega por falta de telemetria. Injete os volumes de água baseando-se na evapotranspiração histórica calculada para aquela zona de manejo específica na plataforma de agricultura de precisão, ativando a irrigação por gotejamento em modo manual estruturado."
+  },
+  {
+    "pergunta_40": "O monitoramento captura raios severos a 15 km de distância que se deslocam rapidamente para o centro da fazenda, que está atualmente fertirrigando a fase de vegetação.",
+    "resposta_40": "Descargas próximas induzem surtos de tensão pelos cabos úmidos, destruindo controladores de injeção proporcional e desregulando a condutividade da solução entregue ao campo. Execute o desligamento preventivo do painel da irrigação por gotejamento, retomando a dosagem de onde parou para aquela exata zona de manejo mapeada pela agricultura de precisão assim que a tempestade dissipar."
+  },
+  {
+    "pergunta_41": "O risco elétrico passou, mas choveu pesado. Havia a programação de trator para pulverizar cálcio foliar essencial à expansão do fruto. Qual a alternativa técnica?",
+    "resposta_41": "As folhas molhadas farão o produto escorrer sem absorção, e o solo saturado sofrerá grave compactação e patinhamento pelas rodas do maquinário pesado. Cancele o uso do trator e entregue o cálcio prontamente assimilável pelo bulbo radicular usando o sistema de irrigação por gotejamento, dosando a aplicação conforme o mapa de bases do solo na agricultura de precisão."
+  },
+  {
+    "pergunta_42": "Tempestades elétricas acompanhadas de chuva de granizo atingiram severamente o dossel do cafezal na fase fenológica de pós-colheita. Qual o principal foco agronômico?",
+    "resposta_42": "As lacerações deixadas pelo gelo quebram a barreira física das folhas, permitindo a entrada explosiva de patógenos bacterianos e fúngicos no tecido debilitado. Delimite as reboleiras mais avariadas pelas imagens de VANT da agricultura de precisão e inicie uma rotina curativa contendo cobre sistêmico injetado diretamente na linha de irrigação por gotejamento."
+  },
+  {
+    "pergunta_43": "Após a queda de energia por raios, o operador religa manualmente a bomba e o sistema detecta uma pressão anormal na rede durante a fase fenológica de maturação. Como atuar?",
+    "resposta_43": "Variações drásticas de pressão apontam para o estouro de tubulações principais ou o travamento mecânico de válvulas devido ao golpe de aríete no momento do desligamento abrupto. Bloqueie as saídas principais da irrigação por gotejamento e faça uma auditoria física rápida priorizando as áreas de maior declividade demarcadas nos mapas topográficos da agricultura de precisão."
+  },
+  {
+    "pergunta_44": "Tempestades diárias com alto risco elétrico impedem os tratos culturais tratorizados por uma semana durante a fase de repouso, atrasando a adubação de base. O que fazer?",
+    "resposta_44": "O atraso no suprimento de base vai prejudicar o arranque vegetativo e a emissão das gemas florais; a inviabilidade de tráfego mecanizado exige uma solução líquida. Transfira a recomendação de macronutrientes da aplicação sólida para a via fluida do sistema de irrigação por gotejamento, aplicando os volumes prescritos nas zonas de manejo delimitadas pela agricultura de precisão."
+  },
+  {
+    "pergunta_45": "O alerta contínuo de chuvas e raios impossibilita o uso de pulverizadores. Observam-se fortes sinais fitossanitários de doença de solo nas raízes na fase de vegetação ativa.",
+    "resposta_45": "Não se pode aguardar o escoamento completo da água sob risco de colapso vascular e desfolha letal do cafeeiro pela infecção radicular avançada. Promova o tratamento curativo injetando fungicidas de solo registrados de maneira precisa via irrigação por gotejamento, focando o volume de calda nos polígonos de alto risco fúngico mapeados pela agricultura de precisão."
+  },
+  {
+    "pergunta_46": "A sonda registra que a condutividade elétrica do solo ultrapassou 3 dS/m nos talhões jovens (fase fenológica inicial). Qual a gravidade e a solução para esse quadro?",
+    "resposta_46": "Uma salinidade nesse nível é severamente tóxica, promovendo o colapso osmótico e a queima das raízes recém-formadas, o que levará à morte das mudas de café. Com base na área apontada pelo mapa de condutividade aparente da agricultura de precisão, acione imediatamente a irrigação por gotejamento com água pura para lixiviar os sais retidos no bulbo radicular."
+  },
+  {
+    "pergunta_47": "Os dados de salinidade do solo caem a zero após semanas de chuvas pesadas na fase fenológica de floração, e as folhas novas perdem a cor verde característica.",
+    "resposta_47": "A leitura nula de condutividade prova que houve lavagem profunda de todo o estoque de ânions e cátions solúveis, gerando subnutrição na planta em momento de altíssimo dreno energético. Reestabeleça o pool de nutrientes do bulbo iniciando ciclos concentrados de fertirrigação via irrigação por gotejamento, distribuídos a taxa variável pelas zonas de amostragem da agricultura de precisão."
+  },
+  {
+    "pergunta_48": "O monitoramento contínuo aponta que a tensão de água no solo chegou ao ponto de murcha permanente na fase de chumbinho, embora o índice foliar aéreo pareça normal. Como agir?",
+    "resposta_48": "O café está em colapso hídrico celular; o dossel demora semanas para refletir no vigor aéreo a morte das raízes e o abortamento interno dos frutos que já está ocorrendo. Emita ordem imediata para saturar o perfil utilizando o sistema de irrigação por gotejamento em carga máxima nas zonas de manejo críticas apontadas pelos mapas hídricos da agricultura de precisão."
+  },
+  {
+    "pergunta_49": "Durante a fase de repouso (estresse hídrico controlado), o teor de umidade num setor sobe de repente sem qualquer registro de chuva pelos equipamentos climáticos locais.",
+    "resposta_49": "Uma elevação inexplicável de umidade do solo sem chuva confirma um vazamento oculto na linha de distribuição, que vai anular o estresse hídrico pontual e gerar desuniformidade floral. Recupere as coordenadas da sonda anômala através do sistema de agricultura de precisão e isole o ramal defeituoso da irrigação por gotejamento para realizar a manutenção física imediatamente."
+  },
+  {
+    "pergunta_50": "Na fase de enchimento de grãos, os talhões argilosos mantêm alta umidade, enquanto os talhões arenosos secam em 24h sob o mesmo turno de rega. Como reequilibrar o manejo hídrico geral?",
+    "resposta_50": "Aplicar a mesma frequência em texturas distintas gerará sufocamento por asfixia na argila e perda severa de peneira por seca na areia, destruindo a produtividade global. Separe completamente a operação do sistema de irrigação por gotejamento empregando as zonas de manejo texturais da agricultura de precisão, aplicando microciclos frequentes na areia e pulsos espaçados na argila."
+  },
+  {
+    "pergunta_51": "A umidade volumétrica do solo estabiliza cravada em 100% por toda a semana na fase fenológica vegetativa ativa, mas a previsão meteorológica externa aponta tempo seco.",
+    "resposta_51": "A saturação persistente indica falha na capacidade de infiltração, expulsando o oxigênio essencial à respiração radicular e paralisando a absorção metabólica de folhagem nova. Pare imediatamente a irrigação por gotejamento nesse setor e cruze as métricas com o modelo digital de terreno da agricultura de precisão para identificar pontos de afogamento e planejar drenagem física."
+  },
+  {
+    "pergunta_52": "A condutividade elétrica e a umidade do solo apresentam picos cíclicos de elevação a cada rega na fase fenológica de expansão rápida dos frutos. Este padrão instrumental é o esperado?",
+    "resposta_52": "Sim, a sincronia dos picos assegura que o bolo de sais solúveis da fertirrigação está perfeitamente contido dentro da faixa de umidade absorvente das raízes do cafeeiro. Sustente o protocolo vigente parcelando as doses de nutrientes via irrigação por gotejamento e correlacione os resultados de vigor através dos índices vegetativos captados periodicamente pela agricultura de precisão."
+  },
+  {
+    "pergunta_53": "Durante a fase fenológica de maturação, a umidade do solo ainda está sendo lida em níveis altíssimos, mas os frutos já se encontram perdendo hidratação satisfatoriamente. O que decidir?",
+    "resposta_53": "O excesso contínuo de água atrasa fisiologicamente a maturação, e injetar fertilizante estimula a emissão de brotos indesejados, competindo por energia com os frutos cereja. Encerre definitivamente o programa de fertirrigação via irrigação por gotejamento para o ciclo e produza mapas de avanço de colheita na plataforma de agricultura de precisão para coordenar o maquinário."
+  },
+  {
+    "pergunta_54": "O sensor mais profundo (40 cm) mostra solo perigosamente seco, enquanto a sonda superficial (15 cm) marca saturação perene na fase de desenvolvimento vegetativo. Qual a patologia física?",
+    "resposta_54": "A água escoa de lado e não percola devido a uma severa camada de compactação subsuperficial, aprisionando o sistema radicular do café em uma faixa muito estreita e asfixiada. Organize o subsolador para escarificar a entrelinha utilizando mapas de resistência do solo da agricultura de precisão e diminua a vazão instantânea do emissor da irrigação por gotejamento para forçar a penetração vertical."
+  },
+  {
+    "pergunta_55": "No início das águas (fase vegetativa), a umidade do ar noturna passa constantemente de 95%, criando neblina densa até o meio da manhã. Qual o desdobramento biológico?",
+    "resposta_55": "Esse microclima saturado desencadeia a proliferação agressiva e a esporulação de fungos patogênicos causadores da Ferrugem, resultando em desfolha epidêmica rápida. Antecipe a defesa monitorando a queda de índice de clorofila (NDRE) nas zonas de manejo críticas na agricultura de precisão e injete fungicidas sistêmicos protetores utilizando as linhas hidráulicas da irrigação por gotejamento."
+  },
+  {
+    "pergunta_56": "A umidade relativa da atmosfera despenca para 15% logo após o almoço durante a fase de floração plena (antese), e não há registro de ventos. Como salvar a florada?",
+    "resposta_56": "Um ar agressivamente seco retira água do próprio tecido estigmático da flor, impedindo a descida do tubo polínico e causando esterilidade em massa na safra do café. Empregue a irrigação por gotejamento em carga máxima para saturar de água a estrutura da planta, atenuando indiretamente a secura do ar nas zonas de manejo mais vulneráveis mapeadas pela agricultura de precisão."
+  },
+  {
+    "pergunta_57": "A umidade do ar permanentemente elevada aliada a temperaturas muito brandas limita a evapotranspiração na fase de enchimento de grãos em plantas com excesso absoluto de folhas.",
+    "resposta_57": "Plantas com autossombreamento extremo e baixa taxa transpiratória falham no carreamento de cálcio pelo xilema, enfraquecendo as paredes celulares dos frutos e aumentando podridões internas. Oprima sensivelmente as lâminas diárias entregues pela irrigação por gotejamento e utilize mapas de biomassa (NDVI) da agricultura de precisão para nortear as operações manuais de desbrota de arejamento."
+  },
+  {
+    "pergunta_58": "Um ar excepcionalmente seco provoca estresse de demanda atmosférica, resultando em murchamento precoce das folhas apicais na fase inicial de mudas recém-plantadas a campo.",
+    "resposta_58": "A escassa estrutura radicular das mudas novas não comporta a perda acelerada de vapor d'água das folhas, criando um risco letal de seca fisiológica aguda nas primeiras semanas. Incremente significativamente o número de pulsos curtos da irrigação por gotejamento por dia, mantendo um foco hídrico especial nas zonas de manejo mais arenosas discriminadas pelas ferramentas de agricultura de precisão."
+  },
+  {
+    "pergunta_59": "Modelos climáticos apontam inversão térmica associada a ar totalmente saturado de neblina para toda a semana na fase fenológica de repouso vegetativo do café adulto. Como intervir?",
+    "resposta_59": "O ar 100% saturado e o clima frio propiciam o balanço perfeito de dormência, aprofundando o descanso metabólico e induzindo primórdios florais blindados contra o déficit letal de seiva. Respeite plenamente o bloqueio dos setores de irrigação por gotejamento, validando se a uniformidade de paralisação ocorre paralelamente às cotas topográficas cruzadas pelo software de agricultura de precisão."
+  },
+  {
+    "pergunta_60": "O monitoramento reporta variação brusca e instável de umidade do ar ao longo da maturação e seca dos grãos na planta, resultando em frutos verdes misturados aos maduros no mesmo ramo.",
+    "resposta_60": "Essa instabilidade hídrica impede a síntese concentrada e coordenada do etileno, gerando percentuais inviáveis de café verde na colheita mecânica e castigando o rendimento financeiro final. Bloqueie injeções minerais no sistema de irrigação por gotejamento; direcione imediatamente a colhedora para os pontos de alta homogeneidade de maturação evidenciados nos sobrevoos multiespectrais da agricultura de precisão."
+  },
+  {
+    "pergunta_61": "O ar seco severo combinado com calor estressante na fase de chumbinho do café está acelerando a severidade da infestação da praga bicho-mineiro no terço superior das plantas.",
+    "resposta_61": "A área foliar destruída pelas minas necróticas compromete irremediavelmente a carga fotossintética necessária exatamente na fase de altíssimo consumo energético pelo fruto jovem. Administre inseticidas de via radicular valendo-se da fertirrigação no sistema de irrigação por gotejamento, concentrando caldas maiores nas zonas de infestação identificadas pelo levantamento em grade da agricultura de precisão."
+  },
+  {
+    "pergunta_62": "Os sensores acusam ambiente extremamente seco, mas as sondas no perfil radicular provam boa umidade na fase de vegetação plena. A fotossíntese do cafezal está operante?",
+    "resposta_62": "Não; o ar em extrema seca força o fechamento reativo dos estômatos, bloqueando totalmente a captação de carbono e estagnando o ganho de biomassa do cafeeiro apesar do solo molhado. Cesse acionamentos volumosos da irrigação por gotejamento diurno que serão inertes; reestruture a nutrição estimulante baseando-se no potencial fotossintético detectado (NDRE) por zonas de manejo na agricultura de precisão."
+  },
+  {
+    "pergunta_63": "Umidade do ar permanentemente baixa ao longo de semanas coincide com a fase de granação pesada dos frutos, e a captação elétrica do reservatório não tolera o regime contínuo de bombeamento.",
+    "resposta_63": "A secura do ar força um consumo de água que a infraestrutura não é capaz de repor, o que garantirá o murchamento dos grãos na planta e a queda generalizada do rendimento final (peneira). Concentre e sacrifique a água bombeada pela irrigação por gotejamento garantindo volume restrito, porém eficiente, nas zonas de manejo que entregaram maior lucratividade no mapa histórico da agricultura de precisão."
+  },
+  {
+    "pergunta_64": "Avaliando históricos da fase de expansão de frutos (chumbinho), percebeu-se que o maior aborto oculto e quebra de produtividade ocorreram nos talhões do mapa caracterizados com o maior vigor.",
+    "resposta_64": "O índice altíssimo de vigor corresponde ao excesso estrutural de ramificações e sombreamento foliar, elevando o consumo hídrico e promovendo o aborto natural de chumbinhos por falta de luz interna. Institua mapas de restrição nutricional limitando o aporte de Nitrogênio nas fertirrigações por irrigação por gotejamento para as zonas super vegetativas marcadas na plataforma de agricultura de precisão."
+  },
+  {
+    "pergunta_65": "O fechamento do mapa de colheita confirmou que manchas circulares isoladas na lavoura tiveram baixíssima produção, mas os sensores nessas ilhas acusam que a fase vegetativa atual segue com ótimo clima local.",
+    "resposta_65": "Sendo o clima favorável, a estagnação perene local comprova limitantes invisíveis de solo e biologia (exemplo, parasitas nematoides ou pH gravemente descompensado da média do talhão). Acione o levantamento laboratorial focado em amostragem por grade da agricultura de precisão nessas reboleiras, promovendo posterior injeção corretiva de químicos corretivos localizada via irrigação por gotejamento setorial."
+  },
+  {
+    "pergunta_66": "As métricas colhidas por drone revelam extrema discrepância entre NDVI e NDRE dentro do mesmo polígono de café adulto durante a fase de indução floral. Qual balizador usar para planejar a nutrição pré-florada?",
+    "resposta_66": "As plantas adultas superadensadas saturam facilmente a leitura do NDVI que reflete apenas folhas de topo; o NDRE cruza as copas e quantifica o teor leal de clorofila ativa da folhagem de base e meio. Calcule e aplique o volume total de fertilizantes foliares translocáveis pela linha de gotejadores da irrigação por gotejamento pautando os dados pela leitura estrita do NDRE de agricultura de precisão."
+  },
+  {
+    "pergunta_67": "Modelos digitais tridimensionais exibem acúmulo natural da drenagem pluvial nas grandes depressões de baixada durante a pré-florada (estresse hídrico). O que determinar na configuração das estações de bombeamento?",
+    "resposta_67": "As bacias naturais umidificam continuamente o solo e inviabilizam o déficit necessário da indução, o que levará a florações dessincronizadas e contínuas na baixada misturando frutos maduros e verdes. Sele todas as válvulas elétricas referentes aos sistemas de irrigação por gotejamento listados dentro dessa zona de manejo topográfica da agricultura de precisão para prolongar artificialmente a secagem das gemas."
+  },
+  {
+    "pergunta_68": "Varreduras completas da condutividade elétrica aparente da fazenda isolam vastas manchas de pura areia que não existiam no projeto original, exatamente sob a imposição da fase fenológica de repouso.",
+    "resposta_68": "A areia quebra rapidamente a tensão da água alcançando a murcha mortal em frações do tempo da argila, o que agravará o estresse natural e matará a gema por colapso irreversível. Mantenha os setores pesados fechados, mas ative uma programação sutil de suporte micro dosado através da irrigação por gotejamento contido rigidamente nas delimitações arenosas do sistema de agricultura de precisão."
+  },
+  {
+    "pergunta_69": "Os mapas detalhados das análises de área foliar denunciam quadro de deficiência grave de potássio afetando inteiramente a borda leste na fase avançada da maturação dos grãos.",
+    "resposta_69": "Tentar repor o potássio atrasado num tecido senescente com os grãos prestes a colher não gerará acréscimo nenhum, perdendo recursos e atrasando o ponto natural do corte do café. Descarte aplicações paliativas imediatas e transfira o planejamento intensivo corretivo de potássio na irrigação por gotejamento para coincidir tecnicamente com o início pleno da fase de pós-colheita mapeado pela agricultura de precisão."
+  },
+  {
+    "pergunta_70": "A plataforma de dados acusa pontos de maturação ultra precoce exibindo concentração total de grãos já classificados como cereja, embora 60% da fazenda siga intensamente verde e aguando.",
+    "resposta_70": "Deixar o grão cereja maturar ao lado do grão verde expõe as bagas maduras à fermentação pela umidade, além de acelerar a passagem para estado de café seco de baixa qualidade de taça. Destitua do plano hidráulico a emissão de água pela irrigação por gotejamento dentro destes perímetros delimitados pela agricultura de precisão e insira imediatamente a colheita antecipada dos setores isolados."
+  },
+  {
+    "pergunta_71": "A captação via drone na fase de enchimento de grãos expõe todo o cafezal mudando aceleradamente a coloração foliar de verde brilhante para o amarelo fosco, de maneira uniforme independente das zonas cadastradas.",
+    "resposta_71": "O amarelecimento severo, maciço e repentino mesmo com as cotas hídricas perfeitas denota extração desbalanceada pela carga de safra imensa ou asfixia generalizada do sistema reticular pelas chuvas recentes. Averigúe o bloqueio hídrico e, na ausência deste, aumente vertiginosamente o pulso fertilizante de nitrogênio rebatendo-o pela irrigação por gotejamento conforme as equações mais exigentes cadastradas no portal de agricultura de precisão."
+  },
+  {
+    "pergunta_72": "Durante o período vegetativo formador de mudas do primeiro ano a campo, avaliações orbitais revelam parcelas que literalmente estagnaram o crescimento após quatro meses sob temperatura, sol e clima excepcionais.",
+    "resposta_72": "A falha letárgica total e invisível, quando se tem abundância contínua de água e luz, indica embuchamento físico do sistema radicular na cova da muda ou um ataque predatório perigoso de nematoides jovens no peão. Ordene a retirada de amostragem física de campo em cruzamento geográfico com o limite exato travado na agricultura de precisão e prepare as medidas injetáveis terapêuticas no ramal isolado de irrigação por gotejamento."
+  },
+  {
+    "pergunta_73": "A morfologia da fazenda traz perfis onde as rampas atingem 20% de inclinação do relevo em meia encosta e estamos abastecendo a lavoura com cota de rega máxima por conta da fase de florada plena do café.",
+    "resposta_73": "Em rampas inclinadas submetidas a uma cota agressiva de irrigação em turno único contínuo haverá rápido escoamento subsuperficial lateral afogando as saídas e deixando as raízes da encosta secas abortando flores. Fracione a cota total calculada de água em múltiplos acionamentos diários rápidos pelas linhas da irrigação por gotejamento usando as coordenadas declivosas filtradas no painel da agricultura de precisão."
+  },
+  {
+    "pergunta_74": "O balanço analítico combinando os registros da leitura das bombas d'água e os espectros térmicos espaciais captura folhagens extremamente ralas e doentes cruzando exatamente com a mancha super irrigada de repasse da fase vegetativa.",
+    "resposta_74": "O volume bruto descontrolado imposto por um superávit artificial lixivia totalmente o banco do solo retirando o ar, estressando severamente as plantas, as quais perdem clorofila e área fotossintética foliar global. Reprograme e mutile substancialmente a curva paramétrica do aplicativo que orquestra as eletroválvulas de irrigação por gotejamento restringindo as cotas a números defensivos apontados diretamente na plataforma de agricultura de precisão."
+  },
+  {
+    "pergunta_75": "Avaliando mapas fechados do passado, uma determinada reboleira tem acumulado uma queda expressiva e sistemática na produtividade pelo terceiro ano seguido, sendo que a atual fenologia do novo ciclo vegetal já se abriu forte no campo.",
+    "resposta_75": "O padrão temporal perene de queda isolada e sistemática aponta a degradação total de base física natural de solo (compactação química de subsolo) incapaz de suprir as fases exigentes do metabolismo do fruto ou folhas. Engatilhe ordens de coleta agressiva para amostragem profunda atestada via agricultura de precisão e reconfigure o gotejador na irrigação por gotejamento para inserir fluxos hiper potentes e concentrados de recondicionadores como cálcio líquido de alta reatividade."
+  },
+  {
+    "pergunta_76": "Os dados térmicos do clima atestam acúmulos recordes atípicos na soma histórica dos graus-dia, estressando o ritmo vital, e encurtando o prazo temporal em semanas a atual fase biológica da granação antes das frentes frias.",
+    "resposta_76": "O acúmulo acelerado de calor faz o fruto entrar no ponto de solidificação rígida e precoce do endosperma antes mesmo de sofrer a expansão final por hidratação celular provocando quebra da rentabilidade na classificação por peneira. Freie o avanço fenológico pelo controle ambiental microclimático sustentando tensão contínua noturna da irrigação por gotejamento e garanta hidratação maciça nas zonas listadas pelo histórico altíssimo de rendimento via agricultura de precisão."
+  },
+  {
+    "pergunta_77": "O sensor espectral ativo afixado diretamente na máquina foliar capta decaimento brusco e precoce do Índice Relativo de Clorofila nas ruas sombreadas ao longo da pré-colheita avançada comparado com ruas ensolaradas ainda super verdes.",
+    "resposta_77": "O sombreamento final estático impõe fotossíntese negativa, e os tecidos antecipam agressivamente a senescência natural translocando os nutrientes remanescentes de si próprios numa tentativa letárgica final para garantir a sementeção. Correlacione e carregue o shape geográfico das ruas do bosque exportado da agricultura de precisão e mande pelo ramal do cano da irrigação por gotejamento reposição final emergencial restrita com caldas de foliares orgânicos aminoácidos puros."
+  },
+  {
+    "pergunta_78": "A safra atual tem apresentado colheitas colossais atestando superprodução em níveis bienais positivos estressantes mas o mapa computado do NDVI marca já exaustão destrutiva da palhada verde inteira sob o estresse da fase pós-colheita.",
+    "resposta_78": "Esta super colheita atuou como dreno mortal extraindo todo o limite das reservas basais de carboidratos, restando os ossos das raízes e os tecidos correndo altíssimo risco contínuo da letal doença morte dos ponteiros por fome. Institua programa total intensivo corretivo direcionado integralmente em taxas altas pelo painel controlador elétrico do centro da irrigação por gotejamento, distribuindo fósforo curativo seguindo milimetricamente o mapa das plantas depauperadas da agricultura de precisão."
+  },
+  {
+    "pergunta_79": "Os extratos passados indicam variabilidade natural confirmando que o bloco composto pelo Catucaí sobreviveu no regime pluviométrico seco consumindo água inferior ao bloco de Mundo Novo vizinho durante a florada do passado.",
+    "resposta_79": "Desconsiderar geneticamente a arquitetura de enraizamento ou taxas de tolerância destas espécies impondo a regra coletiva provocará letal estrangulamento asfíxico em uma cultivar e aborto reprodutivo por murchamento diário na parceira. Demarque as linhagens fenotípicas criando perfis segmentados em bancos fechados das zonas de manejo na agricultura de precisão isolando as válvulas dedicadas as programações do calendário unitário respectivo de cada irrigação por gotejamento biológica."
+  },
+  {
+    "pergunta_80": "Há uma defasagem e completa ausência financeira na aquisição da matriz de sensores contínuos umidostatos em toda a roça impedindo definir por sonda o nível do déficit exigido pela biologia restrita da atual fase fenológica do repouso.",
+    "resposta_80": "Fiar-se e extrapolar universalmente na intuição climática em lavoura de extrema variabilidade acarreta colapsos destrutivos da uniformidade desorganizando os surtos de estresse vitais forçando quebra maciça nas respostas hormonais dos botões da próxima florada. Estipule a caracterização restritiva georreferenciada pelos níveis da condutividade do terreno importados por equipamentos independentes na malha da agricultura de precisão balizando regimes parciais impostos às matrizes seccionadas dos ramais automáticos da irrigação por gotejamento pontual."
+  },
+  {
+    "pergunta_81": "A termometria de campo revela que o fundo das raízes tombou e petrificou no congelante patamar abaixo de 5°C após madrugada gélida estacionária exata durante os eventos de hidratação contínua nos botões no princípio celular do chumbinho.",
+    "resposta_81": "Esta queda gelada atrofia severamente todo o complexo aparelho basal que move íons limitando os carreadores a absorverem seiva brutalizando o metabolismo estressando a rápida fase inicial da frutificação jovem por deficiência energética translocacional fatal de açúcar. Cancele integral e preventivamente o envio caro da injeção salina de adubo solúvel no evento noturno focando apenas manter a inércia basal encharcada nas regiões identificadas propícias na cota das curvas isoladas de altitude na agricultura de precisão usando lâmina natural via irrigação por gotejamento aquecido do final da tarde."
+  },
+  {
+    "pergunta_82": "As análises termométricas dos perfis do fundo enterrado (40cm) acusam constante variação na curva dos termopares flutuando ao sabor letal do pico de aquecimento brusco diurno na fase fenológica que induz ativamente a vegetação densa do novo dossel foliar.",
+    "resposta_82": "As violentas mudanças de temperaturas profundas e térmicas confirmam a eliminação orgânica completa da barreira de biomassa morta foliar rala que protegia as biotas vitais do ataque térmico letal desregulado e desnudo expondo o sol aos perfis capilares e esporos doentes. Programe e determine a reconfiguração hídrica corretiva de contenção operando disparos restritivos instantâneos com micro frações do fluxo nominal padrão pela irrigação por gotejamento mapeando especificamente os buracos secos identificados expostos e abertos nos voos rasantes cruzados de fotografia da agricultura de precisão."
+  },
+  {
+    "pergunta_83": "Temperatura termométrica persistente apontada excede 38°C massacrando a cultura pelas tardes agressivas porém atesta refrigeração rápida despencando para gélidos 10°C em poucas horas na frente noturna impactando diretamente a pesada granação sólida no mês adiantado de verão quente.",
+    "resposta_83": "O atroz massacre celular contínuo de agressões solares oxidativas pareadas as violentas estagnações vitais paralisadas pelo frio severo nas madrugadas limitam impiedosamente a expansão celular tracionando a quebra fisiológica total dos níveis translocacionais cruciais destruindo o fluxo que eleva pesadamente os quilos do enchimendo do grão finalizado maduro. Assegure a liberação maciça curativa hidratante nas manhas via injeção central da matriz tubulada de irrigação por gotejamento contendo níveis otimizados fortíssimos da defesa energética protetora injetando doses pesadas programadas de magnésio foliar focando exclusivamente nos bancos mais exportados classificados rigidamente pelas plataformas ativas vitais mapeadas restritas na agricultura de precisão."
+  },
+  {
+    "pergunta_84": "Geada massiva letal reportada de madrugada atingiu fisicamente devastando todo o cinturão e saia protetora vegetativa das baixadas queimando perigosamente e necrosando mais de setenta por cento de tecidos foliares das bases inferiores no período de franca transição inicial dos botões na entrada da fase crítica na maturação madura pregressa natural finalizada vermelha.",
+    "resposta_84": "O estresse por necrose por cristais vitais compromete fisiologicamente não apenas a coloração madura sadia desidratando os drenos pela fome biológica sistêmica mas colapsa inteiramente paralisando e queimando de cima a baixo o tecido lenhoso natural responsável em segurar a floração dos anos das colheitas sazonais supervenientes do sistema agrícola produtivo perene comercial orgânico de café denso perene inteiro estressado. Identifique a mancha negra destrutiva por imagens sintéticas computacionais atestadas por sobrevoo automatizado validadas e contornadas pelas máquinas virtuais interligadas das imagens na agricultura de precisão travando a tubulação central do fertirrigador que distribui água cara inútil suspendendo incondicionalmente todos fluxos automáticos injetivos diários repassados na linha de irrigação por gotejamento alocando força humana braçal urgente no recepe drástico cicatrizante vegetativo das lenhas infectadas pela necrose podre morta gélida inoperante total local curativa isolada."
+  },
+  {
+    "pergunta_85": "O monitoramento geral de estação registra o aquecimento super elevado atípico de bloqueios isolados nas correntes de ar na transição chuvosa de inverno impedindo fisicamente as induções térmicas do metabolismo na planta necessárias no deflagramento estagnacional biológico de choque requeridos que antecede de repouso das florações anuais no cafezal do arábico denso na safra finalizada colhida.",
+    "resposta_85": "A inibição integral atípica por ausência contínua de clima de restrições gélidas suprime do sistema reprodutivo a interrupção vital vegetativa essencial destruindo as frentes indutoras estressantes no hormônio interno incitando fisiologicamente botões temporãos esporádicos esparsos misturando lixo vegetal que inviabiliza as coletas sazonais únicas que exigem colheitadeira no final tratorizado. Execute forçadamente os regimes mecânicos impostos secativos cortando os fluxos e bloqueando a água basal tracionando uma simulação rigorosa estressante espacial no bulbo e raiz inteira bloqueando integral e perenemente a linha molhada dos repasses na irrigação por gotejamento focado nos crivos operacionais definidos rigidamente nos índices percentuais marcadores na agricultura de precisão limitados nos balanços e curvas retentivas texturais."
+  },
+  {
+    "pergunta_86": "Chuva gelada atípica reportada acompanhou o céu negro derrubando imediatamente para letais 8°C todas as termometrias radiadas focais da folhagem sensível molhada no choque severo das gotas em pleno pico da irradiação diurna natural transpiratória de intensa fenologia explosiva de fecundação (antese) contínua nos talhões.",
+    "resposta_86": "O violento impacto destrutivo agressivo letal combinando o choque térmico desidratante frio somados a alta umidade superficial prolongada estagna a parede física do crescimento do tubo reprodutor masculino gerando necrose patogênica interna no vaso foliar inviabilizando maciçamente e causando aborto total em necrose do conjunto orgânico ovariano fecundante impedindo brutalmente o pegamento global estipulado. Cesse incondicional as janelas normativas dos controles de água programadas cancelando momentânea todos os despachos emergenciais programados do calendário contínuo basal da irrigação por gotejamento documentando formalmente e antecipando avaliações geográficas periciais contendo mapeamentos tridimensionais restritivos e fotográficos focados atrelados nos registros técnicos da agricultura de precisão atestando quebras prováveis em rendimentos anuais localizados em manchas e danos parciais."
+  },
+  {
+    "pergunta_87": "A temperatura do perfil de monitoração da estação passa violentamente por semanas a exceder em vários graus anômalos todos os indicadores estaduais tidos registrados sistematicamente máximos dentro dos perfis da fase inicial fisiológica exigente da estipulada e restritiva janela na indução programada floral e formação pré-chuva biológica das plantas adultas exauridas reprodutoras colhidas de finalização limpa e secas sem adubação.",
+    "resposta_87": "O esgotamento diurno térmico destrutivo excessivo contínuo do balanço respiratório interno força invariavelmente os ramos vegetativos biológicos maduros e indutores de gemas latentes reprodutivas a abortarem e calcinarem desestruturando-as quimicamente de modo a atrofiar em desidratação (estrela murcha preta morta seca oculta inoperante oca morta cega falsa seca), minando a sanidade dreno da carga natural estocada celular folhosa e secando o metabolismo florístico floral da fazenda de forma incurável precoce desarmônica geral esporádica final reprodutora produtiva. Ative compulsoriamente controles evapotranspiratórios contendo picos artificiais corretivos promovendo um resfriamento localizado das bordaduras úmidas induzindo neblina focal evaporativa disparando ativamente em micropulsos intermitentes a irrigação por gotejamento programando focos contundentes de lâminas nas áreas de exposições de fachadas mapeadas nas vertentes do portal do software especializado integrado ao módulo operacional e digital altimétrico e expositivo na agricultura de precisão cruzado setorial isolado direcional Norte."
+  },
+  {
+    "pergunta_88": "Geadas de canela frias congelantes e restritivas relatam perdas localizadas atacando rasteiramente rasantes nas encostas despidas do chão cru provocando lacerações fendas na madeira e rompendo severamente no tecido cortical caulinar exposto ferindo letal das dezenas mudas recém postas limpas sensíveis novas esticadas finas e sem saia no limiar incipiente precoce da sua fase de implantação da juventude basal fenológica tenra exposta de inverno seco recém pós-plantio radicular curto fraco pequeno de fundação limitante inferior vital orgânica estressada base rala fina de tronco liso terno sem estrias na proteção na rizosfera desmatada desnudada pelada exposta limpa desprotegida na terra.",
+    "resposta_88": "O violento destrutivo ataque restritivo necrótico rasante causa o degolamento do câmbio físico inviabilizando por obstrução mecânica letal do xilema basal impedindo radical a ascensão e translocação seiva fluida ascendente; essas cultivares sucumbirão cronicamente atrofiadas à letal senescência sufocante murcha letal seca sistêmica orgânica progressiva radicular terminal por asfixia circulatória vascular letal aguda invariavelmente independente o quanto for molhada sua restrita matriz vital local de rizosfera úmida rica fértil fofa ideal encharcada maciça base radicular basal debaixo de terra molhada adubada de nutrientes basais disponíveis minerais livres solúveis e fáceis. Suspeite perdas e aborte incondicionalmente fluxos fertirrigados descartando qualquer tentativa injeção basal hídrica química dispendiosa solúvel na matriz da irrigação por gotejamento e efetue de imediato balanços espaciais focando estritamente cruzamentos limites vitais espaciais das ilhas danificadas utilizando drones sobrevoo de levantamento em área na agricultura de precisão orçando arranquios mecânicos manuais replantio substitutivos replantes integrais urgentes limpos corretivos diretos imediatos pontuais físicos isolados mortos falhos perdidos ocos."
+  },
+  {
+    "pergunta_89": "O monitoramento reporta perigosamente dias e noites atipicamente abafadas e excessivamente muito aquecidas ultrapassando seguidamente longas marcas registradas da casa do termômetro de acima vinte e cinco célsius o que tem impedido radical e sistemicamente e forçado agressivamente o bloqueio contínuo do natural vital fundamental letárgico balanço repousante biológico descanso orgânico calmo noturno metabólico folhoso e lenhoso basal vital transpiracional basal vital contínuo vital vegetativo do café durante fenologia incipiente de sua principal fase crítica e mais demandante expansão radicular rápida e hiper volumosa e engorda violenta rápida celular em volume maciço pesado dos chumbinhos de frutificação forte precoce da granação verde da meia estação intensa metabólica do ano agrícola.",
+    "resposta_89": "O estresse por sufocamento constante em asfixia do excesso térmico noites demasiadas aquecidas estimula drasticamente o alto dreno consumptivo dos hormônios forçando a respiração violenta destruidora roubando os fotossintatos diários elaborados estocados minando brutal e crônica e secando as estruturas drenos minando todo peso em matéria orgânica solidificada reduzindo violentamente as matérias sólidas final gerando bagas e feijões fisiologicamente inoperantes sem peso vazio com desnutrição severa interna sem reserva sólidos miúdos chochos finos leves ruins desqualificados inferiores do escore seco maduro de massa densa da cota orgânica pesada sólida do lote peneira natural classificada final da granação. Revise e altere a condução salina nutricional compensando e freando ativamente e reforçando fisiológica quimicamente promovendo equilíbrio hormonal vital do metabolismo eletrolítico focado em suplementos intensivos curativos protetores injetando formulação fluida corretiva do cálcio e de alta resposta reativa protetiva orgânica do amino magnésio protetor por vias exclusivas limpas puras de irrigação por gotejamento limitadas na exclusividade focal restrita e guiadas limitadas em proporção direta a exportação potencial natural focada ditada por imagens orgânicas na agricultura de precisão atreladas."
+  },
+  {
+    "pergunta_90": "Um imenso perigoso e extenso atípico muro bolha bloqueio atmosférico meteorológico estático aprisionado nos mapas locais estacionado e gerador forçando estática retenção letal severa bolha natural intensa barreira pressão gerou forte e destrutiva contínua escalada térmica atípica com asfalto calcinante e sol extremo com mormaço seco severo parado ausente calmaria completa limpa inoperante em movimento ventos correntes e zero brisa contínuo forçando evaporação física e fazendo a rizosfera cozinhar e o perfil arenoso perder assustadoramente violentamente acelerado agressivo severamente muito agressivo do perfil solo arenoso enxuto basal hídrico do bulbo perdendo toda da gota a umidade e forçando a gota natural a secagem repentina final nas etapas de transições em encerramentos contínuos finais e fechamento fenológico orgânico natural na biologia madura avançada final encerramentos últimos finais e maturação terminal da cereja da pregressa granação natural colheita da pré maturação de campo cheia preenchida amarela da finalidade da cereja roxa forte pesada escura quase madura inteira seca final secativa verde passarela.",
+    "resposta_90": "O escaldante desumidificador atroz extremo forçado sem umidade atmosférica ar agressivamente contínuo limpo na calmaria agressiva violenta final estressará as rotinas fisiológicas do fechamento biológico transformando secando enxugando murchando atrozmente sugando hidratando drenando matando secando torrando as polpas das bagas ricas recém úmidas de sucos sadios cheias recém maduras recém coladas fisiologicamente de estágio natural para a conversão murcha de forma rápida indesejável precoce fisiológica forçada em uvas ressecadas passas atreladas amarradas grudentas encasuladas e endurecidas presas com fibras fortes duras coladas de pele amarrada casca lenhosa resistente enrugada fixa tracionada sem caldos sem seivas presas nas cascas do dossel natural no tronco amarrado prejudicando as cascas dificultando extração colheita limpa solta e reduzindo os escores da bebida das cascas do doce açucarado ideal sadio de taça do licor natural seco e úmido original limpo. Controle imediatamente o déficit insuportável torrador aplicando e limitando estritamente em caráter curativo passagens moderadas leves suaves orgânicas de micropulsos restauradores reidratantes preventivos compensatórios da umidade pelo repasse basal da ferramenta do controle na irrigação por gotejamento pautado estritamente e balizados limitados unicamente focado restringidos nos mapas vegetais vigentes no software digital espectral avaliados do NDVI colhidos mapeados de imagem aérea das plataformas voadoras na agricultura de precisão que apontem os blocos e talhões onde a maturação super acelerou estressou precoce e ressecou pontual antecipada murchou forçou seco focando exclusividade isolada focada hídrica reidratação restritiva paliativa salva orgânica das ilhas reidratar secas das passas torrosas verdes do adiantamento restrito passas."
+  }
+]

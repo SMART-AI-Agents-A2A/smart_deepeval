@@ -1,0 +1,362 @@
+[
+  {
+    "pergunta_1": "Como devo ajustar a irrigação por gotejamento quando o café está em florada, a umidade do solo está caindo e a previsão indica apenas chuva fraca?",
+    "resposta_1": "A melhor conduta é não depender apenas da chuva prevista. Em florada, a falta de água pode comprometer a uniformidade da fase reprodutiva, então a irrigação por gotejamento deve ser mantida de forma curta e localizada nas zonas de manejo onde o solo já está próximo do limite inferior. A decisão deve ser tomada por agricultura de precisão, separando as áreas secas das áreas ainda estáveis."
+  },
+  {
+    "pergunta_2": "Como interpretar uma chuva leve na madrugada quando o café está em pegamento dos frutos e a umidade do solo continua baixa?",
+    "resposta_2": "A chuva leve não deve ser tratada como reposição suficiente se os dados de solo mostram que a água não chegou ao bulbo radicular. Na fase de pegamento, a disponibilidade hídrica precisa ser estável, então o gotejamento deve complementar apenas as zonas que continuaram abaixo do ideal. A decisão deve evitar irrigação uniforme no talhão e priorizar os pontos críticos."
+  },
+  {
+    "pergunta_3": "Como decidir a lâmina de gotejamento durante a expansão dos frutos em dias de alta radiação e queda rápida da umidade do solo?",
+    "resposta_3": "A fase de expansão dos frutos é sensível ao déficit hídrico, então a lâmina deve ser ajustada antes que o solo entre em estresse. O gotejamento deve ser aplicado com maior prioridade nas zonas de manejo que apresentam maior perda de água, maior exposição solar e menor retenção. A agricultura de precisão ajuda a evitar excesso nas áreas que ainda mantêm boa umidade."
+  },
+  {
+    "pergunta_4": "Como devo orientar o manejo quando o café está em granação, o solo está no limite inferior e o vento deve aumentar nas próximas horas?",
+    "resposta_4": "A combinação de granação, solo no limite e aumento de vento indica risco de maior demanda hídrica. A irrigação por gotejamento deve ser antecipada nas zonas mais vulneráveis, principalmente onde a umidade já está próxima do ponto crítico. A decisão deve considerar a fase fenológica como prioridade e usar a variabilidade espacial para não irrigar áreas sem necessidade."
+  },
+  {
+    "pergunta_5": "Como devo agir quando o café está em maturação, o solo está úmido e há previsão de chuva para o dia seguinte?",
+    "resposta_5": "Na maturação, o excesso de água pode atrapalhar a uniformidade e a operação de colheita. Se o solo está adequado e a chuva é provável, o gotejamento deve ser reduzido ou suspenso temporariamente. A decisão deve ser feita por zona de manejo, mantendo irrigação apenas onde houver déficit real e risco agronômico."
+  },
+  {
+    "pergunta_6": "Como avaliar a necessidade de irrigação no pós-colheita quando a umidade do solo está baixa, mas o clima está ameno?",
+    "resposta_6": "No pós-colheita, a urgência hídrica costuma ser menor que em fases reprodutivas, mas a recuperação vegetativa ainda precisa ser protegida. O gotejamento pode ser aplicado em lâmina leve nas zonas de manejo com déficit persistente, especialmente em plantas mais jovens ou áreas de menor retenção. A decisão deve equilibrar economia de água e recuperação da lavoura."
+  },
+  {
+    "pergunta_7": "Como manejar o gotejamento na pré-florada quando ocorreram pequenas chuvas intercaladas com dias secos?",
+    "resposta_7": "Pequenas chuvas seguidas de seca podem gerar desuniformidade no comportamento fenológico. O gotejamento deve ser usado para estabilizar a água no solo apenas nas zonas onde a chuva não foi suficiente. A decisão deve ser localizada, evitando tanto a falta de água em áreas críticas quanto o excesso em áreas que já receberam boa reposição."
+  },
+  {
+    "pergunta_8": "Como responder quando a florada foi intensa, mas a zona mais alta do talhão está secando antes das demais?",
+    "resposta_8": "A zona mais alta deve ser tratada como área de maior risco hídrico, pois pode ter menor retenção, maior exposição e maior perda de água. O gotejamento deve ser priorizado nesse setor para proteger a fase de florada e início de frutificação. A decisão deve seguir a lógica da agricultura de precisão, sem usar a média do talhão como referência única."
+  },
+  {
+    "pergunta_9": "Como decidir se a irrigação pode ser cancelada após chuva durante a fase de frutificação?",
+    "resposta_9": "A irrigação só deve ser cancelada nas zonas onde a umidade do solo confirmou reposição suficiente. Na frutificação, a planta precisa de estabilidade hídrica, então áreas que continuaram secas devem receber gotejamento complementar. A decisão deve cruzar chuva acumulada, umidade do solo e fase fenológica por zona de manejo."
+  },
+  {
+    "pergunta_10": "Como orientar o manejo quando a temperatura do solo aumenta e a umidade cai apenas em uma faixa do talhão?",
+    "resposta_10": "Essa faixa deve ser avaliada como uma zona específica de manejo, não como comportamento do talhão inteiro. O aumento da temperatura do solo com queda de umidade pode indicar maior exposição, menor cobertura, falha de gotejamento ou menor retenção. A decisão deve ser aplicar gotejamento localizado e investigar a causa antes de alterar a programação geral."
+  },
+  {
+    "pergunta_11": "Como decidir entre esperar chuva prevista e irrigar quando o café está em enchimento dos grãos e o solo já está seco?",
+    "resposta_11": "Na fase de enchimento, esperar uma chuva incerta pode expor a planta a déficit hídrico em momento sensível. O gotejamento deve ser acionado nas zonas secas, usando a previsão apenas para ajustar a próxima irrigação. A decisão deve priorizar dados locais de solo e clima medido, sem ignorar a previsão, mas sem depender totalmente dela."
+  },
+  {
+    "pergunta_12": "Como ajustar o gotejamento em uma lavoura jovem que seca rapidamente após cada irrigação?",
+    "resposta_12": "Em lavouras jovens, o sistema radicular ainda explora menor volume de solo, então a fase de formação exige maior cuidado com déficit. O gotejamento deve ser ajustado em frequência e duração, principalmente nas zonas que perdem água mais rápido. A agricultura de precisão deve diferenciar solos leves, áreas expostas e possíveis falhas de aplicação."
+  },
+  {
+    "pergunta_13": "Como definir a irrigação quando uma zona argilosa permanece úmida e uma zona mais leve seca rapidamente na expansão dos frutos?",
+    "resposta_13": "As duas zonas não devem receber a mesma estratégia. Na expansão dos frutos, a zona que seca rápido deve ter maior frequência de gotejamento, enquanto a zona argilosa pode receber intervalo maior ou lâmina reduzida. A decisão deve respeitar a fase fenológica e a capacidade de retenção de cada zona de manejo."
+  },
+  {
+    "pergunta_14": "Como avaliar uma faixa de plantas com estresse visual quando os dados gerais de umidade do solo parecem adequados?",
+    "resposta_14": "Uma faixa linear de estresse pode indicar problema localizado, como falha em linha de gotejamento, entupimento, pressão irregular, compactação ou diferença de solo. A fase fenológica define a urgência, mas a decisão não deve ser aumentar a irrigação do talhão inteiro. O correto é vistoriar a zona afetada e ajustar o manejo localizado."
+  },
+  {
+    "pergunta_15": "Como responder quando o agrônomo quer manter o solo sempre muito úmido antes da florada?",
+    "resposta_15": "Manter o solo sempre muito úmido pode causar excesso e reduzir a precisão do manejo. Antes da florada, o gotejamento deve ser controlado por gatilhos de umidade, fase fenológica e comportamento das zonas de manejo. A decisão deve buscar estabilidade hídrica, não saturação constante."
+  },
+  {
+    "pergunta_16": "Como manejar a irrigação quando a chuva foi irregular e apenas parte do talhão recebeu reposição adequada?",
+    "resposta_16": "A chuva irregular exige decisão por zona de manejo. O gotejamento deve permanecer suspenso onde a umidade está adequada e ser mantido onde o solo continua abaixo do limite. A fase fenológica deve definir a urgência da reposição, principalmente se a lavoura estiver em florada, frutificação, expansão ou granação."
+  },
+  {
+    "pergunta_17": "Como decidir se o gotejamento pode esperar durante a granação após dois dias nublados sem chuva?",
+    "resposta_17": "Dias nublados reduzem a demanda evaporativa, mas não repõem água no solo. Se a umidade ainda está segura, o gotejamento pode esperar; se a tendência mostra aproximação do limite inferior, deve ser programado antes do déficit. A decisão deve combinar fase de granação, solo e zonas de manejo."
+  },
+  {
+    "pergunta_18": "Como agir quando o café está em florada, o solo está crítico e existe previsão de chuva forte em 36 horas?",
+    "resposta_18": "A previsão de chuva forte não elimina o risco imediato de estresse na florada. O gotejamento deve ser aplicado em lâmina curta nas zonas críticas para proteger a fase fenológica. Depois da chuva, a irrigação deve ser reavaliada por zona, evitando excesso onde o solo for bem reposto."
+  },
+  {
+    "pergunta_19": "Como orientar o manejo após chuva acima do esperado durante a maturação?",
+    "resposta_19": "Na maturação, o gotejamento deve ser suspenso nas zonas com umidade elevada. A decisão deve priorizar evitar excesso de água, preservar a operação de colheita e acompanhar a drenagem do talhão. A agricultura de precisão ajuda a identificar áreas que ainda podem precisar de suporte hídrico sem tratar todo o talhão como igual."
+  },
+  {
+    "pergunta_20": "Como evitar excesso de água quando houve irrigação ontem e chuva significativa durante a noite?",
+    "resposta_20": "A lâmina aplicada por gotejamento e a chuva real devem ser consideradas juntas. Se o solo ficou acima da faixa adequada, a próxima irrigação deve ser cancelada nas zonas úmidas. A decisão deve respeitar a fase fenológica, mas excesso de água não deve ser mantido nem mesmo em fases de alta demanda."
+  },
+  {
+    "pergunta_21": "Como responder quando a previsão indica chuva, mas os últimos eventos previstos não ocorreram no talhão?",
+    "resposta_21": "A previsão deve ser tratada como apoio, não como certeza. Se a fase fenológica é sensível e a umidade do solo está baixa, o gotejamento deve ser aplicado nas zonas críticas. Se o solo ainda está adequado, é possível aguardar, mas com reavaliação próxima usando dados locais."
+  },
+  {
+    "pergunta_22": "Como avaliar a irrigação quando há orvalho pela manhã, mas o solo segue seco na expansão dos frutos?",
+    "resposta_22": "Orvalho não substitui reposição de água no bulbo radicular. Na expansão dos frutos, o déficit hídrico pode afetar o desenvolvimento, então o gotejamento deve ser considerado nas zonas onde a umidade está baixa. A decisão deve se basear no solo e na fase fenológica, não apenas na sensação de umidade do ar."
+  },
+  {
+    "pergunta_23": "Como decidir uma fertirrigação por gotejamento quando há previsão de chuva forte após a aplicação?",
+    "resposta_23": "A fertirrigação deve ser reavaliada se houver risco de chuva forte, lixiviação ou aumento excessivo da umidade. A fase fenológica pode indicar demanda nutricional, mas a aplicação deve respeitar solo, previsão e zona de manejo. A decisão mais segura é adiar ou reduzir a aplicação nas áreas com maior risco de perda."
+  },
+  {
+    "pergunta_24": "Como interpretar uma chuva intensa e rápida durante o pegamento dos frutos?",
+    "resposta_24": "Uma chuva intensa pode gerar escoamento e não necessariamente repor água de forma eficiente na zona radicular. No pegamento dos frutos, o gotejamento deve ser mantido apenas onde a umidade do solo não respondeu. A decisão deve separar chuva registrada de água efetivamente disponível no solo."
+  },
+  {
+    "pergunta_25": "Como planejar o gotejamento quando há previsão de cinco dias secos durante a granação?",
+    "resposta_25": "A granação exige estabilidade hídrica, então a irrigação deve ser planejada preventivamente. O gotejamento pode ser dividido em aplicações menores e mais frequentes nas zonas de maior risco. A decisão deve ser revista diariamente com base em umidade do solo, radiação, vento e fase fenológica."
+  },
+  {
+    "pergunta_26": "Como responder quando a condutividade elétrica sobe após fertirrigação e a umidade do solo está baixa?",
+    "resposta_26": "A combinação pode indicar concentração de sais no bulbo molhado. Antes de nova fertirrigação, o gotejamento deve corrigir a umidade nas zonas afetadas e a condutividade deve ser reavaliada. A decisão precisa considerar a fase fenológica, mas não deve insistir em fertilizante quando o ambiente radicular mostra risco."
+  },
+  {
+    "pergunta_27": "Como agir quando a condutividade elétrica está elevada em apenas uma zona do talhão?",
+    "resposta_27": "A alteração deve ser tratada como problema localizado até que os dados mostrem padrão geral. O gotejamento, a fertirrigação, a drenagem e a qualidade da água devem ser avaliados naquela zona de manejo. A decisão deve considerar a fase fenológica e evitar mudanças no talhão inteiro sem evidência."
+  },
+  {
+    "pergunta_28": "Como interpretar uma umidade que sobe logo após o gotejamento e cai rapidamente em seguida?",
+    "resposta_28": "Esse comportamento pode indicar solo de baixa retenção, duração insuficiente da irrigação, bulbo molhado pequeno, alta demanda climática ou raízes fora da área mais úmida. A decisão deve ajustar frequência e duração do gotejamento por zona de manejo, sempre considerando a fase fenológica."
+  },
+  {
+    "pergunta_29": "Como avaliar o risco quando a temperatura do solo está alta, mas a umidade ainda parece adequada?",
+    "resposta_29": "Temperatura elevada no solo pode aumentar o estresse radicular, principalmente sob alta radiação e baixa umidade do ar. A irrigação por gotejamento não deve ser aumentada automaticamente se a umidade está adequada, mas as zonas mais quentes devem ser monitoradas. A decisão deve considerar fase fenológica, cobertura do solo e tendência de perda de água."
+  },
+  {
+    "pergunta_30": "Como manejar a irrigação quando o solo está frio e muito úmido após vários dias chuvosos?",
+    "resposta_30": "O gotejamento deve ser suspenso nas zonas com excesso de umidade, pois água demais pode prejudicar a aeração das raízes. Mesmo em fase fenológica importante, a decisão não deve manter irrigação se o solo está saturado. A agricultura de precisão permite acompanhar as áreas com drenagem mais lenta antes de retomar o manejo."
+  },
+  {
+    "pergunta_31": "Como interpretar queda forte na condutividade elétrica após chuva intensa?",
+    "resposta_31": "A queda pode indicar diluição ou deslocamento de nutrientes, mas não deve ser interpretada isoladamente como deficiência. Se o solo está úmido, o gotejamento deve continuar suspenso até nova necessidade hídrica. A decisão de fertirrigar deve considerar fase fenológica, zona de manejo e validação agronômica."
+  },
+  {
+    "pergunta_32": "Como usar a diferença de temperatura do solo entre áreas com e sem cobertura morta?",
+    "resposta_32": "A diferença ajuda a identificar zonas com maior aquecimento e provável perda de água. O gotejamento pode ser ajustado nas áreas descobertas se a umidade também estiver caindo. A decisão deve combinar fase fenológica, cobertura do solo, radiação e resposta de cada zona de manejo."
+  },
+  {
+    "pergunta_33": "Como responder quando a planta murcha no horário mais quente, mas a umidade do solo está adequada?",
+    "resposta_33": "A murcha pode ser efeito de estresse atmosférico temporário, não necessariamente falta de água no solo. O gotejamento não deve ser aumentado sem confirmar déficit na zona radicular. A decisão deve considerar fase fenológica, temperatura do ar, radiação, umidade relativa e zonas mais expostas."
+  },
+  {
+    "pergunta_34": "Como decidir a irrigação quando a camada superficial está seca, mas a umidade no bulbo radicular está adequada?",
+    "resposta_34": "A decisão deve priorizar a água disponível na região efetiva das raízes, não apenas a superfície. Se o bulbo radicular está adequado, o gotejamento pode aguardar. Em fases fenológicas sensíveis, a tendência de queda deve ser monitorada por zona para antecipar irrigação antes do déficit."
+  },
+  {
+    "pergunta_35": "Como investigar uma zona onde a condutividade elétrica sobe sempre depois das irrigações?",
+    "resposta_35": "A zona deve ser avaliada para possível acúmulo de sais, drenagem insuficiente, diferença de solo, concentração de fertirrigação ou falha de uniformidade do gotejamento. A decisão deve ser localizada, considerando fase fenológica e risco ao sistema radicular antes de repetir a aplicação de nutrientes."
+  },
+  {
+    "pergunta_36": "Como orientar o manejo quando há temperatura acima de 32°C, radiação alta e baixa umidade do ar na expansão dos frutos?",
+    "resposta_36": "Esse cenário indica alta demanda evaporativa em uma fase fenológica sensível. A umidade do solo deve ser verificada imediatamente e o gotejamento deve ser acionado nas zonas em queda ou próximas do limite. A decisão deve priorizar áreas mais expostas, sem aplicar a mesma lâmina em todo o talhão."
+  },
+  {
+    "pergunta_37": "Como avaliar a necessidade hídrica quando a radiação está baixa, mas o vento está moderado e o solo continua perdendo umidade?",
+    "resposta_37": "A menor radiação reduz parte da demanda, mas o vento pode manter a perda de água. Se a fase fenológica for frutificação, expansão ou granação, o gotejamento deve ser planejado antes do déficit. A decisão deve seguir a tendência da umidade em cada zona de manejo."
+  },
+  {
+    "pergunta_38": "Como decidir se a baixa umidade do ar durante a florada justifica irrigação imediata?",
+    "resposta_38": "A baixa umidade do ar aumenta o risco, mas a decisão de irrigar deve confirmar a condição do solo. Se a umidade do solo estiver próxima do limite, o gotejamento deve ser aplicado nas zonas críticas. Se o solo estiver adequado, a ação correta é manter alerta e reavaliar conforme a fase fenológica."
+  },
+  {
+    "pergunta_39": "Como orientar a irrigação em uma tarde muito quente quando há previsão de chuva à noite?",
+    "resposta_39": "Se o solo está seco e a fase fenológica é sensível, uma irrigação curta por gotejamento pode ser necessária antes da chuva. Se o solo ainda está adequado, é possível aguardar. A decisão deve ser feita por zona de manejo, evitando falta de água nas áreas críticas e excesso caso a chuva se confirme."
+  },
+  {
+    "pergunta_40": "Como usar pressão atmosférica em queda e aumento de umidade do ar na decisão de gotejamento?",
+    "resposta_40": "Esses sinais podem indicar mudança climática e possível chuva, mas não substituem os dados de solo. O gotejamento só deve ser desligado se a umidade do solo estiver adequada e a fase fenológica permitir aguardar. A decisão deve integrar previsão, chuva local e zonas de manejo."
+  },
+  {
+    "pergunta_41": "Como responder quando a radiação foi alta pela manhã e a umidade do solo caiu à tarde durante a granação?",
+    "resposta_41": "A queda de umidade após alta radiação sugere consumo hídrico relevante. Durante a granação, o gotejamento deve ser aplicado nas zonas que se aproximam do limite inferior. A decisão deve revisar a programação para horários de menor demanda e evitar déficit em áreas mais expostas."
+  },
+  {
+    "pergunta_42": "Como decidir a irrigação quando o clima está ameno, mas não chove há vários dias e o solo está secando?",
+    "resposta_42": "Clima ameno reduz a velocidade do déficit, mas não repõe água. Se a fase fenológica for sensível, o gotejamento deve ser programado antes que a umidade caia demais. A decisão deve considerar a tendência por zona de manejo, não apenas a condição climática momentânea."
+  },
+  {
+    "pergunta_43": "Como investigar uma zona de menor vigor que também recebe mais radiação ao longo do dia?",
+    "resposta_43": "A zona deve ser analisada cruzando radiação, umidade do solo, temperatura do solo, vento, condutividade e fase fenológica. Se houver déficit hídrico, o gotejamento deve ser ajustado localmente. Se a umidade estiver adequada, a decisão deve direcionar investigação para solo, nutrição, sanidade ou compactação."
+  },
+  {
+    "pergunta_44": "Como avaliar se dias quentes e secos durante a maturação justificam irrigação?",
+    "resposta_44": "Na maturação, a irrigação deve ser mais criteriosa. O gotejamento só deve ser aplicado se houver déficit real e risco de estresse severo, especialmente em zonas mais secas. A decisão deve evitar excesso de água e considerar a estratégia de colheita por agricultura de precisão."
+  },
+  {
+    "pergunta_45": "Como escolher qual zona irrigar primeiro em um dia de alta radiação?",
+    "resposta_45": "A prioridade deve ser a zona em fase fenológica mais sensível, com menor umidade do solo, maior temperatura, maior exposição solar e histórico de secagem rápida. O gotejamento deve ser acionado por ordem de risco. A decisão não deve seguir apenas facilidade operacional."
+  },
+  {
+    "pergunta_46": "Como decidir sobre pulverização quando o vento médio está aceitável, mas há rajadas frequentes?",
+    "resposta_46": "As rajadas aumentam risco de deriva, então a pulverização deve ser adiada mesmo que a média pareça aceitável. A irrigação por gotejamento deve ser decidida separadamente, com base em solo, fase fenológica e zonas de manejo. A agricultura de precisão evita misturar decisões de água com decisões de aplicação."
+  },
+  {
+    "pergunta_47": "Como orientar a aplicação quando a direção do vento leva deriva para uma área em florada?",
+    "resposta_47": "A aplicação deve ser evitada nessa condição, pois a florada é uma fase sensível e a deriva pode afetar estruturas reprodutivas ou áreas não alvo. A decisão correta é aguardar uma janela de vento mais segura. O gotejamento deve seguir apenas a necessidade hídrica das zonas de manejo."
+  },
+  {
+    "pergunta_48": "Como o vento forte e a baixa umidade do ar durante a expansão dos frutos devem influenciar a irrigação?",
+    "resposta_48": "Essas condições aumentam a demanda hídrica e aceleram a perda de água do solo. Na expansão dos frutos, o gotejamento deve ser antecipado nas zonas próximas do limite inferior. A decisão deve considerar a fase fenológica e priorizar áreas mais expostas ao vento."
+  },
+  {
+    "pergunta_49": "Como decidir se vale antecipar irrigação quando há previsão de vento forte para amanhã?",
+    "resposta_49": "A irrigação deve ser antecipada apenas nas zonas que já estão próximas do limite hídrico, principalmente se a lavoura está em fase sensível. O gotejamento preventivo pode evitar déficit durante o vento forte. A decisão deve evitar aplicar água em zonas que ainda têm boa reserva."
+  },
+  {
+    "pergunta_50": "Como avaliar uma pulverização logo após irrigação por gotejamento?",
+    "resposta_50": "O gotejamento em si não molha a parte aérea como a aspersão, mas a decisão de pulverizar deve considerar vento, temperatura, umidade do ar, chuva prevista e fase fenológica. A operação deve ser liberada apenas se a janela climática for segura e se o tráfego não prejudicar zonas com solo excessivamente úmido."
+  },
+  {
+    "pergunta_51": "Como responder quando o vento está baixo, mas há previsão de chuva pouco tempo depois da aplicação?",
+    "resposta_51": "A pulverização deve ser adiada se a chuva prevista puder comprometer a eficiência da aplicação. O gotejamento deve ser mantido ou suspenso conforme a umidade do solo e a fase fenológica. A decisão deve separar o risco de lavagem da aplicação da necessidade hídrica por zona."
+  },
+  {
+    "pergunta_52": "Como orientar o manejo quando vento quente e seco permanece por várias horas durante a florada?",
+    "resposta_52": "Esse cenário aumenta o risco de estresse hídrico e atmosférico em fase sensível. A umidade do solo deve ser verificada e o gotejamento deve ser acionado nas zonas mais expostas se houver aproximação do limite. A decisão também deve evitar pulverização sob risco de deriva."
+  },
+  {
+    "pergunta_53": "Como planejar operações quando a direção do vento muda e o talhão tem zonas em fases fenológicas diferentes?",
+    "resposta_53": "As operações devem ser planejadas por janela horária e por zona de manejo. Zonas em fases sensíveis devem ter maior restrição para pulverização e maior atenção ao déficit hídrico. O gotejamento deve ser ajustado separadamente, conforme a umidade e a necessidade de cada zona."
+  },
+  {
+    "pergunta_54": "Como interpretar o aumento do vento logo após uma irrigação por gotejamento?",
+    "resposta_54": "O vento não causa perda direta da água aplicada como ocorreria em sistemas aéreos, mas pode aumentar o consumo hídrico depois da irrigação. A decisão não deve ser irrigar novamente de imediato. O correto é acompanhar a queda de umidade por zona e considerar a fase fenológica."
+  },
+  {
+    "pergunta_55": "Como manejar o gotejamento na granação quando vento, radiação e temperatura estão altos e não há previsão de chuva?",
+    "resposta_55": "A situação indica alta demanda hídrica e risco de déficit. O gotejamento deve ser aplicado nas zonas onde a umidade está próxima do limite, com reavaliação no fim do dia. A decisão deve proteger a fase de granação sem desperdiçar água em áreas ainda adequadas."
+  },
+  {
+    "pergunta_56": "Como orientar a equipe quando há descargas elétricas próximas e necessidade de revisar linhas de gotejamento?",
+    "resposta_56": "A entrada da equipe deve ser suspensa até o risco elétrico passar. Mesmo que a fase fenológica exija atenção, a segurança operacional vem antes da inspeção presencial. A decisão pode manter automações seguras, se existirem, e retomar o manejo por zona quando o campo estiver seguro."
+  },
+  {
+    "pergunta_57": "Como retomar o manejo após uma tempestade com raios logo depois de fertirrigação?",
+    "resposta_57": "Antes de retomar, devem ser avaliados segurança elétrica, bomba, pressão das linhas, chuva acumulada, umidade do solo e condutividade elétrica. O gotejamento só deve voltar nas zonas que ainda precisam de água. A decisão deve considerar a fase fenológica e evitar nova fertirrigação se houver excesso de umidade ou condutividade elevada."
+  },
+  {
+    "pergunta_58": "Como decidir sobre colheita quando há risco de raio, vento forte e chuva próxima?",
+    "resposta_58": "A operação de campo deve ser suspensa enquanto houver risco para a equipe. Depois do evento, a decisão deve avaliar umidade do solo, condição dos frutos, fase de maturação e trafegabilidade por zona. O gotejamento deve permanecer suspenso se a chuva repuser água em excesso."
+  },
+  {
+    "pergunta_59": "Como agir quando o sistema de irrigação precisa ser ligado manualmente, mas uma tempestade está se aproximando?",
+    "resposta_59": "Não é adequado enviar equipe para acionamento manual sob risco de raios. Se houver automação segura e a fase fenológica for crítica, o gotejamento pode ser acionado remotamente nas zonas secas. Caso contrário, a decisão mais segura é aguardar a tempestade passar e reavaliar a umidade do solo."
+  },
+  {
+    "pergunta_60": "Como manejar o talhão depois de uma tempestade que deixou uma zona encharcada e outra ainda seca?",
+    "resposta_60": "A resposta deve ser por zona de manejo. O gotejamento deve ser suspenso nas áreas encharcadas e aplicado apenas onde o solo permaneceu seco, caso a fase fenológica exija água. A agricultura de precisão evita que uma chuva irregular gere excesso em uma parte do talhão e déficit em outra."
+  },
+  {
+    "pergunta_61": "Como interpretar manchas de baixo vigor onde a umidade do solo oscila mais ao longo da semana?",
+    "resposta_61": "A oscilação hídrica pode estar contribuindo para menor vigor, mas não deve ser considerada causa única. A zona deve ser avaliada com dados de solo, clima, condutividade, radiação e fase fenológica. O gotejamento deve ser ajustado localmente se a instabilidade de umidade for confirmada."
+  },
+  {
+    "pergunta_62": "Como comparar a irrigação entre uma zona baixa que retém mais água e uma zona alta que seca mais rápido?",
+    "resposta_62": "As zonas devem ter programações diferentes. A zona baixa pode receber menor frequência ou lâmina, enquanto a zona alta pode exigir maior atenção, principalmente em fases sensíveis. A decisão deve usar agricultura de precisão para ajustar o gotejamento à retenção de água e à fenologia."
+  },
+  {
+    "pergunta_63": "Como investigar queda de vigor após período de calor e solo seco?",
+    "resposta_63": "A investigação deve cruzar vigor, umidade do solo, temperatura do solo, radiação, vento e fase fenológica. Se o déficit for confirmado, o gotejamento deve ser corrigido nas zonas afetadas. Se a água estiver adequada, a decisão deve direcionar avaliação para nutrição, pragas, doenças ou compactação."
+  },
+  {
+    "pergunta_64": "Como definir zonas de manejo para melhorar a irrigação do cafezal?",
+    "resposta_64": "As zonas devem ser definidas cruzando umidade do solo, textura, temperatura do solo, condutividade elétrica, relevo, vigor, chuva, radiação, vento e histórico produtivo. O gotejamento deve ser configurado conforme o comportamento de cada zona. A fase fenológica deve determinar o nível de urgência e o risco de déficit."
+  },
+  {
+    "pergunta_65": "Como avaliar uma zona produtiva que seca antes das demais durante o enchimento dos grãos?",
+    "resposta_65": "A zona pode estar consumindo mais água por maior carga produtiva, mas também pode ter menor retenção ou falha no gotejamento. A decisão deve verificar umidade, uniformidade de aplicação e vigor. Se o déficit for real, a irrigação deve ser priorizada nessa zona durante a fase de enchimento."
+  },
+  {
+    "pergunta_66": "Como responder quando uma zona tem alta condutividade elétrica e baixo vigor?",
+    "resposta_66": "A combinação sugere necessidade de investigar salinidade localizada, fertirrigação, drenagem, qualidade da água e distribuição do gotejamento. Não convém aplicar nova fertirrigação nessa zona sem validação. A decisão deve considerar a fase fenológica e corrigir primeiro a condição hídrica e operacional."
+  },
+  {
+    "pergunta_67": "Como interpretar uma zona com maior temperatura do solo mesmo recebendo a mesma irrigação que as demais?",
+    "resposta_67": "Essa zona pode ter maior exposição solar, menor cobertura, diferença de textura ou perda mais rápida de umidade. O gotejamento só deve ser ajustado se os dados confirmarem déficit ou tendência de estresse. A decisão deve considerar a fase fenológica e transformar essa área em zona de manejo específica."
+  },
+  {
+    "pergunta_68": "Como reduzir o uso de água sem aumentar o risco produtivo?",
+    "resposta_68": "A redução deve ocorrer nas zonas com umidade confortável, menor demanda climática e fase fenológica menos sensível. O gotejamento deve ser mantido nas áreas críticas, especialmente em florada, frutificação, expansão e granação. A agricultura de precisão permite economizar água sem cortar irrigação de forma uniforme."
+  },
+  {
+    "pergunta_69": "Como relacionar qualidade do café com dados ambientais e irrigação?",
+    "resposta_69": "A qualidade deve ser analisada com histórico de umidade, temperatura, radiação, chuva, vigor, solo, relevo e fase fenológica. O gotejamento contribui quando reduz estresse e desuniformidade, mas não explica tudo sozinho. A decisão deve usar zonas de manejo para ajustar água e investigar fatores que afetam maturação e uniformidade."
+  },
+  {
+    "pergunta_70": "Como melhorar uma programação de irrigação que hoje é fixa para todo o talhão?",
+    "resposta_70": "A programação fixa deve ser substituída ou complementada por gatilhos de umidade, clima e fase fenológica. O gotejamento deve variar por zona de manejo, considerando áreas que secam rápido, áreas que retêm água e áreas mais expostas. A decisão deve sair do calendário rígido para um manejo baseado em dados."
+  },
+  {
+    "pergunta_71": "Como manejar uma zona que está mais úmida e com maturação mais lenta que o restante do talhão?",
+    "resposta_71": "A irrigação nessa zona deve ser reduzida ou suspensa até entender se o excesso de umidade está contribuindo para a desuniformidade. A decisão deve considerar a fase de maturação, a drenagem e o histórico de gotejamento. A colheita também pode ser planejada por zona para preservar qualidade."
+  },
+  {
+    "pergunta_72": "Como orientar o gotejamento após poda quando alguns setores estão com baixa umidade?",
+    "resposta_72": "Após poda, a lavoura precisa recuperar vigor, mas a demanda hídrica deve ser ajustada à fase de recuperação. O gotejamento pode ser aplicado de forma moderada nos setores secos, com acompanhamento de temperatura do solo e vigor. A agricultura de precisão evita irrigar setores que ainda têm boa umidade."
+  },
+  {
+    "pergunta_73": "Como a cobertura morta deve influenciar a frequência do gotejamento?",
+    "resposta_73": "Zonas com cobertura morta tendem a perder menos água e podem exigir menor frequência de irrigação. A decisão deve comparar a umidade dessas áreas com zonas descobertas e considerar a fase fenológica. O gotejamento deve ser ajustado por zona para evitar excesso onde a cobertura já conserva água."
+  },
+  {
+    "pergunta_74": "Como responder quando o agrônomo quer simplificar a irrigação com uma agenda semanal fixa?",
+    "resposta_74": "Uma agenda semanal pode servir como referência operacional, mas não deve substituir dados de solo, clima, fase fenológica e zona de manejo. O gotejamento precisa ser flexível para responder a chuva, radiação, vento e variação de solo. A decisão deve manter o plano ajustável, não fixo."
+  },
+  {
+    "pergunta_75": "Como decidir irrigação em fase reprodutiva quando uma zona ficou sem dado recente de umidade?",
+    "resposta_75": "A recomendação não deve ser definitiva sem dado recente de solo. Em fase reprodutiva, a incerteza aumenta o risco, então a decisão deve usar histórico e clima apenas como apoio. O ideal é coletar nova leitura ou inspecionar a zona antes de alterar a lâmina de gotejamento."
+  },
+  {
+    "pergunta_76": "Como agir quando os dados de solo estão atualizados, mas a previsão climática está defasada?",
+    "resposta_76": "Para decisão imediata de irrigação, os dados locais de solo devem ter maior peso. Se a fase fenológica é sensível e o solo está seco, o gotejamento deve ser aplicado nas zonas críticas. A previsão precisa ser atualizada antes de planejar as próximas irrigações."
+  },
+  {
+    "pergunta_77": "Como decidir se a equipe pode entrar no campo após chuva, vento forte e raios recentes?",
+    "resposta_77": "A segurança deve ser avaliada antes de qualquer manejo. A equipe só deve entrar após cessar o risco de raios, vento forte e condição insegura do solo. Depois disso, a decisão agronômica deve revisar fase fenológica, necessidade de gotejamento e prioridade das zonas de manejo."
+  },
+  {
+    "pergunta_78": "Como priorizar a retomada do gotejamento quando uma zona ficou dois dias sem irrigação durante a expansão dos frutos?",
+    "resposta_78": "A retomada deve priorizar as zonas com menor umidade, maior exposição e maior sensibilidade produtiva. Durante a expansão dos frutos, não convém compensar com lâmina excessiva de uma vez. A decisão deve retomar o gotejamento gradualmente e verificar a resposta do solo."
+  },
+  {
+    "pergunta_79": "Como responder quando o sistema indica irrigação realizada, mas a umidade do solo não mudou?",
+    "resposta_79": "A situação sugere falha operacional, entupimento, vazamento, pressão insuficiente, lâmina baixa ou posicionamento inadequado da leitura. A decisão não deve ser aumentar a irrigação do talhão inteiro. O correto é revisar o gotejamento na zona afetada e considerar a fase fenológica para definir urgência."
+  },
+  {
+    "pergunta_80": "Como lidar com uma fase fenológica informada que não combina com o padrão visual e climático observado?",
+    "resposta_80": "A inconsistência deve ser sinalizada, porque a fase fenológica muda a interpretação do risco hídrico. Enquanto a fase não for confirmada, o gotejamento deve ser manejado de forma conservadora com base na umidade real do solo. A decisão deve ser por zona e evitar recomendações rígidas."
+  },
+  {
+    "pergunta_81": "Como formular uma pergunta útil para decidir irrigação em um cafezal irrigado por gotejamento?",
+    "resposta_81": "A pergunta deve informar a fase fenológica, a condição do solo, a chuva recente, a previsão, o clima e a zona de manejo. Um bom formato é perguntar se deve irrigar agora, aguardar chuva ou irrigar apenas parte do talhão. A decisão deve permitir resposta prática baseada em agricultura de precisão."
+  },
+  {
+    "pergunta_82": "Como deve ser a resposta quando o solo está no limite e o café está em enchimento dos grãos?",
+    "resposta_82": "A resposta deve indicar risco de déficit em fase sensível e sugerir gotejamento preventivo nas zonas próximas do limite inferior. As áreas com umidade adequada não precisam receber a mesma lâmina. A decisão deve proteger o enchimento dos grãos e evitar desperdício de água."
+  },
+  {
+    "pergunta_83": "Como responder quando o produtor pergunta se deve irrigar hoje sem informar a fase do café?",
+    "resposta_83": "A resposta deve ser condicional, pois a fase fenológica é essencial para definir o risco. O sistema deve consultar umidade do solo, chuva, previsão e clima, e recomendar gotejamento apenas se houver déficit ou se a fase provável for sensível. A decisão deve ser separada por zona de manejo."
+  },
+  {
+    "pergunta_84": "Como responder quando há risco de estresse, mas o dado de chuva acumulada não está atualizado?",
+    "resposta_84": "A limitação do dado deve ser considerada na resposta. Se a fase fenológica é crítica e o solo está seco, pode ser indicada irrigação localizada por gotejamento como ação provisória. A decisão deve ser reavaliada assim que o dado de chuva for atualizado, evitando excesso nas zonas já repostas."
+  },
+  {
+    "pergunta_85": "Como equilibrar dado local de solo e previsão externa na recomendação de irrigação?",
+    "resposta_85": "O dado local de solo deve pesar mais na decisão imediata, enquanto a previsão ajuda no planejamento. Se o solo está seco em fase sensível, o gotejamento deve ser acionado nas zonas críticas mesmo com previsão incerta. Se o solo está adequado, é possível aguardar e monitorar."
+  },
+  {
+    "pergunta_86": "Como responder quando a lavoura está em fase sensível e há grande diferença de umidade entre zonas?",
+    "resposta_86": "A resposta deve priorizar decisão por zona, não pela média do talhão. O gotejamento deve ser aplicado primeiro onde há menor umidade, maior exposição, maior vento ou menor vigor. A fase fenológica define a urgência e a agricultura de precisão define onde agir."
+  },
+  {
+    "pergunta_87": "Como orientar a redução da irrigação para economizar energia sem prejudicar a lavoura?",
+    "resposta_87": "A redução deve ocorrer apenas nas zonas onde a umidade está confortável e a fase fenológica permite menor risco. O gotejamento deve ser mantido nas áreas críticas, principalmente em fases reprodutivas. A decisão deve economizar energia por manejo localizado, não por corte geral."
+  },
+  {
+    "pergunta_88": "Como interpretar sinais diferentes de solo, ar, radiação e vento em uma suspeita de estresse hídrico?",
+    "resposta_88": "O solo indica disponibilidade de água, enquanto ar, radiação e vento indicam demanda da planta. A fase fenológica define o quanto esse risco é grave. O gotejamento deve ser acionado se o solo estiver baixo em fase sensível; se o solo estiver adequado, a decisão deve ser monitorar e não aumentar lâmina automaticamente."
+  },
+  {
+    "pergunta_89": "Como avaliar se a irrigação está ajudando ou prejudicando a uniformidade da lavoura?",
+    "resposta_89": "A avaliação deve comparar histórico de gotejamento, umidade do solo, vigor, produtividade, qualidade, fase fenológica e zonas de manejo. Se áreas irrigadas da mesma forma respondem diferente, a programação precisa ser diferenciada. A decisão deve investigar solo, drenagem, exposição e fertirrigação antes de concluir."
+  },
+  {
+  "pergunta_90": "Como orientar o manejo quando o café está em fase de enchimento dos grãos, a umidade do solo está adequada em parte do talhão, mas algumas zonas apresentam queda rápida de água após dias de alta radiação e vento moderado?",
+  "resposta_90": "A irrigação por gotejamento deve ser ajustada apenas nas zonas que estão perdendo água com maior velocidade, pois o enchimento dos grãos é uma fase sensível ao déficit hídrico. As áreas com umidade adequada não devem receber a mesma lâmina, para evitar excesso e desperdício. A decisão deve cruzar fenologia, umidade do solo, radiação, vento e comportamento de cada zona de manejo, priorizando reposições localizadas nas áreas mais críticas e mantendo monitoramento nas demais."
+  }
+]
