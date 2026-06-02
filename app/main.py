@@ -11,16 +11,21 @@ from deepeval import evaluate
 from deepeval.dataset import EvaluationDataset, Golden
 from deepeval.test_case import ToolCall
 
-from app.api.conect_api import (
+from app.api import (
     call_smart_chat,
+    configure_judge_environment,
     extract_agents_called,
     extract_tools_called,
     load_api_config,
 )
-from app.api.juiz import configure_judge_environment
-from app.tools.goal_acuraccy import build_goal_accuracy_case, build_goal_accuracy_metric
-from app.tools.task_completion import build_observed_smart_agent, build_task_completion_metric
-from app.tools.tool_correctness import build_tool_correctness_case, build_tool_correctness_metric
+from app.tools import (
+    build_goal_accuracy_case,
+    build_goal_accuracy_metric,
+    build_observed_smart_agent,
+    build_task_completion_metric,
+    build_tool_correctness_case,
+    build_tool_correctness_metric,
+)
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]

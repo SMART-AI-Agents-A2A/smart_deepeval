@@ -5,7 +5,7 @@ import os
 from deepeval.metrics import ToolCorrectnessMetric
 from deepeval.test_case import LLMTestCase, ToolCall
 
-from app.api.juiz import JudgeConfig
+from app.api import JudgeConfig
 
 
 DEFAULT_SMART_TOOL_NAMES = [

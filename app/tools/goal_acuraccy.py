@@ -3,7 +3,7 @@ from __future__ import annotations
 from deepeval.metrics import GoalAccuracyMetric
 from deepeval.test_case import ConversationalTestCase, ToolCall, Turn
 
-from app.api.juiz import JudgeConfig
+from app.api import JudgeConfig
 
 
 SMART_AGENT_SCENARIO = (

@@ -3,8 +3,7 @@ from __future__ import annotations
 from deepeval.metrics import TaskCompletionMetric
 from deepeval.tracing import observe, update_current_span
 
-from app.api.conect_api import SmartApiConfig, call_smart_chat, extract_tools_called
-from app.api.juiz import JudgeConfig
+from app.api import JudgeConfig, SmartApiConfig, call_smart_chat, extract_tools_called
 
 
 def build_task_completion_metric(config: JudgeConfig) -> TaskCompletionMetric:
