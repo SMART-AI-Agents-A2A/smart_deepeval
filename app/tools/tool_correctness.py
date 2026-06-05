@@ -9,24 +9,63 @@ from app.api import JudgeConfig
 
 
 DEFAULT_SMART_TOOL_NAMES = [
-    "weather",
-    "forecast",
-    "soil_moisture",
-    "rainfall",
-    "wind",
-    "farm_context",
-    "agronomic_recommendation",
+    "smart_soil_data",
+    "smart_rain_accumulated",
+    "smart_rain_forecast",
+    "smart_radiation_solar",
+    "smart_lightning_incidence",
+    "smart_lightning_strikes",
+    "smart_lightning_risk",
+    "smart_wind_speed",
+    "smart_wind_direction",
+    "smart_wind_gust",
+    "smart_wind_current_weather",
+    "smart_wind_forecast",
+    "smart_air_temperature",
+    "smart_air_humidity",
+    "smart_air_pressure",
+    "smart_air_conditions",
+    "smart_air_current_weather",
 ]
 
+SMART_AGENT_TOOLS: dict[str, tuple[str, ...]] = {
+    "solo": ("smart_soil_data",),
+    "chuva": ("smart_rain_accumulated", "smart_rain_forecast"),
+    "radiacao": ("smart_radiation_solar",),
+    "raio": ("smart_lightning_incidence", "smart_lightning_strikes", "smart_lightning_risk"),
+    "ar": (
+        "smart_air_temperature",
+        "smart_air_humidity",
+        "smart_air_pressure",
+        "smart_air_conditions",
+        "smart_air_current_weather",
+    ),
+    "vento": (
+        "smart_wind_speed",
+        "smart_wind_direction",
+        "smart_wind_gust",
+        "smart_wind_current_weather",
+        "smart_wind_forecast",
+    ),
+}
+
 EXPECTED_TOOL_KEYWORDS: tuple[tuple[tuple[str, ...], tuple[str, ...]], ...] = (
-    (("umidade", "solo", "seco", "seca", "bulbo"), ("soil_moisture", "farm_context")),
-    (("chuva", "acumulada", "choveu"), ("rainfall", "farm_context")),
-    (("previsao", "previsão", "proximos", "próximos", "amanha", "amanhã"), ("forecast", "farm_context")),
-    (("vento", "ventos", "velocidade", "direcao", "direção", "rajada"), ("wind", "farm_context")),
-    (("temperatura", "calor", "frio", "geada", "radiação", "radiacao"), ("weather", "farm_context")),
-    (("deriva", "aplicacao", "aplicação"), ("wind", "weather", "agronomic_recommendation")),
-    (("nutricao", "nutrição", "fertirrigacao", "fertirrigação", "adubo", "nitrogenio", "nitrogênio"), ("weather", "soil_moisture", "agronomic_recommendation")),
-    (("irrigacao", "irrigação", "gotejamento", "lâmina", "lamina", "rega"), ("soil_moisture", "weather", "agronomic_recommendation")),
+    (("umidade do solo", "solo", "seco", "seca", "bulbo", "teros12"), ("smart_soil_data",)),
+    (("temperatura do solo", "condutividade elétrica do solo", "condutividade eletrica do solo"), ("smart_soil_data",)),
+    (("chuva acumulada", "choveu", "precipitação acumulada", "precipitacao acumulada"), ("smart_rain_accumulated",)),
+    (("previsão de chuva", "previsao de chuva", "risco de chuva"), ("smart_rain_forecast",)),
+    (("radiação", "radiacao", "radiação solar", "radiacao solar", "insolação", "insolacao"), ("smart_radiation_solar",)),
+    (("raio", "raios", "descarga atmosférica", "descarga atmosferica", "risco elétrico", "risco eletrico"), ("smart_lightning_incidence", "smart_lightning_strikes", "smart_lightning_risk")),
+    (("velocidade do vento", "vento forte", "ventos fortes"), ("smart_wind_speed",)),
+    (("direção do vento", "direcao do vento"), ("smart_wind_direction",)),
+    (("rajada", "rajadas"), ("smart_wind_gust",)),
+    (("previsão de vento", "previsao de vento"), ("smart_wind_forecast",)),
+    (("vento atual", "deriva", "aplicação agrícola", "aplicacao agricola"), ("smart_wind_current_weather", "smart_wind_speed", "smart_wind_direction", "smart_wind_gust")),
+    (("temperatura do ar", "calor", "frio", "geada"), ("smart_air_temperature",)),
+    (("umidade do ar", "umidade relativa"), ("smart_air_humidity",)),
+    (("pressão", "pressao", "pressão atmosférica", "pressao atmosferica"), ("smart_air_pressure",)),
+    (("condições do ar", "condicoes do ar", "condições gerais", "condicoes gerais"), ("smart_air_conditions",)),
+    (("tempo atual", "clima atual", "openweather"), ("smart_air_current_weather",)),
 )
 
 
@@ -60,7 +99,7 @@ def infer_expected_tools(question: str, expected_output: str = "") -> list[ToolC
                     selected.append(tool_name)
 
     if not selected:
-        selected = ["weather", "farm_context"]
+        selected = ["smart_air_conditions"]
 
     return [ToolCall(name=name) for name in selected]
 
