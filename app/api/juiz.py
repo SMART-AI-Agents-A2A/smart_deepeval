@@ -112,6 +112,16 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             return self.base_url
         return f"{self.base_url}/chat/completions"
 
+    def _uses_cloudflare_gateway(self) -> bool:
+        return "gateway.ai.cloudflare.com" in self.base_url
+
+    def _should_send_response_format(self) -> bool:
+        configured = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_RESPONSE_FORMAT"))
+        if configured is not None:
+            return configured.lower() in {"1", "true", "yes", "on"}
+
+        return not self._uses_cloudflare_gateway()
+
     def _headers(self) -> dict[str, str]:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
@@ -127,14 +137,42 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
 
         return headers
 
-    def _payload(self, prompt: str, schema: type[BaseModel] | None) -> dict[str, Any]:
+    def _payload(
+        self,
+        prompt: str,
+        schema: type[BaseModel] | None,
+        *,
+        force_no_response_format: bool = False,
+    ) -> dict[str, Any]:
+        messages = [{"role": "user", "content": prompt}]
+        if schema:
+            schema_json = json.dumps(schema.model_json_schema(), ensure_ascii=False)
+            messages = [
+                {
+                    "role": "system",
+                    "content": (
+                        "Voce e um juiz de avaliacao. Retorne somente JSON valido, "
+                        "sem Markdown, sem explicacao e sem texto fora do objeto JSON."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"{prompt}\n\n"
+                        "O JSON de resposta deve obedecer exatamente este schema:\n"
+                        f"{schema_json}"
+                    ),
+                },
+            ]
+
         payload: dict[str, Any] = {
             "model": self.model_name,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": messages,
             "temperature": 0,
+            "max_tokens": int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048")),
         }
 
-        if schema:
+        if schema and not force_no_response_format and self._should_send_response_format():
             payload["response_format"] = {
                 "type": "json_schema",
                 "json_schema": {
@@ -173,7 +211,15 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             content = message.get("content", "")
             if isinstance(content, list):
                 return "".join(part.get("text", "") for part in content if isinstance(part, dict))
-            return content if isinstance(content, str) else str(content)
+            if isinstance(content, str):
+                return content
+            for key in ("reasoning_content", "reasoning", "refusal"):
+                value = message.get(key)
+                if isinstance(value, str) and value.strip():
+                    return value
+            if "text" in choices[0] and isinstance(choices[0]["text"], str):
+                return choices[0]["text"]
+            return ""
 
         return data.get("output_text") or data.get("response") or ""
 
@@ -252,8 +298,12 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             f"RESPOSTA A CONVERTER:\n{content or '[resposta vazia]'}"
         )
         payload = self._payload(repair_prompt, None)
-        payload["response_format"] = {"type": "json_object"}
+        if self._should_send_response_format():
+            payload["response_format"] = {"type": "json_object"}
         repaired_content = self._request(payload)
+        if not repaired_content.strip():
+            fallback_payload = self._payload(repair_prompt, None, force_no_response_format=True)
+            repaired_content = self._request(fallback_payload)
         try:
             return self._parse_schema_response(repaired_content, schema)
         except Exception:
@@ -271,11 +321,15 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             if not schema:
                 raise
 
-            payload = self._payload(prompt, None)
-            payload["response_format"] = {"type": "json_object"}
+            payload = self._payload(prompt, None, force_no_response_format=True)
+            if self._should_send_response_format():
+                payload["response_format"] = {"type": "json_object"}
             content = self._request(payload)
 
         if schema:
+            if not content.strip() and self._should_send_response_format():
+                payload = self._payload(prompt, schema, force_no_response_format=True)
+                content = self._request(payload)
             try:
                 return self._parse_schema_response(content, schema)
             except Exception:
