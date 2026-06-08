@@ -1,4 +1,6 @@
 deepeval
+matplotlib
+pandas
 pydantic
 python-dotenv
 requests
