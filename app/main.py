@@ -22,6 +22,7 @@ from app.api import (
     load_api_config,
 )
 from app.tools import (
+    SMART_AGENT_TOOLS,
     build_goal_accuracy_case,
     build_goal_accuracy_metric,
     build_observed_smart_agent,
@@ -116,11 +117,20 @@ def collect_smart_responses(samples: list[EvalSample]):
         try:
             answer, payload = call_smart_chat(sample.question, conversation_id, api_config)
         except Exception as error:
+            status_code = getattr(getattr(error, "response", None), "status_code", None)
+            if status_code in {401, 403}:
+                raise RuntimeError(
+                    "Falha de autenticacao ao chamar a API SMART. "
+                    "Confira HONO_TOKEN, HONO_COOKIE e HONO_ORIGIN no .env."
+                ) from error
+
             print(f"      [AVISO] Falha ao chamar API: {error}")
             answer, payload = "Erro ao consultar a API SMART.", {}
 
-        tools_called = extract_tools_called(payload)
         agents_called = extract_agents_called(payload)
+        tools_called = extract_tools_called(payload)
+        if not tools_called:
+            tools_called = infer_tools_from_agents(agents_called)
         route = payload.get("trace", {}).get("route", "desconhecida")
 
         print(f"      route={route} | agentes={agents_called} | tools={[tool.name for tool in tools_called]}")
@@ -136,6 +146,19 @@ def collect_smart_responses(samples: list[EvalSample]):
         )
 
     return collected
+
+
+def infer_tools_from_agents(agents_called: list[str]) -> list[ToolCall]:
+    tool_names: list[str] = []
+    for agent_name in agents_called:
+        normalized = agent_name.strip().lower()
+        for known_agent, mapped_tools in SMART_AGENT_TOOLS.items():
+            if normalized in {known_agent, known_agent.lower()} or normalized == known_agent.lower():
+                for tool_name in mapped_tools:
+                    if tool_name not in tool_names:
+                        tool_names.append(tool_name)
+
+    return [ToolCall(name=tool_name) for tool_name in tool_names]
 
 
 def _expected_tool_calls(sample: EvalSample) -> list[ToolCall] | None:
@@ -230,6 +253,12 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_DATASET_FILE,
         help="JSON de perguntas/respostas esperadas. Padrao: app/db/db.json.",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limita a quantidade de casos carregados do dataset.",
+    )
     return parser.parse_args()
 
 
@@ -239,6 +268,8 @@ def main() -> None:
     judge_config = configure_judge_environment()
     confident_config = load_confident_ai_config()
     samples = load_dataset(args.dataset)
+    if args.limit is not None:
+        samples = samples[: args.limit]
     collected = collect_smart_responses(samples)
 
     run_goal_accuracy(collected, judge_config, confident_config)

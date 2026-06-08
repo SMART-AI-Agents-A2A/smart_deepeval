@@ -80,8 +80,9 @@ def load_available_smart_tools() -> list[ToolCall]:
 
 
 def build_tool_correctness_metric(config: JudgeConfig) -> ToolCorrectnessMetric:
+    use_llm_tool_selection = os.getenv("DEEPEVAL_TOOL_SELECTION_WITH_LLM", "false").lower() == "true"
     return ToolCorrectnessMetric(
-        available_tools=load_available_smart_tools(),
+        available_tools=load_available_smart_tools() if use_llm_tool_selection else None,
         threshold=config.threshold,
         model=config.model,
         include_reason=config.include_reason,

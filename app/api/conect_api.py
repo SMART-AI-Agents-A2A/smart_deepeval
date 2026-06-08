@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+import json
+import re
 from dataclasses import dataclass
 from typing import Any, Iterable
 
@@ -13,6 +15,8 @@ class SmartApiConfig:
     base_url: str
     chat_path: str
     token: str | None
+    cookie: str | None
+    origin: str | None
     timeout: int
 
 
@@ -22,13 +26,26 @@ def load_api_config() -> SmartApiConfig:
     if not chat_path.startswith("/"):
         chat_path = f"/{chat_path}"
     token = os.getenv("HONO_TOKEN")
+    cookie = os.getenv("HONO_COOKIE")
+    origin = os.getenv("HONO_ORIGIN", "http://localhost:5173")
     timeout = int(os.getenv("HONO_TIMEOUT", "60"))
-    return SmartApiConfig(base_url=base_url, chat_path=chat_path, token=token, timeout=timeout)
+    return SmartApiConfig(
+        base_url=base_url,
+        chat_path=chat_path,
+        token=token,
+        cookie=cookie,
+        origin=origin,
+        timeout=timeout,
+    )
 
 
 def call_smart_chat(question: str, conversation_id: str, config: SmartApiConfig | None = None) -> tuple[str, dict[str, Any]]:
     config = config or load_api_config()
     headers: dict[str, str] = {}
+    if config.origin:
+        headers["Origin"] = config.origin
+    if config.cookie:
+        headers["Cookie"] = config.cookie
     if config.token:
         headers["Authorization"] = f"Bearer {config.token}"
 
@@ -43,8 +60,131 @@ def call_smart_chat(question: str, conversation_id: str, config: SmartApiConfig 
     )
     response.raise_for_status()
 
-    payload: dict[str, Any] = response.json()
+    payload = parse_chat_response(response)
     return extract_answer(payload), payload
+
+
+def parse_chat_response(response: requests.Response) -> dict[str, Any]:
+    content_type = response.headers.get("content-type", "")
+    if "text/event-stream" in content_type:
+        return parse_sse_response(response.text)
+
+    try:
+        return response.json()
+    except ValueError:
+        text = response.text.strip()
+        return {
+            "response": text,
+            "raw_response": text,
+            "content_type": content_type,
+        }
+
+
+def parse_sse_response(text: str) -> dict[str, Any]:
+    events: list[dict[str, Any]] = []
+    full_response_parts: list[str] = []
+    latest_trace: dict[str, Any] | None = None
+    done_payload: dict[str, Any] | None = None
+    error_messages: list[str] = []
+
+    for block in text.replace("\r\n", "\n").split("\n\n"):
+        block = block.strip()
+        if not block:
+            continue
+
+        event_name = "message"
+        data_lines: list[str] = []
+
+        for line in block.splitlines():
+            if line.startswith("event:"):
+                event_name = line.removeprefix("event:").strip()
+            elif line.startswith("data:"):
+                data_lines.append(line.removeprefix("data:").strip())
+
+        if not data_lines:
+            continue
+
+        raw_data = "\n".join(data_lines)
+        try:
+            data: Any = json.loads(raw_data)
+        except ValueError:
+            data = raw_data
+
+        events.append({"event": event_name, "data": data})
+
+        if event_name == "delta" and isinstance(data, dict) and isinstance(data.get("delta"), str):
+            full_response_parts.append(data["delta"])
+        elif event_name == "trace" and isinstance(data, dict):
+            latest_trace = data
+        elif event_name == "done" and isinstance(data, dict):
+            done_payload = data
+        elif event_name == "error" and isinstance(data, dict) and isinstance(data.get("message"), str):
+            error_messages.append(data["message"])
+
+    payload = dict(done_payload or {})
+    if latest_trace and "trace" not in payload:
+        payload["trace"] = latest_trace
+
+    response_text = payload.get("response")
+    if not isinstance(response_text, str) or not response_text.strip():
+        fallback = "".join(full_response_parts).strip()
+        if not fallback:
+            fallback = build_agent_evidence_response(payload, latest_trace)
+        if not fallback and error_messages:
+            fallback = "Erro retornado pela API SMART: " + " | ".join(error_messages)
+        payload["response"] = fallback
+
+    payload["events"] = events
+    payload["raw_response"] = text
+    return payload
+
+
+def build_agent_evidence_response(
+    payload: dict[str, Any],
+    trace: dict[str, Any] | None,
+) -> str:
+    agent_results = payload.get("agentResults")
+    if not isinstance(agent_results, list):
+        return ""
+
+    lines: list[str] = []
+    route = trace.get("route") if isinstance(trace, dict) else payload.get("route")
+    if isinstance(route, str):
+        lines.append(f"Rota usada: {route}.")
+
+    for result in agent_results:
+        if not isinstance(result, dict):
+            continue
+        agent_name = result.get("agentName") or result.get("agentId")
+        summary = result.get("summary")
+        action = result.get("action")
+        if isinstance(agent_name, str):
+            lines.append(f"Agente acionado: {agent_name}.")
+        if isinstance(action, str):
+            lines.append(f"Acao: {action}.")
+        if isinstance(summary, str):
+            lines.append(summary)
+
+        evidence = result.get("evidence")
+        if isinstance(evidence, dict):
+            tools = evidence.get("mcpTools")
+            if isinstance(tools, list) and tools:
+                lines.append("Ferramentas MCP: " + ", ".join(str(tool) for tool in tools) + ".")
+            values = evidence.get("values")
+            if isinstance(values, list):
+                for value in values[:12]:
+                    if not isinstance(value, dict):
+                        continue
+                    label = value.get("label")
+                    amount = value.get("value")
+                    unit = value.get("unit")
+                    timestamp = value.get("timestamp")
+                    if label is not None and amount is not None:
+                        suffix = f" {unit}" if isinstance(unit, str) and unit else ""
+                        when = f" em {timestamp}" if isinstance(timestamp, str) and timestamp else ""
+                        lines.append(f"{label}: {amount}{suffix}{when}.")
+
+    return "\n".join(lines).strip()
 
 
 def extract_answer(payload: dict[str, Any]) -> str:
@@ -134,8 +274,17 @@ def extract_agents_called(payload: dict[str, Any]) -> list[str]:
             agent_name = agent
         if not agent_name and isinstance(agent, dict):
             agent_name = agent.get("name") or agent.get("id")
-        if isinstance(agent_name, str) and agent_name and agent_name not in seen:
+        if isinstance(agent_name, str) and _is_valid_agent_name(agent_name) and agent_name not in seen:
             seen.add(agent_name)
             agents.append(agent_name)
 
     return agents
+
+
+def _is_valid_agent_name(value: str) -> bool:
+    normalized = value.strip()
+    if not normalized:
+        return False
+    if re.fullmatch(r"\d+\s+agentes?", normalized, flags=re.IGNORECASE):
+        return False
+    return True

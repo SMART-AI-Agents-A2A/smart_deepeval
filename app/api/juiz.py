@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -17,6 +18,14 @@ def _clean_optional_env(value: str | None) -> str | None:
     return stripped or None
 
 
+def _first_env(*names: str) -> str | None:
+    for name in names:
+        value = _clean_optional_env(os.getenv(name))
+        if value:
+            return value
+    return None
+
+
 def _strip_json_fence(content: str) -> str:
     stripped = content.strip()
     if not stripped.startswith("```"):
@@ -26,6 +35,56 @@ def _strip_json_fence(content: str) -> str:
     if len(lines) >= 3:
         return "\n".join(lines[1:-1]).strip()
     return stripped
+
+
+def _extract_json_object(content: str) -> str:
+    cleaned = _strip_json_fence(content)
+    if cleaned.startswith("{") and cleaned.endswith("}"):
+        return cleaned
+
+    start = cleaned.find("{")
+    if start == -1:
+        return cleaned
+
+    depth = 0
+    in_string = False
+    escape = False
+    for index, character in enumerate(cleaned[start:], start=start):
+        if escape:
+            escape = False
+            continue
+        if character == "\\":
+            escape = True
+            continue
+        if character == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if character == "{":
+            depth += 1
+        elif character == "}":
+            depth -= 1
+            if depth == 0:
+                return cleaned[start : index + 1]
+
+    return cleaned
+
+
+def _preview(value: str, limit: int = 800) -> str:
+    collapsed = " ".join(value.split())
+    if len(collapsed) <= limit:
+        return collapsed
+    return f"{collapsed[:limit]}..."
+
+
+def _extract_between(text: str, start: str, end: str) -> str:
+    pattern = re.compile(
+        rf"{re.escape(start)}\s*(.*?)(?=\n\s*{re.escape(end)}|\Z)",
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+    match = pattern.search(text)
+    return match.group(1).strip() if match else ""
 
 
 class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
@@ -58,11 +117,11 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
 
-        gateway_token = _clean_optional_env(os.getenv("CF_AIG_TOKEN"))
+        gateway_token = _first_env("CF_AIG_TOKEN", "CLOUDFLARE_API_TOKEN")
         if gateway_token:
             headers["cf-aig-authorization"] = f"Bearer {gateway_token}"
 
-        byok_alias = _clean_optional_env(os.getenv("CF_AIG_BYOK_ALIAS"))
+        byok_alias = _first_env("CF_AIG_BYOK_ALIAS", "CLOUDFLARE_AI_GATEWAY_BYOK_ALIAS")
         if byok_alias:
             headers["cf-aig-byok-alias"] = byok_alias
 
@@ -94,7 +153,18 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             json=payload,
             timeout=self.timeout,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as error:
+            detail = response.text.strip()
+            if response.status_code == 401:
+                raise RuntimeError(
+                    "Falha de autenticacao no Cloudflare AI Gateway usado como juiz. "
+                    "Preencha OPENAI_API_KEY quando o Gateway deve repassar a chave da OpenAI, "
+                    "ou CF_AIG_TOKEN quando o Gateway esta autenticado/BYOK. "
+                    f"Resposta do Gateway: {detail or '401 Unauthorized'}"
+                ) from error
+            raise
 
         data = response.json()
         choices = data.get("choices", [])
@@ -108,11 +178,90 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         return data.get("output_text") or data.get("response") or ""
 
     def _parse_schema_response(self, content: str, schema: type[BaseModel]) -> BaseModel:
-        cleaned = _strip_json_fence(content)
+        cleaned = _extract_json_object(content)
         try:
             return schema.model_validate_json(cleaned)
+        except Exception as first_error:
+            try:
+                return schema.model_validate(json.loads(cleaned))
+            except Exception as second_error:
+                raise RuntimeError(
+                    "O modelo juiz nao retornou JSON valido para o schema exigido pelo DeepEval. "
+                    f"Schema: {schema.__name__}. "
+                    f"Conteudo recebido: {_preview(content) or '[vazio]'}"
+                ) from second_error or first_error
+
+    def _fallback_schema_response(
+        self,
+        *,
+        prompt: str,
+        content: str,
+        schema: type[BaseModel],
+    ) -> BaseModel:
+        if schema.__name__ == "TaskAndOutcome":
+            task = _extract_between(prompt, "input:", "tools called:")
+            outcome = _extract_between(prompt, "response:", "JSON:")
+            if not task:
+                task = "Avaliar se a API SMART concluiu a tarefa solicitada pelo usuario."
+            if not outcome:
+                outcome = _extract_between(prompt, "trace:", "JSON:") or (
+                    "O juiz nao retornou JSON valido para extrair o resultado da trace."
+                )
+            return schema.model_validate({"task": task, "outcome": outcome})
+
+        if schema.__name__ == "TaskCompletionVerdict":
+            return schema.model_validate(
+                {
+                    "verdict": 0.0,
+                    "reason": (
+                        "O modelo juiz nao retornou JSON valido para calcular Task Completion. "
+                        f"Conteudo recebido: {_preview(content) or '[vazio]'}"
+                    ),
+                }
+            )
+
+        schema_fields = getattr(schema, "model_fields", {})
+        if "score" in schema_fields and "reason" in schema_fields:
+            return schema.model_validate(
+                {
+                    "score": 0.0,
+                    "reason": (
+                        "O modelo juiz nao retornou JSON valido para este criterio. "
+                        f"Conteudo recebido: {_preview(content) or '[vazio]'}"
+                    ),
+                }
+            )
+
+        raise RuntimeError(
+            "O modelo juiz nao retornou JSON valido para o schema exigido pelo DeepEval. "
+            f"Schema: {schema.__name__}. Conteudo recebido: {_preview(content) or '[vazio]'}"
+        )
+
+    def _repair_schema_response(
+        self,
+        *,
+        prompt: str,
+        content: str,
+        schema: type[BaseModel],
+    ) -> BaseModel:
+        repair_prompt = (
+            "Converta a resposta abaixo para JSON valido que siga exatamente o schema informado. "
+            "Retorne somente o JSON, sem Markdown, sem explicacao e sem texto antes ou depois.\n\n"
+            f"SCHEMA:\n{json.dumps(schema.model_json_schema(), ensure_ascii=False)}\n\n"
+            f"PROMPT ORIGINAL:\n{prompt}\n\n"
+            f"RESPOSTA A CONVERTER:\n{content or '[resposta vazia]'}"
+        )
+        payload = self._payload(repair_prompt, None)
+        payload["response_format"] = {"type": "json_object"}
+        repaired_content = self._request(payload)
+        try:
+            return self._parse_schema_response(repaired_content, schema)
         except Exception:
-            return schema.model_validate(json.loads(cleaned))
+            return self._fallback_schema_response(
+                prompt=prompt,
+                content=repaired_content,
+                schema=schema,
+            )
 
     def generate(self, prompt: str, schema: type[BaseModel] | None = None):
         payload = self._payload(prompt, schema)
@@ -127,7 +276,21 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             content = self._request(payload)
 
         if schema:
-            return self._parse_schema_response(content, schema)
+            try:
+                return self._parse_schema_response(content, schema)
+            except Exception:
+                try:
+                    return self._repair_schema_response(
+                        prompt=prompt,
+                        content=content,
+                        schema=schema,
+                    )
+                except Exception:
+                    return self._fallback_schema_response(
+                        prompt=prompt,
+                        content=content,
+                        schema=schema,
+                    )
         return content
 
     async def a_generate(self, prompt: str, schema: type[BaseModel] | None = None):
