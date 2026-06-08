@@ -32,7 +32,7 @@ from app.tools import (
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-DEFAULT_DATASET_FILE = ROOT_DIR / "base4-gpt.json"
+DEFAULT_DATASET_FILE = ROOT_DIR / "app" / "db" / "db.json"
 
 
 @dataclass(frozen=True)
@@ -73,6 +73,7 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
         )
         expected_output = (
             item.get("expected_output")
+            or item.get("resposta_completa")
             or item.get("resposta")
             or item.get("answer")
             or item.get("expected")
@@ -162,7 +163,8 @@ def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConf
         metric_name="goal_accuracy",
         config=confident_config,
         hyperparameters={
-            "judge_model": judge_config.model,
+            "judge_model": judge_config.model_name,
+            "judge_base_url": judge_config.base_url,
             "threshold": judge_config.threshold,
             "dataset_size": len(test_cases),
         },
@@ -189,7 +191,8 @@ def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiC
         metric_name="tool_correctness",
         config=confident_config,
         hyperparameters={
-            "judge_model": judge_config.model,
+            "judge_model": judge_config.model_name,
+            "judge_base_url": judge_config.base_url,
             "threshold": judge_config.threshold,
             "dataset_size": len(test_cases),
         },
@@ -225,7 +228,7 @@ def parse_args() -> argparse.Namespace:
         "--dataset",
         type=Path,
         default=DEFAULT_DATASET_FILE,
-        help="JSON de perguntas/respostas esperadas. Padrao: base4-gpt.json.",
+        help="JSON de perguntas/respostas esperadas. Padrao: app/db/db.json.",
     )
     return parser.parse_args()
 

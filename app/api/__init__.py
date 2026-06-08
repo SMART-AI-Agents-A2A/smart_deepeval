@@ -12,11 +12,17 @@ from .connect_confident_ai import (
     evaluate_with_confident_ai,
     load_confident_ai_config,
 )
-from .juiz import JudgeConfig, configure_judge_environment, load_judge_config
+from .juiz import (
+    JudgeConfig,
+    OpenAICompatibleJudgeModel,
+    configure_judge_environment,
+    load_judge_config,
+)
 
 __all__ = [
     "ConfidentAiConfig",
     "JudgeConfig",
+    "OpenAICompatibleJudgeModel",
     "SmartApiConfig",
     "call_smart_chat",
     "configure_confident_ai_environment",
