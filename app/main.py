@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -29,6 +31,7 @@ from app.tools import (
     build_task_completion_metric,
     build_tool_correctness_case,
     build_tool_correctness_metric,
+    infer_expected_tools,
 )
 
 
@@ -40,6 +43,7 @@ DEFAULT_DATASET_FILE = ROOT_DIR / "app" / "db" / "db.json"
 class EvalSample:
     question: str
     expected_output: str
+    number: int | None = None
     expected_tools: list[str] = field(default_factory=list)
 
 
@@ -60,7 +64,7 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
     samples: list[EvalSample] = []
     for index, item in enumerate(data, start=1):
         if isinstance(item, str):
-            samples.append(EvalSample(question=item.strip(), expected_output=""))
+            samples.append(EvalSample(question=item.strip(), expected_output="", number=index))
             continue
 
         if not isinstance(item, dict):
@@ -82,6 +86,7 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
             or ""
         )
         expected_tools = item.get("expected_tools") or item.get("ferramentas_esperadas") or []
+        number = item.get("numero") or item.get("number") or index
 
         if not isinstance(question, str) or not question.strip():
             raise ValueError(f"Item {index} de {path} nao contem pergunta valida.")
@@ -94,6 +99,7 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
             EvalSample(
                 question=question.strip(),
                 expected_output=expected_output.strip(),
+                number=number if isinstance(number, int) else index,
                 expected_tools=[tool.strip() for tool in expected_tools if tool.strip()],
             )
         )
@@ -165,6 +171,85 @@ def _expected_tool_calls(sample: EvalSample) -> list[ToolCall] | None:
     if not sample.expected_tools:
         return None
     return [ToolCall(name=tool_name) for tool_name in sample.expected_tools]
+
+
+def _tool_names(tools: list[ToolCall]) -> list[str]:
+    return [tool.name for tool in tools]
+
+
+def _join(values: list[str]) -> str:
+    return "|".join(values)
+
+
+def _json_cell(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+
+
+def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> float:
+    if not expected_tools:
+        return 1.0 if called_tools else 0.0
+
+    expected = set(expected_tools)
+    called = set(called_tools)
+    true_positive = len(expected & called)
+    false_positive = len(called - expected)
+    false_negative = len(expected - called)
+    denominator = true_positive + false_positive + false_negative
+
+    return round(true_positive / denominator, 4) if denominator else 1.0
+
+
+def export_collected_csv(collected, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    fieldnames = [
+        "numero",
+        "conversation_id",
+        "route",
+        "agents_called",
+        "tools_called",
+        "expected_tools",
+        "simple_tool_score",
+        "question",
+        "expected_output",
+        "actual_output",
+        "trace_json",
+        "rag_json",
+    ]
+
+    with output_path.open("w", encoding="utf-8-sig", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for item in collected:
+            sample = item["sample"]
+            payload = item["payload"]
+            agents_called = extract_agents_called(payload)
+            called_tools = _tool_names(item["tools_called"])
+            expected_tool_calls = _expected_tool_calls(sample) or []
+            expected_tools = _tool_names(expected_tool_calls)
+
+            if not expected_tools:
+                expected_tools = _tool_names(infer_expected_tools(sample.question, sample.expected_output))
+
+            writer.writerow(
+                {
+                    "numero": sample.number or "",
+                    "conversation_id": item["conversation_id"],
+                    "route": payload.get("trace", {}).get("route", payload.get("route", "")),
+                    "agents_called": _join(agents_called),
+                    "tools_called": _join(called_tools),
+                    "expected_tools": _join(expected_tools),
+                    "simple_tool_score": _simple_tool_score(expected_tools, called_tools),
+                    "question": sample.question,
+                    "expected_output": sample.expected_output,
+                    "actual_output": item["answer"],
+                    "trace_json": _json_cell(payload.get("trace", {})),
+                    "rag_json": _json_cell(payload.get("rag", {})),
+                }
+            )
+
+    print(f"\nCSV exportado em: {output_path}")
 
 
 def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConfig) -> None:
@@ -259,6 +344,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Limita a quantidade de casos carregados do dataset.",
     )
+    parser.add_argument(
+        "--export-csv",
+        type=Path,
+        default=None,
+        help="Exporta respostas e metadados coletados em CSV para analise posterior.",
+    )
     return parser.parse_args()
 
 
@@ -272,9 +363,16 @@ def main() -> None:
         samples = samples[: args.limit]
     collected = collect_smart_responses(samples)
 
+    if args.export_csv:
+        export_collected_csv(collected, args.export_csv)
+
     run_goal_accuracy(collected, judge_config, confident_config)
     run_tool_correctness(collected, judge_config, confident_config)
     run_task_completion(samples, judge_config, confident_config)
+
+    if args.export_csv is None:
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        export_collected_csv(collected, ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv")
 
     print("\nAvaliacao concluida.")
 
