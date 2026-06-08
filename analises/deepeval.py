@@ -36,8 +36,23 @@ def latest_csv() -> Path:
     return csv_files[0]
 
 
+def is_metric_csv(df: pd.DataFrame) -> bool:
+    return {"metric_name", "score", "passed"}.issubset(df.columns)
+
+
 def load_results(csv_path: Path) -> pd.DataFrame:
     df = pd.read_csv(csv_path, encoding="utf-8-sig")
+
+    if is_metric_csv(df):
+        df["score"] = pd.to_numeric(df["score"], errors="coerce")
+        df["threshold"] = pd.to_numeric(df["threshold"], errors="coerce").fillna(0.7)
+        df["passed"] = df["passed"].astype(str).str.lower().isin(["true", "1", "yes"])
+        df["route"] = df.get("route", "").fillna("").replace("", "sem_rota")
+        df["answer_length"] = df.get("actual_output", "").fillna("").astype(str).str.len()
+        df["tools_called_list"] = df.get("tools_called", "").apply(split_pipe)
+        df["expected_tools_list"] = df.get("expected_tools", "").apply(split_pipe)
+        df["agents_called_list"] = df.get("agents_called", "").apply(split_pipe)
+        return df
 
     if "simple_tool_score" in df.columns:
         df["simple_tool_score"] = pd.to_numeric(df["simple_tool_score"], errors="coerce").fillna(0)
@@ -52,6 +67,148 @@ def load_results(csv_path: Path) -> pd.DataFrame:
     df["rag_source_count"] = df.get("rag_json", "").apply(extract_rag_source_count)
 
     return df
+
+
+def plot_metric_score_distribution(df: pd.DataFrame, output_dir: Path) -> None:
+    metrics = sorted(df["metric_name"].dropna().unique())
+    if not metrics:
+        return
+
+    plt.figure(figsize=(10, 5))
+    for metric_name in metrics:
+        values = df.loc[df["metric_name"] == metric_name, "score"].dropna()
+        if values.empty:
+            continue
+        plt.hist(values, bins=10, alpha=0.55, label=metric_name)
+
+    plt.axvline(0.7, color="#cc3333", linestyle="--", linewidth=2, label="threshold 0.70")
+    plt.title("Distribuicao de Scores por Metrica")
+    plt.xlabel("Score")
+    plt.ylabel("Quantidade de casos")
+    plt.legend()
+    save_current(output_dir, "01_metricas_distribuicao_scores.png")
+
+
+def plot_metric_average_scores(df: pd.DataFrame, output_dir: Path) -> None:
+    scores = df.groupby("metric_name")["score"].mean().sort_values(ascending=False)
+    ax = scores.plot(kind="bar", figsize=(9, 5), color="#4c78a8")
+    plt.axhline(0.7, color="#cc3333", linestyle="--", linewidth=2, label="threshold 0.70")
+    plt.title("Score Medio por Metrica")
+    plt.xlabel("Metrica")
+    plt.ylabel("Score medio")
+    plt.ylim(0, 1)
+    plt.legend()
+    annotate_bars(ax)
+    save_current(output_dir, "02_metricas_score_medio.png")
+
+
+def plot_metric_pass_rate(df: pd.DataFrame, output_dir: Path) -> None:
+    pass_rate = (df.groupby("metric_name")["passed"].mean() * 100).sort_values(ascending=False)
+    ax = pass_rate.plot(kind="bar", figsize=(9, 5), color="#59a14f")
+    plt.title("Pass Rate por Metrica")
+    plt.xlabel("Metrica")
+    plt.ylabel("Pass rate (%)")
+    plt.ylim(0, 100)
+    annotate_bars(ax)
+    save_current(output_dir, "03_metricas_pass_rate.png")
+
+
+def plot_metric_pass_fail(df: pd.DataFrame, output_dir: Path) -> None:
+    pivot = (
+        df.assign(status=df["passed"].map({True: "passou", False: "falhou"}))
+        .pivot_table(index="metric_name", columns="status", values="question", aggfunc="count", fill_value=0)
+    )
+    ax = pivot.plot(kind="bar", stacked=True, figsize=(9, 5), color=["#e15759", "#59a14f"])
+    plt.title("Passou vs Falhou por Metrica")
+    plt.xlabel("Metrica")
+    plt.ylabel("Quantidade de casos")
+    annotate_bars(ax)
+    save_current(output_dir, "04_metricas_passou_vs_falhou.png")
+
+
+def plot_metric_score_by_route(df: pd.DataFrame, output_dir: Path) -> None:
+    pivot = df.pivot_table(index="route", columns="metric_name", values="score", aggfunc="mean")
+    ax = pivot.plot(kind="bar", figsize=(11, 5))
+    plt.axhline(0.7, color="#cc3333", linestyle="--", linewidth=2, label="threshold 0.70")
+    plt.title("Score Medio por Rota e Metrica")
+    plt.xlabel("Rota")
+    plt.ylabel("Score medio")
+    plt.ylim(0, 1)
+    plt.legend()
+    save_current(output_dir, "05_metricas_score_por_rota.png")
+
+
+def plot_worst_cases(df: pd.DataFrame, output_dir: Path) -> None:
+    worst = df.dropna(subset=["score"]).sort_values("score").head(20).copy()
+    if worst.empty:
+        return
+
+    worst["label"] = worst["numero"].astype(str) + " - " + worst["metric_name"].astype(str)
+    ax = worst.set_index("label")["score"].sort_values().plot(kind="barh", figsize=(11, 7), color="#e15759")
+    plt.title("20 Piores Casos por Score")
+    plt.xlabel("Score")
+    plt.ylabel("Caso")
+    plt.xlim(0, 1)
+    save_current(output_dir, "06_metricas_piores_casos.png")
+
+
+def plot_metric_heatmap(df: pd.DataFrame, output_dir: Path) -> None:
+    pivot = df.pivot_table(index="numero", columns="metric_name", values="score", aggfunc="mean").sort_index()
+    if pivot.empty:
+        return
+
+    plt.figure(figsize=(9, max(8, len(pivot) * 0.12)))
+    plt.imshow(pivot.fillna(0), aspect="auto", interpolation="nearest", cmap="RdYlGn", vmin=0, vmax=1)
+    plt.title("Heatmap Pergunta x Metrica")
+    plt.xlabel("Metrica")
+    plt.ylabel("Numero da pergunta")
+    plt.xticks(range(len(pivot.columns)), pivot.columns, rotation=45, ha="right")
+    plt.yticks(range(len(pivot.index)), pivot.index, fontsize=6)
+    plt.colorbar(label="Score")
+    save_current(output_dir, "07_metricas_heatmap_pergunta_metrica.png")
+
+
+def plot_metric_tools_for_failures(df: pd.DataFrame, output_dir: Path) -> None:
+    failures = df[(df["metric_name"].str.lower() == "tool correctness") & (~df["passed"])]
+    if failures.empty:
+        return
+
+    missing: dict[str, int] = {}
+    extra: dict[str, int] = {}
+    for _, row in failures.iterrows():
+        called = set(row["tools_called_list"])
+        expected = set(row["expected_tools_list"])
+        for tool in expected - called:
+            missing[tool] = missing.get(tool, 0) + 1
+        for tool in called - expected:
+            extra[tool] = extra.get(tool, 0) + 1
+
+    comparison = pd.DataFrame(
+        {
+            "faltou": pd.Series(missing),
+            "sobrou": pd.Series(extra),
+        }
+    ).fillna(0).sort_values("faltou", ascending=True)
+
+    if comparison.empty:
+        return
+
+    ax = comparison.plot(kind="barh", figsize=(12, max(6, len(comparison) * 0.35)), color=["#e15759", "#76b7b2"])
+    plt.title("Falhas de Tool Correctness: Ferramentas Faltantes vs Extras")
+    plt.xlabel("Quantidade de falhas")
+    plt.ylabel("Ferramenta")
+    save_current(output_dir, "08_metricas_tool_faltou_vs_sobrou.png")
+
+
+def plot_metric_csv(df: pd.DataFrame, output_dir: Path) -> None:
+    plot_metric_score_distribution(df, output_dir)
+    plot_metric_average_scores(df, output_dir)
+    plot_metric_pass_rate(df, output_dir)
+    plot_metric_pass_fail(df, output_dir)
+    plot_metric_score_by_route(df, output_dir)
+    plot_worst_cases(df, output_dir)
+    plot_metric_heatmap(df, output_dir)
+    plot_metric_tools_for_failures(df, output_dir)
 
 
 def extract_rag_source_count(value: object) -> int:
@@ -259,6 +416,16 @@ def plot_rag_by_route(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def print_summary(df: pd.DataFrame, csv_path: Path, output_dir: Path, threshold: float) -> None:
+    if is_metric_csv(df):
+        print(f"CSV de metricas analisado: {csv_path}")
+        print(f"Linhas: {len(df)}")
+        print("Score medio por metrica:")
+        for metric_name, score in df.groupby("metric_name")["score"].mean().sort_values(ascending=False).items():
+            pass_rate = df.loc[df["metric_name"] == metric_name, "passed"].mean() * 100
+            print(f"  - {metric_name}: score={score:.4f} pass_rate={pass_rate:.2f}%")
+        print(f"Graficos exportados em: {output_dir}")
+        return
+
     pass_rate = (df["simple_tool_score"] >= threshold).mean() * 100
     print(f"CSV analisado: {csv_path}")
     print(f"Perguntas: {len(df)}")
@@ -297,6 +464,11 @@ def main() -> None:
     csv_path = args.csv or latest_csv()
     output_dir = args.out_dir
     df = load_results(csv_path)
+
+    if is_metric_csv(df):
+        plot_metric_csv(df, output_dir)
+        print_summary(df, csv_path, output_dir, args.threshold)
+        return
 
     plot_score_distribution(df, output_dir, args.threshold)
     plot_route_counts(df, output_dir)

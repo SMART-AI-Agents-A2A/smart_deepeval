@@ -37,6 +37,7 @@ from app.tools import (
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_DATASET_FILE = ROOT_DIR / "app" / "db" / "db.json"
+DEFAULT_OUTPUTS_DIR = ROOT_DIR / "outputs"
 
 
 @dataclass(frozen=True)
@@ -108,6 +109,26 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
         raise ValueError(f"{path} nao contem casos de avaliacao.")
 
     return samples
+
+
+def select_top_samples_by_csv(samples: list[EvalSample], csv_path: Path, limit: int) -> list[EvalSample]:
+    if limit <= 0:
+        return samples
+
+    with csv_path.open(encoding="utf-8-sig", newline="") as file:
+        rows = list(csv.DictReader(file))
+
+    ranked_numbers: list[int] = []
+    for row in sorted(rows, key=lambda item: float(item.get("simple_tool_score") or 0), reverse=True):
+        try:
+            number = int(row.get("numero") or "")
+        except ValueError:
+            continue
+        if number not in ranked_numbers:
+            ranked_numbers.append(number)
+
+    selected_numbers = set(ranked_numbers[:limit])
+    return [sample for sample in samples if sample.number in selected_numbers]
 
 
 def collect_smart_responses(samples: list[EvalSample]):
@@ -199,6 +220,172 @@ def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> fl
     return round(true_positive / denominator, 4) if denominator else 1.0
 
 
+def _base_metric_row(
+    *,
+    metric_name: str,
+    score: float | None,
+    threshold: float,
+    passed: bool | None,
+    reason: str,
+    item: dict[str, Any],
+) -> dict[str, Any]:
+    sample = item["sample"]
+    payload = item["payload"]
+    agents_called = extract_agents_called(payload)
+    called_tools = _tool_names(item["tools_called"])
+    expected_tool_calls = _expected_tool_calls(sample) or infer_expected_tools(
+        sample.question,
+        sample.expected_output,
+    )
+    expected_tools = _tool_names(expected_tool_calls)
+
+    return {
+        "numero": sample.number or "",
+        "metric_name": metric_name,
+        "score": "" if score is None else round(float(score), 4),
+        "threshold": threshold,
+        "passed": "" if passed is None else bool(passed),
+        "reason": reason,
+        "question": sample.question,
+        "actual_output": item["answer"],
+        "expected_output": sample.expected_output,
+        "route": payload.get("trace", {}).get("route", payload.get("route", "")),
+        "agents_called": _join(agents_called),
+        "tools_called": _join(called_tools),
+        "expected_tools": _join(expected_tools),
+    }
+
+
+def _get_attr(value: Any, *names: str) -> Any:
+    for name in names:
+        if isinstance(value, dict) and name in value:
+            return value[name]
+        if hasattr(value, name):
+            return getattr(value, name)
+    return None
+
+
+def _metric_data_rows(evaluation_result: Any) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    test_results = _get_attr(evaluation_result, "test_results") or []
+
+    for test_result in test_results:
+        input_text = _get_attr(test_result, "input") or ""
+        actual_output = _get_attr(test_result, "actual_output") or ""
+        expected_output = _get_attr(test_result, "expected_output") or ""
+        metrics_data = _get_attr(test_result, "metrics_data") or []
+
+        if not input_text:
+            turns = _get_attr(test_result, "turns") or []
+            for turn in turns:
+                role = _get_attr(turn, "role")
+                content = _get_attr(turn, "content") or ""
+                if role == "user" and not input_text:
+                    input_text = content
+                elif role == "assistant" and not actual_output:
+                    actual_output = content
+
+        for metric_data in metrics_data:
+            rows.append(
+                {
+                    "metric_name": _get_attr(metric_data, "name") or "",
+                    "score": _get_attr(metric_data, "score"),
+                    "threshold": _get_attr(metric_data, "threshold"),
+                    "passed": _get_attr(metric_data, "success"),
+                    "reason": _get_attr(metric_data, "reason") or _get_attr(metric_data, "error") or "",
+                    "question": input_text,
+                    "actual_output": actual_output,
+                    "expected_output": expected_output,
+                }
+            )
+
+    return rows
+
+
+def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected) -> list[dict[str, Any]]:
+    by_question = {item["sample"].question: item for item in collected}
+    merged: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for metric_row in metric_rows:
+        question = str(metric_row.get("question") or "")
+        item = by_question.get(question)
+        if item is None:
+            continue
+
+        metric_name = str(metric_row.get("metric_name") or "")
+        key = (metric_name, question)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        threshold = metric_row.get("threshold")
+        if threshold is None:
+            threshold = 0.0
+        merged.append(
+            _base_metric_row(
+                metric_name=metric_name,
+                score=metric_row.get("score"),
+                threshold=float(threshold),
+                passed=metric_row.get("passed"),
+                reason=str(metric_row.get("reason") or ""),
+                item=item,
+            )
+        )
+
+    return merged
+
+
+def fallback_tool_metric_rows(collected, threshold: float) -> list[dict[str, Any]]:
+    rows = []
+    for item in collected:
+        sample = item["sample"]
+        called_tools = _tool_names(item["tools_called"])
+        expected_tool_calls = _expected_tool_calls(sample) or infer_expected_tools(
+            sample.question,
+            sample.expected_output,
+        )
+        expected_tools = _tool_names(expected_tool_calls)
+        score = _simple_tool_score(expected_tools, called_tools)
+        rows.append(
+            _base_metric_row(
+                metric_name="Tool Correctness",
+                score=score,
+                threshold=threshold,
+                passed=score >= threshold,
+                reason="Score local calculado por cobertura Jaccard entre expected_tools e tools_called.",
+                item=item,
+            )
+        )
+    return rows
+
+
+def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "numero",
+        "metric_name",
+        "score",
+        "threshold",
+        "passed",
+        "reason",
+        "question",
+        "actual_output",
+        "expected_output",
+        "route",
+        "agents_called",
+        "tools_called",
+        "expected_tools",
+    ]
+
+    with output_path.open("w", encoding="utf-8-sig", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(metric_rows)
+
+    print(f"\nCSV de metricas exportado em: {output_path}")
+
+
 def export_collected_csv(collected, output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -252,7 +439,7 @@ def export_collected_csv(collected, output_path: Path) -> None:
     print(f"\nCSV exportado em: {output_path}")
 
 
-def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConfig) -> None:
+def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConfig):
     metric = build_goal_accuracy_metric(judge_config)
     test_cases = [
         build_goal_accuracy_case(
@@ -265,7 +452,7 @@ def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConf
     ]
 
     print("\n[1/3] Avaliando Goal Accuracy...")
-    evaluate_with_confident_ai(
+    return evaluate_with_confident_ai(
         test_cases=test_cases,
         metrics=[metric],
         metric_name="goal_accuracy",
@@ -279,7 +466,7 @@ def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConf
     )
 
 
-def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiConfig) -> None:
+def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiConfig):
     metric = build_tool_correctness_metric(judge_config)
     test_cases = [
         build_tool_correctness_case(
@@ -293,7 +480,7 @@ def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiC
     ]
 
     print("\n[2/3] Avaliando Tool Correctness...")
-    evaluate_with_confident_ai(
+    return evaluate_with_confident_ai(
         test_cases=test_cases,
         metrics=[metric],
         metric_name="tool_correctness",
@@ -307,7 +494,7 @@ def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiC
     )
 
 
-def run_task_completion(samples: list[EvalSample], judge_config, confident_config: ConfidentAiConfig) -> None:
+def run_task_completion(samples: list[EvalSample], judge_config, confident_config: ConfidentAiConfig):
     configure_confident_ai_environment(confident_config)
     metric = build_task_completion_metric(judge_config)
     api_config = load_api_config()
@@ -320,12 +507,20 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
     )
 
     print("\n[3/3] Avaliando Task Completion via tracing...")
-    for index, golden in enumerate(dataset.evals_iterator(metrics=[metric]), start=1):
+    iterator = dataset.evals_iterator(metrics=[metric])
+    index = 1
+    while True:
+        try:
+            golden = next(iterator)
+        except StopIteration as finished:
+            return finished.value
+
         observed_smart_agent(
             golden.input,
             f"deepeval-task-completion-{index}",
             golden.expected_output or "",
         )
+        index += 1
 
 
 def parse_args() -> argparse.Namespace:
@@ -350,6 +545,24 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Exporta respostas e metadados coletados em CSV para analise posterior.",
     )
+    parser.add_argument(
+        "--export-metrics-csv",
+        type=Path,
+        default=None,
+        help="Exporta scores oficiais por metrica/pergunta em CSV.",
+    )
+    parser.add_argument(
+        "--top-tool-score",
+        type=int,
+        default=None,
+        help="Seleciona as N melhores perguntas com base no simple_tool_score de um CSV anterior.",
+    )
+    parser.add_argument(
+        "--top-source-csv",
+        type=Path,
+        default=None,
+        help="CSV anterior usado por --top-tool-score. Padrao: outputs/smart_deepeval_90.csv.",
+    )
     return parser.parse_args()
 
 
@@ -359,6 +572,9 @@ def main() -> None:
     judge_config = configure_judge_environment()
     confident_config = load_confident_ai_config()
     samples = load_dataset(args.dataset)
+    if args.top_tool_score is not None:
+        source_csv = args.top_source_csv or DEFAULT_OUTPUTS_DIR / "smart_deepeval_90.csv"
+        samples = select_top_samples_by_csv(samples, source_csv, args.top_tool_score)
     if args.limit is not None:
         samples = samples[: args.limit]
     collected = collect_smart_responses(samples)
@@ -366,13 +582,27 @@ def main() -> None:
     if args.export_csv:
         export_collected_csv(collected, args.export_csv)
 
-    run_goal_accuracy(collected, judge_config, confident_config)
-    run_tool_correctness(collected, judge_config, confident_config)
-    run_task_completion(samples, judge_config, confident_config)
+    all_metric_rows: list[dict[str, Any]] = []
+
+    goal_result = run_goal_accuracy(collected, judge_config, confident_config)
+    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(goal_result), collected))
+
+    tool_result = run_tool_correctness(collected, judge_config, confident_config)
+    tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
+    all_metric_rows.extend(tool_rows or fallback_tool_metric_rows(collected, judge_config.threshold))
+
+    task_result = run_task_completion(samples, judge_config, confident_config)
+    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(task_result), collected))
 
     if args.export_csv is None:
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         export_collected_csv(collected, ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv")
+
+    metrics_csv = args.export_metrics_csv
+    if metrics_csv is None:
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        metrics_csv = DEFAULT_OUTPUTS_DIR / f"smart_deepeval_metrics_{timestamp}.csv"
+    export_metric_results_csv(all_metric_rows, metrics_csv)
 
     print("\nAvaliacao concluida.")
 
