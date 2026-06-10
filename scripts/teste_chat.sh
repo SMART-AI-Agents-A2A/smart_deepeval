@@ -1,5 +1,5 @@
 Invoke-RestMethod `
-  -Uri "$base/v1/ai/chat" `
+  -Uri "http://localhost:8787/v1/ai/chat" `
   -Method POST `
   -ContentType "application/json" `
   -Headers @{
