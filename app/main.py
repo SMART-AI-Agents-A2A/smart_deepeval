@@ -336,6 +336,57 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected) -> list[dic
     return merged
 
 
+def _metric_rows_from_samples(
+    metric_rows: list[dict[str, Any]],
+    samples: list[EvalSample],
+    threshold: float,
+) -> list[dict[str, Any]]:
+    by_question = {sample.question: sample for sample in samples}
+    rows: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for metric_row in metric_rows:
+        question = str(metric_row.get("question") or "")
+        sample = by_question.get(question)
+        if sample is None:
+            continue
+
+        metric_name = str(metric_row.get("metric_name") or "")
+        key = (metric_name, question)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        score = metric_row.get("score")
+        row_threshold = metric_row.get("threshold")
+        if row_threshold is None:
+            row_threshold = threshold
+        expected_tool_calls = _expected_tool_calls(sample) or infer_expected_tools(
+            sample.question,
+            sample.expected_output,
+        )
+
+        rows.append(
+            {
+                "numero": sample.number or "",
+                "metric_name": metric_name,
+                "score": "" if score is None else round(float(score), 4),
+                "threshold": row_threshold,
+                "passed": metric_row.get("passed"),
+                "reason": str(metric_row.get("reason") or ""),
+                "question": sample.question,
+                "actual_output": metric_row.get("actual_output") or "",
+                "expected_output": sample.expected_output,
+                "route": "",
+                "agents_called": "",
+                "tools_called": "",
+                "expected_tools": _join(_tool_names(expected_tool_calls)),
+            }
+        )
+
+    return rows
+
+
 def fallback_tool_metric_rows(collected, threshold: float) -> list[dict[str, Any]]:
     rows = []
     for item in collected:
@@ -384,6 +435,11 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
         writer.writerows(metric_rows)
 
     print(f"\nCSV de metricas exportado em: {output_path}")
+
+
+def _export_metric_checkpoint(metric_rows: list[dict[str, Any]], output_path: Path | None) -> None:
+    if output_path is not None:
+        export_metric_results_csv(metric_rows, output_path)
 
 
 def export_collected_csv(collected, output_path: Path) -> None:
@@ -552,6 +608,14 @@ def parse_args() -> argparse.Namespace:
         help="Exporta scores oficiais por metrica/pergunta em CSV.",
     )
     parser.add_argument(
+        "--metrics",
+        default="all",
+        help=(
+            "Metricas a executar: all, goal, tool, task ou lista separada por virgula "
+            "(ex.: goal,tool)."
+        ),
+    )
+    parser.add_argument(
         "--top-tool-score",
         type=int,
         default=None,
@@ -577,24 +641,53 @@ def main() -> None:
         samples = select_top_samples_by_csv(samples, source_csv, args.top_tool_score)
     if args.limit is not None:
         samples = samples[: args.limit]
-    collected = collect_smart_responses(samples)
+    requested_metrics = {
+        metric.strip().lower()
+        for metric in str(args.metrics).split(",")
+        if metric.strip()
+    }
+    if "all" in requested_metrics:
+        requested_metrics = {"goal", "tool", "task"}
+
+    valid_metrics = {"goal", "tool", "task"}
+    unknown_metrics = requested_metrics - valid_metrics
+    if unknown_metrics:
+        raise ValueError(
+            f"Metricas invalidas em --metrics: {', '.join(sorted(unknown_metrics))}. "
+            "Use all, goal, tool, task ou lista separada por virgula."
+        )
+
+    should_collect = bool({"goal", "tool"} & requested_metrics) or args.export_csv is not None
+    collected = collect_smart_responses(samples) if should_collect else []
 
     if args.export_csv:
         export_collected_csv(collected, args.export_csv)
 
     all_metric_rows: list[dict[str, Any]] = []
 
-    goal_result = run_goal_accuracy(collected, judge_config, confident_config)
-    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(goal_result), collected))
+    if "goal" in requested_metrics:
+        goal_result = run_goal_accuracy(collected, judge_config, confident_config)
+        all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(goal_result), collected))
+        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
 
-    tool_result = run_tool_correctness(collected, judge_config, confident_config)
-    tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
-    all_metric_rows.extend(tool_rows or fallback_tool_metric_rows(collected, judge_config.threshold))
+    if "tool" in requested_metrics:
+        tool_result = run_tool_correctness(collected, judge_config, confident_config)
+        tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
+        all_metric_rows.extend(tool_rows or fallback_tool_metric_rows(collected, judge_config.threshold))
+        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
 
-    task_result = run_task_completion(samples, judge_config, confident_config)
-    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(task_result), collected))
+    if "task" in requested_metrics:
+        task_result = run_task_completion(samples, judge_config, confident_config)
+        task_metric_rows = _metric_data_rows(task_result)
+        if collected:
+            all_metric_rows.extend(_merge_metric_rows(task_metric_rows, collected))
+        else:
+            all_metric_rows.extend(
+                _metric_rows_from_samples(task_metric_rows, samples, judge_config.threshold)
+            )
+        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
 
-    if args.export_csv is None:
+    if args.export_csv is None and collected:
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         export_collected_csv(collected, ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv")
 
@@ -602,7 +695,8 @@ def main() -> None:
     if metrics_csv is None:
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         metrics_csv = DEFAULT_OUTPUTS_DIR / f"smart_deepeval_metrics_{timestamp}.csv"
-    export_metric_results_csv(all_metric_rows, metrics_csv)
+    if metrics_csv != args.export_metrics_csv:
+        export_metric_results_csv(all_metric_rows, metrics_csv)
 
     print("\nAvaliacao concluida.")
 
