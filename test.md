@@ -1,6 +1,3 @@
-testar 5 perguntas:
-python -m app.main --dataset .\app\db\db.json --limit 5 --export-csv .\outputs\smart_top30_after_orchestrate_5_collected.csv --export-metrics-csv .\outputs\smart_top30_after_orchestrate_5_metrics.csv
-
 python -m app.main --dataset .\app\db\db.json --export-csv .\outputs\smart_deepeval_gpt_oss_120b.csv
 
 python -m app.main --dataset .\app\db\db.json --export-csv .\outputs\smart_deepeval_30_gpt_5_4_mini.csv
