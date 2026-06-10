@@ -369,7 +369,7 @@ class JudgeConfig:
 
 
 def load_judge_config() -> JudgeConfig:
-    model_name = os.getenv("DEEPEVAL_JUDGE_MODEL", "gpt-4o-mini")
+    model_name = os.getenv("DEEPEVAL_JUDGE_MODEL")
     base_url = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_BASE_URL"))
     api_key = _clean_optional_env(os.getenv("OPENAI_API_KEY"))
     timeout = int(os.getenv("DEEPEVAL_JUDGE_TIMEOUT", "120"))
