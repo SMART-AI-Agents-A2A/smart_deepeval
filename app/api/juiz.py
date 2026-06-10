@@ -192,7 +192,15 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             timeout=self.timeout,
         )
         try:
-            response.raise_for_status()
+            # response.raise_for_status()
+            if response.status_code >= 400:
+                print("\n[ERRO JUIZ] Status:", response.status_code)
+                print("[ERRO JUIZ] URL:", response.url)
+                print("[ERRO JUIZ] Resposta da Cloudflare:")
+                print(response.text)
+                print("[ERRO JUIZ] Payload enviado:")
+                print(payload)
+                response.raise_for_status()
         except requests.HTTPError as error:
             detail = response.text.strip()
             if response.status_code == 401:
