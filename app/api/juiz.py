@@ -165,12 +165,29 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                 },
             ]
 
+        #########################################
+
+        # payload: dict[str, Any] = {
+        #     "model": self.model_name,
+        #     "messages": messages,
+        #     "temperature": 0,
+        #     "max_tokens": int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048")),
+        # }
+        
+        max_tokens = int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048"))
+
         payload: dict[str, Any] = {
             "model": self.model_name,
             "messages": messages,
-            "temperature": 0,
-            "max_tokens": int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048")),
         }
+
+        if self.model_name.startswith("gpt-5"):
+            payload["max_completion_tokens"] = max_tokens
+        else:
+            payload["temperature"] = 0
+            payload["max_tokens"] = max_tokens
+            
+        #########################################
 
         if schema and not force_no_response_format and self._should_send_response_format():
             payload["response_format"] = {
