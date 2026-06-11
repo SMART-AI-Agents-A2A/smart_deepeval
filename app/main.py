@@ -58,15 +58,6 @@ def _find_numbered_value(item: dict[str, Any], prefix: str) -> str | None:
     return None
 
 
-def _safe_float(value: Any, default: float = 0.0) -> float:
-    try:
-        if value in ("", None):
-            return default
-        return float(value)
-    except (TypeError, ValueError):
-        return default
-
-
 def _preview_text(value: str | None, limit: int = 500) -> str:
     text = " ".join((value or "").split())
     if len(text) <= limit:
@@ -209,36 +200,6 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
     return samples
 
 
-def select_top_samples_by_csv(samples: list[EvalSample], csv_path: Path, limit: int) -> list[EvalSample]:
-    if limit <= 0:
-        return samples
-
-    with csv_path.open(encoding="utf-8-sig", newline="") as file:
-        rows = list(csv.DictReader(file))
-
-    if not rows:
-        return samples
-
-    first_row = rows[0]
-    if "simple_tool_score" not in first_row or "numero" not in first_row:
-        raise ValueError(
-            f"CSV {csv_path} nao contem colunas 'numero' e 'simple_tool_score'. "
-            "Use o CSV exportado com --export-csv, nao o de metricas."
-        )
-
-    ranked_numbers: list[int] = []
-    for row in sorted(rows, key=lambda item: _safe_float(item.get("simple_tool_score")), reverse=True):
-        try:
-            number = int(row.get("numero") or "")
-        except ValueError:
-            continue
-        if number not in ranked_numbers:
-            ranked_numbers.append(number)
-
-    selected_numbers = set(ranked_numbers[:limit])
-    return [sample for sample in samples if sample.number in selected_numbers]
-
-
 def infer_tools_from_agents(agents_called: list[str]) -> list[ToolCall]:
     tool_names: list[str] = []
     for agent_name in agents_called:
@@ -261,16 +222,14 @@ def _tool_names(tools: list[ToolCall]) -> list[str]:
     return [tool.name for tool in tools]
 
 
-def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> float:
-    if not expected_tools:
-        return 1.0 if called_tools else 0.0
+def _tool_diff(expected_tools: list[str], called_tools: list[str]) -> dict[str, list[str]]:
     expected = set(expected_tools)
     called = set(called_tools)
-    true_positive = len(expected & called)
-    false_positive = len(called - expected)
-    false_negative = len(expected - called)
-    denominator = true_positive + false_positive + false_negative
-    return round(true_positive / denominator, 4) if denominator else 1.0
+    return {
+        "correct": [tool for tool in called_tools if tool in expected],
+        "missing": [tool for tool in expected_tools if tool not in called],
+        "extra": [tool for tool in called_tools if tool not in expected],
+    }
 
 
 def collect_smart_responses(
@@ -382,6 +341,7 @@ def _base_metric_row(
         sample.expected_output,
     )
     expected_tools = _tool_names(expected_tool_calls)
+    tool_diff = _tool_diff(expected_tools, called_tools)
 
     return {
         "numero": sample.number or "",
@@ -398,6 +358,9 @@ def _base_metric_row(
         "agents_called": _join(agents_called),
         "tools_called": _join(called_tools),
         "expected_tools": _join(expected_tools),
+        "tools_correct": _join(tool_diff["correct"]),
+        "tools_missing": _join(tool_diff["missing"]),
+        "tools_extra": _join(tool_diff["extra"]),
     }
 
 
@@ -482,30 +445,6 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[s
     return merged
 
 
-def fallback_tool_metric_rows(collected: list[dict[str, Any]], threshold: float) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
-    for item in collected:
-        sample = item["sample"]
-        called_tools = _tool_names(item["tools_called"])
-        expected_tool_calls = _expected_tool_calls(sample) or infer_expected_tools(
-            sample.question,
-            sample.expected_output,
-        )
-        expected_tools = _tool_names(expected_tool_calls)
-        score = _simple_tool_score(expected_tools, called_tools)
-        rows.append(
-            _base_metric_row(
-                metric_name="Tool Correctness",
-                score=score,
-                threshold=threshold,
-                passed=score >= threshold,
-                reason="Score local calculado por cobertura Jaccard entre expected_tools e tools_called.",
-                item=item,
-            )
-        )
-    return rows
-
-
 def fallback_error_metric_rows(
     collected: list[dict[str, Any]],
     *,
@@ -547,6 +486,9 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
         "agents_called",
         "tools_called",
         "expected_tools",
+        "tools_correct",
+        "tools_missing",
+        "tools_extra",
     ]
     with output_path.open("w", encoding="utf-8-sig", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction="ignore")
@@ -564,7 +506,9 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
         "agents_called",
         "tools_called",
         "expected_tools",
-        "simple_tool_score",
+        "tools_correct",
+        "tools_missing",
+        "tools_extra",
         "api_error",
         "question",
         "expected_output",
@@ -584,6 +528,7 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
             expected_tools = _tool_names(expected_tool_calls)
             if not expected_tools:
                 expected_tools = _tool_names(infer_expected_tools(sample.question, sample.expected_output))
+            tool_diff = _tool_diff(expected_tools, called_tools)
             writer.writerow(
                 {
                     "numero": sample.number or "",
@@ -592,7 +537,9 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
                     "agents_called": _join(agents_called),
                     "tools_called": _join(called_tools),
                     "expected_tools": _join(expected_tools),
-                    "simple_tool_score": _simple_tool_score(expected_tools, called_tools),
+                    "tools_correct": _join(tool_diff["correct"]),
+                    "tools_missing": _join(tool_diff["missing"]),
+                    "tools_extra": _join(tool_diff["extra"]),
                     "api_error": item.get("api_error", False),
                     "question": sample.question,
                     "expected_output": sample.expected_output,
@@ -614,6 +561,7 @@ def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
         sample.expected_output,
     )
     expected_tools = _tool_names(expected_tool_calls)
+    tool_diff = _tool_diff(expected_tools, tools_called)
     return {
         "numero": sample.number or "",
         "conversation_id": item["conversation_id"],
@@ -624,9 +572,11 @@ def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
         "agents_called": agents_called,
         "tools_called": tools_called,
         "expected_tools": expected_tools,
+        "tools_correct": tool_diff["correct"],
+        "tools_missing": tool_diff["missing"],
+        "tools_extra": tool_diff["extra"],
         "tools_count": len(tools_called),
         "expected_tools_count": len(expected_tools),
-        "simple_tool_score": _simple_tool_score(expected_tools, tools_called),
         "has_trace": bool(payload.get("trace")),
         "has_rag": bool(payload.get("rag")),
         "answer_chars": len(item["answer"] or ""),
@@ -864,27 +814,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Reduz logs do terminal, mantendo apenas progresso essencial.",
     )
-    parser.add_argument(
-        "--top-tool-score",
-        type=int,
-        default=None,
-        help="Seleciona as N melhores perguntas com base no simple_tool_score de um CSV anterior.",
-    )
-    parser.add_argument(
-        "--top-source-csv",
-        type=Path,
-        default=None,
-        help="CSV anterior usado por --top-tool-score. Padrao: outputs/smart_deepeval_90.csv.",
-    )
     return parser.parse_args()
 
 
 def _load_samples_from_args(args: argparse.Namespace) -> list[EvalSample]:
     samples = load_dataset(args.dataset)
-
-    if args.top_tool_score is not None:
-        source_csv = args.top_source_csv or DEFAULT_OUTPUTS_DIR / "smart_deepeval_90.csv"
-        samples = select_top_samples_by_csv(samples, source_csv, args.top_tool_score)
 
     if args.limit is not None:
         samples = samples[: args.limit]
@@ -964,7 +898,14 @@ def main() -> None:
             if tool_rows:
                 all_metric_rows.extend(tool_rows)
             else:
-                all_metric_rows.extend(fallback_tool_metric_rows(collected, judge_config.threshold))
+                all_metric_rows.extend(
+                    fallback_error_metric_rows(
+                        collected,
+                        metric_name="Tool Correctness",
+                        threshold=judge_config.threshold,
+                        error=RuntimeError("Tool Correctness nao retornou linhas de resultado."),
+                    )
+                )
         except Exception as error:
             run_status = "partial_failure"
             _append_debug_event(
@@ -976,12 +917,18 @@ def main() -> None:
                         "judge_model": judge_config.model_name,
                         "judge_base_url": judge_config.base_url,
                         "dataset_size": len(collected),
-                        "fallback": "local_jaccard_tool_score",
                     },
                 ),
             )
             _print_error_summary("tool_correctness", error, debug_json)
-            all_metric_rows.extend(fallback_tool_metric_rows(collected, judge_config.threshold))
+            all_metric_rows.extend(
+                fallback_error_metric_rows(
+                    collected,
+                    metric_name="Tool Correctness",
+                    threshold=judge_config.threshold,
+                    error=error,
+                )
+            )
 
         try:
             task_result = run_task_completion(
