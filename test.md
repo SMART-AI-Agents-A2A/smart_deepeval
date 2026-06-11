@@ -6,7 +6,12 @@ python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\min
 
 python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\gptoss120b_response.csv --export-metrics-csv .\outputs\gptoss120b_metrics.csv --debug-json .\outputs\gptoss120b_debug.json
 
+# PENSAR EM USAR DEPOIS
+python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\gemini31pro_preview_response.csv --export-metrics-csv .\outputs\gemini31pro_preview_metrics.csv --debug-json .\outputs\gemini31pro_preview_debug.json
+
+python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\claudeOpus47_response.csv --export-metrics-csv .\outputs\claudeOpus47_preview_metrics.csv --debug-json .\outputs\claudeOpus47_preview_debug.json
 
 
+# GRÁFICOS
 gráficos:
 python .\analises\deepeval.py --csv .\outputs\smart_deepeval_metrics_20260608-175635_gpt_oss_120b.csv --out-dir .\analises\graficos_gpt_oss_120b
