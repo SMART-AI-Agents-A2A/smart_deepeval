@@ -1,0 +1,98 @@
+﻿numero,conversation_id,route,agents_called,tools_called,expected_tools,tools_correct,tools_missing,tools_extra,api_error,question,expected_output,actual_output,trace_json,rag_json
+45,deepeval-smart-1,multi-agent,Solo|Ar|Radiacao,smart_soil_data|smart_air_temperature|smart_air_current_weather|smart_air_humidity|smart_radiation_solar,smart_soil_data|smart_radiation_solar|smart_air_temperature|smart_air_humidity|smart_air_current_weather,smart_soil_data|smart_air_temperature|smart_air_current_weather|smart_air_humidity|smart_radiation_solar,,,False,"A lavoura está em condição de atenção por calor hoje, considerando temperatura máxima, umidade relativa mínima, radiação solar e umidade do solo?","A lavoura está em condição de atenção por calor. A temperatura máxima prevista é de 34 °C, a umidade relativa mínima é de 53%, a radiação solar máxima é de 890 W/m² e a umidade do solo está em 22%. A recomendação é evitar manejo entre 11:00 e 15:00 e reavaliar a necessidade de gotejamento no fim da tarde. A justificativa é que calor, radiação e baixa umidade relativa elevam a demanda hídrica da planta. Se o cafeeiro estiver em fase reprodutiva, o risco de impacto fisiológico é maior. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário. Origem técnica da recomendação: Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.","
+
+**Resposta**  
+A lavoura apresenta sinais que exigem atenção devido à combinação de **radiação solar elevada (até 541 W/m²)** e **umidade relativa do ar mínima de 67%**. A umidade do solo está em torno de **16,5%**, o que pode indicar estresse hídrico, mas não há dados de temperatura máxima acima do normal para confirmar calor extremo.  
+
+**Risco**  
+- **Radiação solar alta**: Pode aumentar o estresse térmico e evapotranspiração.  
+- **Umidade relativa mínima de 67%**: Reduz a eficiência da fotossíntese e pode afetar o desenvolvimento dos frutos.  
+- **Umidade do solo moderada (16,5%)**: Limite próximo a valores críticos para cafeeiros, dependendo da fase fenológica.  
+
+**Recomendacao**  
+Monitore a lavoura para ajustar a irrigação se a umidade do solo continuar baixa. Evite operações de poda ou aplicação de agroquímicos em horários de radiação intensa (10h-16h). Considere sombreamento temporário em áreas expostas.  
+
+**Motivo tecnico da recomendacao:**  
+A radiação solar elevada e a umidade relativa baixa podem aumentar o estresse hídrico, mesmo com temperaturas moderadas. A umidade do solo está próxima de níveis críticos, exigindo atenção para evitar impactos na produtividade.  
+
+**Origem tecnica da recomendacao:**  
+Baseado em dados de radiação solar, umidade do ar e solo coletados por sensores IoT e OpenWeather, conforme protocolos de monitoramento agrícola.  
+
+**Dados coletados**  
+- **Sensor InfluxDB/Edaphic (Solo)**  
+  - Umidade do Solo: 16,5% (11/06/2026 14:27:04).  
+- **Sensor InfluxDB (Ar - Temperatura)**  
+  - Temperatura do Ar: 19,7°C (11/06/2026 14:27:04).  
+- **OpenWeather (Ar - Temperatura)**  
+  - Temperatura Atual: 20,67°C (11/06/2026 14:27:38).  
+- **Sensor InfluxDB (Ar - Umidade)**  
+  - Umidade Relativa: 81,6% (11/06/2026 14:27:04).  
+- **OpenWeather (Ar - Umidade)**  
+  - Umidade Relativa: 67% (11/06/2026 14:27:38).  
+- **Sensor InfluxDB (Radiacao)**  
+  - Radiação Solar: 427 W/m² (11/06/2026 14:27:04).","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 6 chamada(s) de agente: Solo, Ar, Ar, Ar, Ar, Radiacao.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""6 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 6 chamada(s) de agente: Solo, Ar, Ar, Ar, Ar, Radiacao.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51737005},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51487076}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51737005},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51487076}],""sourceCount"":2,""enabled"":true}"
+87,deepeval-smart-2,multi-agent,Chuva|Ar,smart_rain_accumulated|smart_rain_forecast|smart_air_humidity|smart_air_current_weather|smart_air_pressure,smart_air_pressure|smart_air_current_weather,smart_air_current_weather|smart_air_pressure,,smart_rain_accumulated|smart_rain_forecast|smart_air_humidity,False,O aumento da pressão atmosférica indica melhora no tempo para amanhã e pode abrir uma janela de manejo?,"O aumento da pressão indica tendência de maior estabilidade para amanhã. A pressão passou de 1009 hPa para 1014 hPa, a chance de chuva caiu para 22% e o vento previsto é de 8 km/h. A recomendação é planejar atividades de campo para o período da manhã, mantendo checagem da previsão antes da execução. A justificativa é que pressão em elevação geralmente está associada a tempo mais estável, o que favorece inspeção, manejo manual e eventualmente aplicação, desde que vento e umidade também estejam adequados. Fonte dos dados: OpenWeather. Motivo técnico da recomendação: A recomendação usa pressão atmosférica, tendência de chuva, vento e mudança de direção como sinais de instabilidade. Mesmo que esses dados não substituam uma análise meteorológica completa, eles ajudam a decidir se uma operação sensível deve ser antecipada, adiada ou feita com cautela nas próximas horas. Origem técnica da recomendação: Baseada no uso de monitoramento agrometeorológico descrito por Meireles et al. e na lógica de agricultura de precisão do Manual de Agricultura de Precisão, que defende organizar dados ambientais para apoiar decisões. A leitura de pressão e tendência de chuva é uma prática meteorológica operacional de apoio, não uma regra isolada dos documentos.","
+
+**Resposta**  
+O aumento da pressão atmosférica não foi observado nos dados coletados. Na realidade, a pressão medida pelo sensor InfluxDB diminuiu ligeiramente (de 92,12 hPa para 91,92 hPa), enquanto a OpenWeather registrou 1015 hPa (valor normal para condições estáveis). No entanto, a previsão da OpenWeather indica chuva de 0,57 mm às 09:00 e 0,62 mm às 15:00 do dia 12/06/2026, o que pode limitar a janela de manejo.  
+
+**Risco**  
+A previsão de chuva para o final do dia 12/06/2026 (87% de probabilidade às 09:00 e 96% às 15:00) representa um risco para operações agrícolas, mesmo com a pressão atmosférica estável. A umidade do ar também caiu de 94,9% para 80,8% (InfluxDB), mas a OpenWeather registrou 67% às 14:27, indicando condições secas.  
+
+**Recomendacao**  
+Evite operações agrícolas críticas para amanhã, pois a previsão de chuva (0,62 mm às 15:00) pode comprometer a eficácia. Monitore novamente os dados de chuva e pressão antes de tomar decisões.  
+
+**Motivo tecnico da recomendacao:**  
+A previsão de chuva (>0,5 mm) e a probabilidade elevada (>80%) indicam risco de interrupção, mesmo com pressão estável.  
+
+**Origem tecnica da recomendacao:**  
+Baseado na previsão de precipitação da OpenWeather (smart_rain_forecast) e na análise de condições climáticas.  
+
+**Dados coletados**  
+- **Sensor InfluxDB (Chuva):**  
+  - RainAccumulation: 0 mm (11/06/2026 08:31 a 14:30).  
+- **OpenWeather (Chuva):**  
+  - Previsão de chuva: 0,57 mm (12/06/2026 09:00), 0,62 mm (12/06/2026 15:00).  
+- **Sensor InfluxDB (Ar - Umidade):**  
+  - AirHumidity: 94,9% (11/06/2026 08:31), 80,8% (11/06/2026 14:30).  
+- **OpenWeather (Ar - Umidade):**  
+  - Humidity: 67% (11/06/2026 14:27).  
+- **Sensor InfluxDB (Ar - Pressão):**  
+  - AtmPressure: 92,12 hPa (11/06/2026 08:31), 91,92 hPa (11/06/2026 14:30).  
+- **OpenWeather (Ar - Pressão):**  
+  - Pressure: 1015 hPa (11/06/2026 14:27).","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 6 chamada(s) de agente: Chuva, Chuva, Ar, Ar, Ar, Ar.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""chuva"",""agentName"":""6 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 6 chamada(s) de agente: Chuva, Chuva, Ar, Ar, Ar, Ar.""},""references"":[]}","{""instance"":""smart-rag"",""sources"":[],""sourceCount"":0,""enabled"":false}"
+84,deepeval-smart-3,multi-agent,Solo|Ar|Chuva|Radiacao|Vento,smart_soil_data|smart_air_humidity|smart_air_current_weather|smart_rain_accumulated|smart_rain_forecast|smart_air_temperature|smart_radiation_solar|smart_wind_speed|smart_wind_current_weather|smart_wind_direction|smart_wind_gust,smart_soil_data,smart_soil_data,,smart_air_humidity|smart_air_current_weather|smart_rain_accumulated|smart_rain_forecast|smart_air_temperature|smart_radiation_solar|smart_wind_speed|smart_wind_current_weather|smart_wind_direction|smart_wind_gust,False,A umidade atual do solo indica risco de compactação se houver entrada de máquinas na área irrigada por gotejamento?,"A umidade atual indica risco moderado de compactação. O valor registrado é de 33%, com chuva recente de 9 mm nas últimas 24 horas. A recomendação é evitar máquinas pesadas e reduzir passadas repetidas, principalmente próximas às linhas de plantio e gotejo. A justificativa é que compactação pode reduzir infiltração, limitar crescimento radicular e prejudicar a distribuição da água no solo. Em uma área irrigada por gotejamento, preservar a estrutura do solo é essencial para que a água aplicada alcance bem a zona radicular. Fonte dos dados: InfluxDB. Motivo técnico da recomendação: A recomendação considera que solo úmido após chuva ou irrigação pode reduzir a trafegabilidade, aumentar risco de compactação e dificultar operações no campo. A decisão não deve se basear apenas no volume de chuva, mas também na umidade atual do solo, na tendência de novas chuvas e na sensibilidade da operação planejada. Origem técnica da recomendação: Baseada em Cararo e Souza Dias, que destacam a importância de características físicas do solo, infiltração, retenção de água e manejo racional; e no Manual de Agricultura de Precisão, que orienta usar dados para definir decisões operacionais. A recomendação sobre tráfego e compactação é uma prática conservacionista de cuidado com solo úmido.","
+
+**Resposta**  
+Sim, a umidade do solo atual (16,5%) indica risco de compactação se houver entrada de máquinas na área irrigada por gotejamento. Solos com teor de umidade abaixo de 18% são mais suscetíveis a compactação sob tráfego de equipamentos, especialmente em solos argilosos ou com baixa estrutura.  
+
+**Risco**  
+- **Compactação do solo**: A umidade atual (16,5%) está próxima ao limite crítico para compactação (18%), aumentando o risco de danos à estrutura do solo e redução da infiltração de água e ar.  
+- **Irrigação por gotejamento**: Sistemas de gotejamento podem manter a umidade adequada, mas a leitura indica que o solo está seco, possivelmente devido a falhas no sistema ou necessidade de ajuste.  
+
+**Recomendacao**  
+Evite a entrada de máquinas na área até que a umidade do solo seja elevada a pelo menos 18%. Verifique o funcionamento do sistema de irrigação por gotejamento e considere ajustar a frequência ou volume de aplicação.  
+
+**Dados coletados**  
+- **Sensor InfluxDB/Edaphic (Solo)**  
+  - Umidade do Solo: 16,5% (11/06/2026 14:30:03).  
+  - Temperatura do Solo: 16,4°C (11/06/2026 14:30:03).  
+- **Sensor InfluxDB: Ar**  
+  - Umidade do Ar: 80,8% (11/06/2026 14:30:03).  
+  - Temperatura do Ar: 19,9°C (11/06/2026 14:30:03).  
+- **OpenWeather**  
+  - Umidade do Ar: 67% (11/06/2026 14:27:38).  
+  - Temperatura do Ar: 20,67°C (11/06/2026 14:27:38).  
+- **Sensor InfluxDB: Chuva**  
+  - Precipitação acumulada: 0 mm (11/06/2026 08:31:03 a 14:30:03).  
+- **OpenWeather (Previsão)**  
+  - Chuva prevista: 0,62 mm (12/06/2026 15:00:00).  
+- **Sensor InfluxDB: Vento**  
+  - Velocidade do Vento: 8,86 km/h (11/06/2026 14:30:03).  
+  - Rajadas: 10,69 km/h (11/06/2026 14:30:03).  
+
+**Motivo tecnico da recomendacao:**  
+A compactação do solo é mais provável em condições de baixa umidade, pois a falta de água reduz a coesão entre partículas, tornando o solo mais suscetível a pressão mecânica.  
+
+**Origem tecnica da recomendacao:**  
+Baseado em práticas agrícolas para prevenção de compactação, que recomendam manter a umidade do solo acima de 18% para operações com máquinas.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""15 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""},""references"":[{""key"":""Cafe-na-AmazoniaDENIS.pdf"",""score"":0.43811846},{""key"":""Cafe-na-AmazoniaDENIS.pdf"",""score"":0.43413198}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Cafe-na-AmazoniaDENIS.pdf"",""score"":0.43811846},{""key"":""Cafe-na-AmazoniaDENIS.pdf"",""score"":0.43413198}],""sourceCount"":2,""enabled"":true}"
