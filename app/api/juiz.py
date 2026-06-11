@@ -388,7 +388,12 @@ class JudgeConfig:
 def load_judge_config() -> JudgeConfig:
     model_name = os.getenv("DEEPEVAL_JUDGE_MODEL")
     base_url = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_BASE_URL"))
-    api_key = _clean_optional_env(os.getenv("OPENAI_API_KEY"))
+    api_key = _first_env(
+        "MODEL_ACCESS_KEY",
+        "DIGITALOCEAN_TOKEN",
+        "OPENAI_API_KEY",
+        "OPEN_API_KEY",
+    )
     timeout = int(os.getenv("DEEPEVAL_JUDGE_TIMEOUT", "120"))
 
     model: str | OpenAICompatibleJudgeModel = model_name
@@ -410,9 +415,14 @@ def load_judge_config() -> JudgeConfig:
 
 
 def configure_judge_environment() -> JudgeConfig:
-    openai_api_key = _clean_optional_env(os.getenv("OPENAI_API_KEY"))
+    judge_api_key = _first_env(
+        "MODEL_ACCESS_KEY",
+        "DIGITALOCEAN_TOKEN",
+        "OPENAI_API_KEY",
+        "OPEN_API_KEY",
+    )
 
-    if openai_api_key:
-        os.environ["OPENAI_API_KEY"] = openai_api_key
+    if judge_api_key:
+        os.environ["OPENAI_API_KEY"] = judge_api_key
 
     return load_judge_config()

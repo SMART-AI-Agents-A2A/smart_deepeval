@@ -568,7 +568,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    load_dotenv(ROOT_DIR / ".env")
+    load_dotenv(ROOT_DIR / ".env", override=True)
     judge_config = configure_judge_environment()
     confident_config = load_confident_ai_config()
     samples = load_dataset(args.dataset)
