@@ -4,6 +4,8 @@ python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\gpt
 
 python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\minimax3_response.csv --export-metrics-csv .\outputs\minimax3_metrics.csv --debug-json .\outputs\minimax3_debug.json
 
+python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\kimi-k2.6_response.csv --export-metrics-csv .\outputs\kimi-k2.6_metrics.csv --debug-json .\outputs\kimi-k2.6_debug.json
+
 python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\gptoss120b_response.csv --export-metrics-csv .\outputs\gptoss120b_metrics.csv --debug-json .\outputs\gptoss120b_debug.json
 
 # PENSAR EM USAR DEPOIS
