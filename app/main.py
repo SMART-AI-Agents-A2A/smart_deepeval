@@ -437,6 +437,28 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
     print(f"\nCSV de metricas exportado em: {output_path}")
 
 
+def _read_existing_metric_rows(output_path: Path) -> list[dict[str, Any]]:
+    if not output_path.exists():
+        return []
+
+    with output_path.open(encoding="utf-8-sig", newline="") as file:
+        return list(csv.DictReader(file))
+
+
+def _metric_row_key(row: dict[str, Any]) -> tuple[str, str]:
+    return (str(row.get("metric_name") or ""), str(row.get("numero") or row.get("question") or ""))
+
+
+def _merge_existing_metric_rows(
+    existing_rows: list[dict[str, Any]],
+    new_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    merged_by_key = {_metric_row_key(row): row for row in existing_rows}
+    for row in new_rows:
+        merged_by_key[_metric_row_key(row)] = row
+    return list(merged_by_key.values())
+
+
 def _export_metric_checkpoint(metric_rows: list[dict[str, Any]], output_path: Path | None) -> None:
     if output_path is not None:
         export_metric_results_csv(metric_rows, output_path)
@@ -664,17 +686,26 @@ def main() -> None:
         export_collected_csv(collected, args.export_csv)
 
     all_metric_rows: list[dict[str, Any]] = []
+    existing_metric_rows: list[dict[str, Any]] = []
+    if args.export_metrics_csv:
+        existing_metric_rows = _read_existing_metric_rows(args.export_metrics_csv)
 
     if "goal" in requested_metrics:
         goal_result = run_goal_accuracy(collected, judge_config, confident_config)
         all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(goal_result), collected))
-        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
+        _export_metric_checkpoint(
+            _merge_existing_metric_rows(existing_metric_rows, all_metric_rows),
+            args.export_metrics_csv,
+        )
 
     if "tool" in requested_metrics:
         tool_result = run_tool_correctness(collected, judge_config, confident_config)
         tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
         all_metric_rows.extend(tool_rows or fallback_tool_metric_rows(collected, judge_config.threshold))
-        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
+        _export_metric_checkpoint(
+            _merge_existing_metric_rows(existing_metric_rows, all_metric_rows),
+            args.export_metrics_csv,
+        )
 
     if "task" in requested_metrics:
         task_result = run_task_completion(samples, judge_config, confident_config)
@@ -685,7 +716,10 @@ def main() -> None:
             all_metric_rows.extend(
                 _metric_rows_from_samples(task_metric_rows, samples, judge_config.threshold)
             )
-        _export_metric_checkpoint(all_metric_rows, args.export_metrics_csv)
+        _export_metric_checkpoint(
+            _merge_existing_metric_rows(existing_metric_rows, all_metric_rows),
+            args.export_metrics_csv,
+        )
 
     if args.export_csv is None and collected:
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
