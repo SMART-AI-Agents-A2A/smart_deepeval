@@ -8,9 +8,9 @@ from deepeval.test_case import LLMTestCase, LLMTestCaseParams, ToolCall
 from app.api import JudgeConfig
 
 
-GOAL_ACCURACY_NAME = "Goal Accuracy"
+G_EVAL_NAME = "G-Eval"
 
-GOAL_ACCURACY_STEPS = [
+G_EVAL_STEPS = [
     "Identifique o objetivo central do usuario a partir do campo 'input'.",
     "Verifique no 'actual output' se a resposta responde de forma clara e direta a esse objetivo, dando uma conclusao explicita quando a pergunta exige (por exemplo sim/nao, ha risco ou nao, abre janela de manejo ou nao).",
     "Compare o 'actual output' com o 'expected output' quanto aos criterios tecnicos esperados, mas nao penalize diferencas numericas quando o 'actual output' estiver claramente baseado em dados atuais coletados pela API SMART. Penalize apenas quando houver erro de unidade, conclusao tecnica incoerente, recomendacao inadequada ou ausencia de dados essenciais para responder a pergunta.",
@@ -19,10 +19,10 @@ GOAL_ACCURACY_STEPS = [
 ]
 
 
-def build_goal_accuracy_metric(config: JudgeConfig) -> GEval:
+def build_g_eval_metric(config: JudgeConfig) -> GEval:
     metric_kwargs = {
-        "name": GOAL_ACCURACY_NAME,
-        "evaluation_steps": GOAL_ACCURACY_STEPS,
+        "name": G_EVAL_NAME,
+        "evaluation_steps": G_EVAL_STEPS,
         "evaluation_params": [
             LLMTestCaseParams.INPUT,
             LLMTestCaseParams.ACTUAL_OUTPUT,
@@ -39,7 +39,7 @@ def build_goal_accuracy_metric(config: JudgeConfig) -> GEval:
     return GEval(**metric_kwargs)
 
 
-def build_goal_accuracy_case(
+def build_g_eval_case(
     question: str,
     answer: str,
     expected_output: str,

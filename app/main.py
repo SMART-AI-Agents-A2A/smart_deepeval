@@ -27,8 +27,8 @@ from app.api import (
 )
 from app.tools import (
     SMART_AGENT_TOOLS,
-    build_goal_accuracy_case,
-    build_goal_accuracy_metric,
+    build_g_eval_case,
+    build_g_eval_metric,
     build_observed_smart_agent,
     build_task_completion_metric,
     build_tool_correctness_case,
@@ -684,11 +684,11 @@ def export_debug_json(
     print(f"Debug JSON exportado em: {output_path}")
 
 
-def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
-    metric = build_goal_accuracy_metric(judge_config)
+def run_g_eval(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
+    metric = build_g_eval_metric(judge_config)
     valid_items = [item for item in collected if not item.get("api_error")]
     test_cases = [
-        build_goal_accuracy_case(
+        build_g_eval_case(
             item["sample"].question,
             item["answer"],
             item["sample"].expected_output,
@@ -696,11 +696,11 @@ def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_c
         )
         for item in valid_items
     ]
-    print("\n[1/3] Avaliando Goal Accuracy...")
+    print("\n[1/3] Avaliando G-Eval...")
     return evaluate_with_confident_ai(
         test_cases=test_cases,
         metrics=[metric],
-        metric_name="goal_accuracy",
+        metric_name="g_eval",
         config=confident_config,
         hyperparameters={
             "judge_model": judge_config.model_name,
@@ -777,7 +777,7 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Avalia a API SMART com DeepEval: Goal Accuracy, Tool Correctness e Task Completion."
+        description="Avalia a API SMART com DeepEval: G-Eval, Tool Correctness e Task Completion."
     )
     parser.add_argument(
         "--dataset",
@@ -865,15 +865,15 @@ def main() -> None:
             )
 
         try:
-            goal_result = run_goal_accuracy(collected, judge_config, confident_config)
-            goal_rows = _merge_metric_rows(_metric_data_rows(goal_result), collected)
-            all_metric_rows.extend(goal_rows)
+            g_eval_result = run_g_eval(collected, judge_config, confident_config)
+            g_eval_rows = _merge_metric_rows(_metric_data_rows(g_eval_result), collected)
+            all_metric_rows.extend(g_eval_rows)
         except Exception as error:
             run_status = "partial_failure"
             _append_debug_event(
                 debug_json,
                 _exception_debug_event(
-                    phase="goal_accuracy",
+                    phase="g_eval",
                     error=error,
                     extra={
                         "judge_model": judge_config.model_name,
@@ -882,11 +882,11 @@ def main() -> None:
                     },
                 ),
             )
-            _print_error_summary("goal_accuracy", error, debug_json)
+            _print_error_summary("g_eval", error, debug_json)
             all_metric_rows.extend(
                 fallback_error_metric_rows(
                     collected,
-                    metric_name="Goal Accuracy",
+                    metric_name="G-Eval",
                     threshold=judge_config.threshold,
                     error=error,
                 )
