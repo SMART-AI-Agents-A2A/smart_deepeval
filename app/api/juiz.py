@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+from pathlib import Path
 import json
 import os
 import re
@@ -85,6 +87,112 @@ def _extract_between(text: str, start: str, end: str) -> str:
     )
     match = pattern.search(text)
     return match.group(1).strip() if match else ""
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "y", "sim", "s"}
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+
+
+def _compact_text(value: Any, limit: int | None = None) -> str:
+    if limit is None:
+        limit = _env_int("DEEPEVAL_DEBUG_PREVIEW_CHARS", 800)
+
+    text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, default=str)
+    text = " ".join(text.split())
+
+    if len(text) <= limit:
+        return text
+
+    return f"{text[:limit]}...[truncated {len(text) - limit} chars]"
+
+
+def _safe_json_loads(text: str) -> Any:
+    try:
+        return json.loads(text)
+    except Exception:
+        return text
+
+
+def _summarize_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    messages = payload.get("messages") or []
+    prompt_text = ""
+
+    if isinstance(messages, list):
+        prompt_text = "\n".join(
+            str(message.get("content", ""))
+            for message in messages
+            if isinstance(message, dict)
+        )
+
+    summary: dict[str, Any] = {
+        "model": payload.get("model"),
+        "temperature": payload.get("temperature"),
+        "max_tokens": payload.get("max_tokens"),
+        "max_completion_tokens": payload.get("max_completion_tokens"),
+        "messages_count": len(messages) if isinstance(messages, list) else 0,
+        "prompt_chars": len(prompt_text),
+        "prompt_preview": _compact_text(prompt_text),
+    }
+
+    if _env_bool("DEEPEVAL_DEBUG_PAYLOAD", False):
+        summary["payload_full"] = payload
+
+    return summary
+
+
+def _append_debug_event(event: dict[str, Any]) -> None:
+    debug_path = _clean_optional_env(os.getenv("DEEPEVAL_DEBUG_JSON"))
+    if not debug_path:
+        return
+
+    path = Path(debug_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    current: dict[str, Any]
+    if path.exists():
+        try:
+            current = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(current, dict):
+                current = {}
+        except Exception:
+            current = {}
+    else:
+        current = {}
+
+    current.setdefault("events", [])
+    current["events"].append(event)
+    current["updated_at"] = _now_iso()
+
+    path.write_text(
+        json.dumps(current, ensure_ascii=False, indent=2, default=str),
+        encoding="utf-8",
+    )
+
+
+def _provider_error_message(response: requests.Response) -> str:
+    parsed = _safe_json_loads(response.text)
+
+    if isinstance(parsed, dict):
+        error = parsed.get("error")
+        if isinstance(error, dict) and isinstance(error.get("message"), str):
+            return error["message"]
+        if isinstance(parsed.get("message"), str):
+            return parsed["message"]
+
+    return _compact_text(response.text, 300)
 
 
 class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
@@ -209,14 +317,28 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             timeout=self.timeout,
         )
         try:
-            # response.raise_for_status()
             if response.status_code >= 400:
-                print("\n[ERRO JUIZ] Status:", response.status_code)
-                print("[ERRO JUIZ] URL:", response.url)
-                print("[ERRO JUIZ] Resposta do provedor:")
-                print(response.text)
-                print("[ERRO JUIZ] Payload enviado:")
-                print(payload)
+                provider_message = _provider_error_message(response)
+
+                debug_event = {
+                    "type": "judge_http_error",
+                    "timestamp": _now_iso(),
+                    "status_code": response.status_code,
+                    "url": response.url,
+                    "model": payload.get("model"),
+                    "provider_message": provider_message,
+                    "response_preview": _compact_text(response.text),
+                    "payload_summary": _summarize_payload(payload),
+                }
+                _append_debug_event(debug_event)
+
+                print(
+                    f"\n[ERRO JUIZ] status={response.status_code} "
+                    f"model={payload.get('model')} "
+                    f"message={provider_message}"
+                )
+                print(f"[ERRO JUIZ] detalhes salvos em: {os.getenv('DEEPEVAL_DEBUG_JSON', 'outputs/deepeval_debug.json')}")
+
                 response.raise_for_status()
         except requests.HTTPError as error:
             detail = response.text.strip()

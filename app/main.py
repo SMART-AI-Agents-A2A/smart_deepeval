@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
+import traceback
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -38,6 +40,7 @@ from app.tools import (
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_DATASET_FILE = ROOT_DIR / "app" / "db" / "db.json"
 DEFAULT_OUTPUTS_DIR = ROOT_DIR / "outputs"
+DEFAULT_DEBUG_JSON_FILE = DEFAULT_OUTPUTS_DIR / "deepeval_debug.json"
 
 
 @dataclass(frozen=True)
@@ -53,6 +56,105 @@ def _find_numbered_value(item: dict[str, Any], prefix: str) -> str | None:
         if key.startswith(prefix) and isinstance(value, str):
             return value
     return None
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    try:
+        if value in ("", None):
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _preview_text(value: str | None, limit: int = 500) -> str:
+    text = " ".join((value or "").split())
+    if len(text) <= limit:
+        return text
+    return f"{text[:limit]}...[truncated {len(text) - limit} chars]"
+
+
+def _json_cell(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str)
+
+
+def _join(values: list[str]) -> str:
+    return "|".join(values)
+
+
+def _get_attr(value: Any, *names: str) -> Any:
+    for name in names:
+        if isinstance(value, dict) and name in value:
+            return value[name]
+        if hasattr(value, name):
+            return getattr(value, name)
+    return None
+
+
+def _resolve_debug_json_path(args: argparse.Namespace) -> Path:
+    if args.debug_json:
+        return args.debug_json
+
+    env_path = os.getenv("DEEPEVAL_DEBUG_JSON")
+    if env_path and env_path.strip():
+        return Path(env_path.strip())
+
+    return DEFAULT_DEBUG_JSON_FILE
+
+
+def _read_existing_debug_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _append_debug_event(output_path: Path, event: dict[str, Any]) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    current = _read_existing_debug_json(output_path)
+    events = current.get("events")
+    if not isinstance(events, list):
+        events = []
+
+    events.append(event)
+    current["events"] = events
+    current["updated_at"] = datetime.now().isoformat()
+
+    output_path.write_text(
+        json.dumps(current, ensure_ascii=False, indent=2, default=str),
+        encoding="utf-8",
+    )
+
+
+def _exception_debug_event(
+    *,
+    phase: str,
+    error: BaseException,
+    extra: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return {
+        "type": "execution_error",
+        "timestamp": datetime.now().isoformat(),
+        "phase": phase,
+        "error_type": type(error).__name__,
+        "error_message": _preview_text(str(error), 1200),
+        "traceback_preview": _preview_text(traceback.format_exc(), 2500),
+        "extra": extra or {},
+    }
+
+
+def _print_error_summary(phase: str, error: BaseException, debug_json: Path) -> None:
+    print(
+        f"\n[ERRO] phase={phase} "
+        f"type={type(error).__name__} "
+        f"message={_preview_text(str(error), 300)}"
+    )
+    print(f"[ERRO] detalhes salvos em: {debug_json}")
 
 
 def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
@@ -119,7 +221,7 @@ def select_top_samples_by_csv(samples: list[EvalSample], csv_path: Path, limit: 
         rows = list(csv.DictReader(file))
 
     ranked_numbers: list[int] = []
-    for row in sorted(rows, key=lambda item: float(item.get("simple_tool_score") or 0), reverse=True):
+    for row in sorted(rows, key=lambda item: _safe_float(item.get("simple_tool_score")), reverse=True):
         try:
             number = int(row.get("numero") or "")
         except ValueError:
@@ -129,50 +231,6 @@ def select_top_samples_by_csv(samples: list[EvalSample], csv_path: Path, limit: 
 
     selected_numbers = set(ranked_numbers[:limit])
     return [sample for sample in samples if sample.number in selected_numbers]
-
-
-def collect_smart_responses(samples: list[EvalSample]):
-    api_config = load_api_config()
-    collected = []
-
-    print(f"Coletando respostas da API SMART para {len(samples)} cenarios...\n")
-
-    for index, sample in enumerate(samples, start=1):
-        conversation_id = f"deepeval-smart-{index}"
-        print(f"  [{index}/{len(samples)}] {sample.question[:90]}")
-
-        try:
-            answer, payload = call_smart_chat(sample.question, conversation_id, api_config)
-        except Exception as error:
-            status_code = getattr(getattr(error, "response", None), "status_code", None)
-            if status_code in {401, 403}:
-                raise RuntimeError(
-                    "Falha de autenticacao ao chamar a API SMART. "
-                    "Confira HONO_TOKEN, HONO_COOKIE e HONO_ORIGIN no .env."
-                ) from error
-
-            print(f"      [AVISO] Falha ao chamar API: {error}")
-            answer, payload = "Erro ao consultar a API SMART.", {}
-
-        agents_called = extract_agents_called(payload)
-        tools_called = extract_tools_called(payload)
-        if not tools_called:
-            tools_called = infer_tools_from_agents(agents_called)
-        route = payload.get("trace", {}).get("route", "desconhecida")
-
-        print(f"      route={route} | agentes={agents_called} | tools={[tool.name for tool in tools_called]}")
-
-        collected.append(
-            {
-                "sample": sample,
-                "answer": answer,
-                "payload": payload,
-                "tools_called": tools_called,
-                "conversation_id": conversation_id,
-            }
-        )
-
-    return collected
 
 
 def infer_tools_from_agents(agents_called: list[str]) -> list[ToolCall]:
@@ -198,14 +256,6 @@ def _tool_names(tools: list[ToolCall]) -> list[str]:
     return [tool.name for tool in tools]
 
 
-def _join(values: list[str]) -> str:
-    return "|".join(values)
-
-
-def _json_cell(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
-
-
 def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> float:
     if not expected_tools:
         return 1.0 if called_tools else 0.0
@@ -218,6 +268,90 @@ def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> fl
     denominator = true_positive + false_positive + false_negative
 
     return round(true_positive / denominator, 4) if denominator else 1.0
+
+
+def collect_smart_responses(
+    samples: list[EvalSample],
+    *,
+    quiet: bool = False,
+    debug_json: Path | None = None,
+) -> list[dict[str, Any]]:
+    api_config = load_api_config()
+    collected: list[dict[str, Any]] = []
+
+    if quiet:
+        print(f"Coletando {len(samples)} respostas da API SMART...")
+    else:
+        print(f"Coletando respostas da API SMART para {len(samples)} cenarios...\n")
+
+    for index, sample in enumerate(samples, start=1):
+        conversation_id = f"deepeval-smart-{index}"
+
+        if not quiet:
+            print(f"  [{index}/{len(samples)}] {sample.question[:90]}")
+
+        try:
+            answer, payload = call_smart_chat(sample.question, conversation_id, api_config)
+        except Exception as error:
+            status_code = getattr(getattr(error, "response", None), "status_code", None)
+
+            if debug_json:
+                _append_debug_event(
+                    debug_json,
+                    _exception_debug_event(
+                        phase="collect_smart_response",
+                        error=error,
+                        extra={
+                            "sample_number": sample.number,
+                            "conversation_id": conversation_id,
+                            "status_code": status_code,
+                            "question_preview": _preview_text(sample.question, 500),
+                        },
+                    ),
+                )
+
+            if status_code in {401, 403}:
+                raise RuntimeError(
+                    "Falha de autenticacao ao chamar a API SMART. "
+                    "Confira HONO_TOKEN, HONO_COOKIE e HONO_ORIGIN no .env."
+                ) from error
+
+            if quiet:
+                print(
+                    f"  [{index}/{len(samples)}] "
+                    f"erro_api={type(error).__name__} status={status_code or ''}"
+                )
+            else:
+                print(f"      [AVISO] Falha ao chamar API: {error}")
+
+            answer, payload = "Erro ao consultar a API SMART.", {}
+
+        agents_called = extract_agents_called(payload)
+        tools_called = extract_tools_called(payload)
+        if not tools_called:
+            tools_called = infer_tools_from_agents(agents_called)
+
+        route = payload.get("trace", {}).get("route", payload.get("route", "desconhecida"))
+
+        if quiet:
+            print(
+                f"  [{index}/{len(samples)}] "
+                f"route={route} agentes={len(agents_called)} tools={len(tools_called)}"
+            )
+        else:
+            print(f"      route={route} | agentes={agents_called} | tools={[tool.name for tool in tools_called]}")
+
+        collected.append(
+            {
+                "sample": sample,
+                "answer": answer,
+                "payload": payload,
+                "tools_called": tools_called,
+                "conversation_id": conversation_id,
+            }
+        )
+
+    return collected
 
 
 def _base_metric_row(
@@ -254,15 +388,6 @@ def _base_metric_row(
         "tools_called": _join(called_tools),
         "expected_tools": _join(expected_tools),
     }
-
-
-def _get_attr(value: Any, *names: str) -> Any:
-    for name in names:
-        if isinstance(value, dict) and name in value:
-            return value[name]
-        if hasattr(value, name):
-            return getattr(value, name)
-    return None
 
 
 def _metric_data_rows(evaluation_result: Any) -> list[dict[str, Any]]:
@@ -302,7 +427,7 @@ def _metric_data_rows(evaluation_result: Any) -> list[dict[str, Any]]:
     return rows
 
 
-def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected) -> list[dict[str, Any]]:
+def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_question = {item["sample"].question: item for item in collected}
     merged: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
@@ -322,6 +447,7 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected) -> list[dic
         threshold = metric_row.get("threshold")
         if threshold is None:
             threshold = 0.0
+
         merged.append(
             _base_metric_row(
                 metric_name=metric_name,
@@ -336,8 +462,9 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected) -> list[dic
     return merged
 
 
-def fallback_tool_metric_rows(collected, threshold: float) -> list[dict[str, Any]]:
-    rows = []
+def fallback_tool_metric_rows(collected: list[dict[str, Any]], threshold: float) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+
     for item in collected:
         sample = item["sample"]
         called_tools = _tool_names(item["tools_called"])
@@ -347,6 +474,7 @@ def fallback_tool_metric_rows(collected, threshold: float) -> list[dict[str, Any
         )
         expected_tools = _tool_names(expected_tool_calls)
         score = _simple_tool_score(expected_tools, called_tools)
+
         rows.append(
             _base_metric_row(
                 metric_name="Tool Correctness",
@@ -357,7 +485,33 @@ def fallback_tool_metric_rows(collected, threshold: float) -> list[dict[str, Any
                 item=item,
             )
         )
+
     return rows
+
+
+def fallback_error_metric_rows(
+    collected: list[dict[str, Any]],
+    *,
+    metric_name: str,
+    threshold: float,
+    error: BaseException,
+) -> list[dict[str, Any]]:
+    reason = (
+        f"Metrica nao calculada por erro em tempo de execucao: "
+        f"{type(error).__name__}: {_preview_text(str(error), 800)}"
+    )
+
+    return [
+        _base_metric_row(
+            metric_name=metric_name,
+            score=None,
+            threshold=threshold,
+            passed=False,
+            reason=reason,
+            item=item,
+        )
+        for item in collected
+    ]
 
 
 def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Path) -> None:
@@ -386,7 +540,7 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
     print(f"\nCSV de metricas exportado em: {output_path}")
 
 
-def export_collected_csv(collected, output_path: Path) -> None:
+def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     fieldnames = [
@@ -439,7 +593,133 @@ def export_collected_csv(collected, output_path: Path) -> None:
     print(f"\nCSV exportado em: {output_path}")
 
 
-def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConfig):
+def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
+    sample = item["sample"]
+    payload = item["payload"]
+    agents_called = extract_agents_called(payload)
+    tools_called = _tool_names(item["tools_called"])
+    expected_tool_calls = _expected_tool_calls(sample) or infer_expected_tools(
+        sample.question,
+        sample.expected_output,
+    )
+    expected_tools = _tool_names(expected_tool_calls)
+
+    return {
+        "numero": sample.number or "",
+        "conversation_id": item["conversation_id"],
+        "question_preview": _preview_text(sample.question, 300),
+        "answer_preview": _preview_text(item["answer"], 700),
+        "route": payload.get("trace", {}).get("route", payload.get("route", "")),
+        "agents_called": agents_called,
+        "tools_called": tools_called,
+        "expected_tools": expected_tools,
+        "tools_count": len(tools_called),
+        "expected_tools_count": len(expected_tools),
+        "simple_tool_score": _simple_tool_score(expected_tools, tools_called),
+        "has_trace": bool(payload.get("trace")),
+        "has_rag": bool(payload.get("rag")),
+        "answer_chars": len(item["answer"] or ""),
+    }
+
+
+def _metric_summary(metric_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    by_metric: dict[str, dict[str, Any]] = {}
+
+    for row in metric_rows:
+        metric_name = str(row.get("metric_name") or "unknown")
+        bucket = by_metric.setdefault(
+            metric_name,
+            {
+                "rows": 0,
+                "passed_count": 0,
+                "failed_count": 0,
+                "empty_score_count": 0,
+                "scores": [],
+            },
+        )
+
+        bucket["rows"] += 1
+
+        passed = row.get("passed")
+        if passed is True:
+            bucket["passed_count"] += 1
+        elif passed is False:
+            bucket["failed_count"] += 1
+
+        score = row.get("score")
+        if score in ("", None):
+            bucket["empty_score_count"] += 1
+        else:
+            try:
+                bucket["scores"].append(float(score))
+            except (TypeError, ValueError):
+                bucket["empty_score_count"] += 1
+
+    for bucket in by_metric.values():
+        scores = bucket.pop("scores")
+        bucket["average_score"] = round(sum(scores) / len(scores), 4) if scores else None
+        bucket["min_score"] = round(min(scores), 4) if scores else None
+        bucket["max_score"] = round(max(scores), 4) if scores else None
+
+    return by_metric
+
+
+def export_debug_json(
+    *,
+    output_path: Path,
+    collected: list[dict[str, Any]],
+    metric_rows: list[dict[str, Any]],
+    judge_config,
+    confident_config: ConfidentAiConfig,
+    samples_count: int,
+    run_status: str,
+) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    previous = _read_existing_debug_json(output_path)
+    existing_events = previous.get("events")
+    if not isinstance(existing_events, list):
+        existing_events = []
+
+    passed_values = [row.get("passed") for row in metric_rows if row.get("passed") != ""]
+    scores = [
+        float(row["score"])
+        for row in metric_rows
+        if row.get("score") not in ("", None)
+    ]
+
+    debug_payload = {
+        "run": {
+            "created_at": previous.get("created_at") or datetime.now().isoformat(),
+            "updated_at": datetime.now().isoformat(),
+            "status": run_status,
+            "samples_count": samples_count,
+            "judge_model": judge_config.model_name,
+            "judge_base_url": judge_config.base_url,
+            "threshold": judge_config.threshold,
+            "confident_ai_enabled": confident_config.enabled,
+        },
+        "summary": {
+            "metrics_rows": len(metric_rows),
+            "passed_count": sum(1 for value in passed_values if value is True),
+            "failed_count": sum(1 for value in passed_values if value is False),
+            "average_score": round(sum(scores) / len(scores), 4) if scores else None,
+            "by_metric": _metric_summary(metric_rows),
+        },
+        "samples": [_debug_sample_row(item) for item in collected],
+        "metrics": metric_rows,
+        "events": existing_events,
+    }
+
+    output_path.write_text(
+        json.dumps(debug_payload, ensure_ascii=False, indent=2, default=str),
+        encoding="utf-8",
+    )
+
+    print(f"Debug JSON exportado em: {output_path}")
+
+
+def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
     metric = build_goal_accuracy_metric(judge_config)
     test_cases = [
         build_goal_accuracy_case(
@@ -466,7 +746,7 @@ def run_goal_accuracy(collected, judge_config, confident_config: ConfidentAiConf
     )
 
 
-def run_tool_correctness(collected, judge_config, confident_config: ConfidentAiConfig):
+def run_tool_correctness(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
     metric = build_tool_correctness_metric(judge_config)
     test_cases = [
         build_tool_correctness_case(
@@ -499,6 +779,7 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
     metric = build_task_completion_metric(judge_config)
     api_config = load_api_config()
     observed_smart_agent = build_observed_smart_agent(api_config, metric)
+
     dataset = EvaluationDataset(
         goldens=[
             Golden(input=sample.question, expected_output=sample.expected_output)
@@ -507,8 +788,10 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
     )
 
     print("\n[3/3] Avaliando Task Completion via tracing...")
+
     iterator = dataset.evals_iterator(metrics=[metric])
     index = 1
+
     while True:
         try:
             golden = next(iterator)
@@ -552,6 +835,17 @@ def parse_args() -> argparse.Namespace:
         help="Exporta scores oficiais por metrica/pergunta em CSV.",
     )
     parser.add_argument(
+        "--debug-json",
+        type=Path,
+        default=None,
+        help="Exporta JSON estruturado de debug com resumo da execucao, casos, metricas e erros.",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Reduz logs do terminal, mantendo apenas progresso essencial.",
+    )
+    parser.add_argument(
         "--top-tool-score",
         type=int,
         default=None,
@@ -566,43 +860,182 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
-    args = parse_args()
-    load_dotenv(ROOT_DIR / ".env", override=True)
-    judge_config = configure_judge_environment()
-    confident_config = load_confident_ai_config()
+def _load_samples_from_args(args: argparse.Namespace) -> list[EvalSample]:
     samples = load_dataset(args.dataset)
+
     if args.top_tool_score is not None:
         source_csv = args.top_source_csv or DEFAULT_OUTPUTS_DIR / "smart_deepeval_90.csv"
         samples = select_top_samples_by_csv(samples, source_csv, args.top_tool_score)
+
     if args.limit is not None:
         samples = samples[: args.limit]
-    collected = collect_smart_responses(samples)
 
-    if args.export_csv:
-        export_collected_csv(collected, args.export_csv)
+    return samples
 
+
+def main() -> None:
+    args = parse_args()
+
+    load_dotenv(ROOT_DIR / ".env", override=True)
+
+    debug_json = _resolve_debug_json_path(args)
+    debug_json.parent.mkdir(parents=True, exist_ok=True)
+    os.environ["DEEPEVAL_DEBUG_JSON"] = str(debug_json)
+
+    judge_config = configure_judge_environment()
+    confident_config = load_confident_ai_config()
+
+    collected: list[dict[str, Any]] = []
     all_metric_rows: list[dict[str, Any]] = []
+    run_status = "success"
 
-    goal_result = run_goal_accuracy(collected, judge_config, confident_config)
-    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(goal_result), collected))
+    try:
+        samples = _load_samples_from_args(args)
 
-    tool_result = run_tool_correctness(collected, judge_config, confident_config)
-    tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
-    all_metric_rows.extend(tool_rows or fallback_tool_metric_rows(collected, judge_config.threshold))
+        if not samples:
+            raise ValueError("Nenhum caso de avaliacao foi selecionado.")
 
-    task_result = run_task_completion(samples, judge_config, confident_config)
-    all_metric_rows.extend(_merge_metric_rows(_metric_data_rows(task_result), collected))
+        collected = collect_smart_responses(
+            samples,
+            quiet=args.quiet,
+            debug_json=debug_json,
+        )
 
-    if args.export_csv is None:
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        export_collected_csv(collected, ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv")
+        if args.export_csv:
+            export_collected_csv(collected, args.export_csv)
 
-    metrics_csv = args.export_metrics_csv
-    if metrics_csv is None:
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        metrics_csv = DEFAULT_OUTPUTS_DIR / f"smart_deepeval_metrics_{timestamp}.csv"
-    export_metric_results_csv(all_metric_rows, metrics_csv)
+        try:
+            goal_result = run_goal_accuracy(collected, judge_config, confident_config)
+            goal_rows = _merge_metric_rows(_metric_data_rows(goal_result), collected)
+            all_metric_rows.extend(goal_rows)
+        except Exception as error:
+            run_status = "partial_failure"
+            _append_debug_event(
+                debug_json,
+                _exception_debug_event(
+                    phase="goal_accuracy",
+                    error=error,
+                    extra={
+                        "judge_model": judge_config.model_name,
+                        "judge_base_url": judge_config.base_url,
+                        "dataset_size": len(collected),
+                    },
+                ),
+            )
+            _print_error_summary("goal_accuracy", error, debug_json)
+            all_metric_rows.extend(
+                fallback_error_metric_rows(
+                    collected,
+                    metric_name="Goal Accuracy",
+                    threshold=judge_config.threshold,
+                    error=error,
+                )
+            )
+
+        try:
+            tool_result = run_tool_correctness(collected, judge_config, confident_config)
+            tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
+
+            if tool_rows:
+                all_metric_rows.extend(tool_rows)
+            else:
+                all_metric_rows.extend(fallback_tool_metric_rows(collected, judge_config.threshold))
+        except Exception as error:
+            run_status = "partial_failure"
+            _append_debug_event(
+                debug_json,
+                _exception_debug_event(
+                    phase="tool_correctness",
+                    error=error,
+                    extra={
+                        "judge_model": judge_config.model_name,
+                        "judge_base_url": judge_config.base_url,
+                        "dataset_size": len(collected),
+                        "fallback": "local_jaccard_tool_score",
+                    },
+                ),
+            )
+            _print_error_summary("tool_correctness", error, debug_json)
+            all_metric_rows.extend(fallback_tool_metric_rows(collected, judge_config.threshold))
+
+        try:
+            task_result = run_task_completion(
+                [item["sample"] for item in collected],
+                judge_config,
+                confident_config,
+            )
+            task_rows = _merge_metric_rows(_metric_data_rows(task_result), collected)
+            all_metric_rows.extend(task_rows)
+        except Exception as error:
+            run_status = "partial_failure"
+            _append_debug_event(
+                debug_json,
+                _exception_debug_event(
+                    phase="task_completion",
+                    error=error,
+                    extra={
+                        "judge_model": judge_config.model_name,
+                        "judge_base_url": judge_config.base_url,
+                        "dataset_size": len(collected),
+                    },
+                ),
+            )
+            _print_error_summary("task_completion", error, debug_json)
+            all_metric_rows.extend(
+                fallback_error_metric_rows(
+                    collected,
+                    metric_name="Task Completion",
+                    threshold=judge_config.threshold,
+                    error=error,
+                )
+            )
+
+        if args.export_csv is None:
+            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            export_collected_csv(
+                collected,
+                ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv",
+            )
+
+        metrics_csv = args.export_metrics_csv
+        if metrics_csv is None:
+            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            metrics_csv = DEFAULT_OUTPUTS_DIR / f"smart_deepeval_metrics_{timestamp}.csv"
+
+        export_metric_results_csv(all_metric_rows, metrics_csv)
+
+    except Exception as error:
+        run_status = "failed"
+
+        _append_debug_event(
+            debug_json,
+            _exception_debug_event(
+                phase="main",
+                error=error,
+                extra={
+                    "judge_model": getattr(judge_config, "model_name", ""),
+                    "judge_base_url": getattr(judge_config, "base_url", ""),
+                },
+            ),
+        )
+        _print_error_summary("main", error, debug_json)
+        raise
+
+    finally:
+        try:
+            samples_count = len(collected) if collected else 0
+
+            export_debug_json(
+                output_path=debug_json,
+                collected=collected,
+                metric_rows=all_metric_rows,
+                judge_config=judge_config,
+                confident_config=confident_config,
+                samples_count=samples_count,
+                run_status=run_status,
+            )
+        except Exception as debug_error:
+            print(f"\n[AVISO] Falha ao exportar debug JSON: {debug_error}")
 
     print("\nAvaliacao concluida.")
 
