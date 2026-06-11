@@ -1,13 +1,19 @@
 from __future__ import annotations
 
-import os
 import json
+import os
+import random
 import re
+import time
 from dataclasses import dataclass
 from typing import Any, Iterable
 
 import requests
 from deepeval.test_case import ToolCall
+
+
+SMART_RETRYABLE_STATUS = {408, 409, 425, 429, 500, 502, 503, 504}
+TOOL_LIST_KEYS = ("mcpTools", "toolsCalled", "toolCalls", "tools_called")
 
 
 @dataclass(frozen=True)
@@ -18,6 +24,23 @@ class SmartApiConfig:
     cookie: str | None
     origin: str | None
     timeout: int
+    retry_attempts: int
+    retry_base_sleep: float
+    retry_max_sleep: float
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        return default
 
 
 def load_api_config() -> SmartApiConfig:
@@ -28,7 +51,7 @@ def load_api_config() -> SmartApiConfig:
     token = os.getenv("HONO_TOKEN")
     cookie = os.getenv("HONO_COOKIE")
     origin = os.getenv("HONO_ORIGIN", "http://localhost:5173")
-    timeout = int(os.getenv("HONO_TIMEOUT", "60"))
+    timeout = _env_int("HONO_TIMEOUT", 60)
     return SmartApiConfig(
         base_url=base_url,
         chat_path=chat_path,
@@ -36,7 +59,20 @@ def load_api_config() -> SmartApiConfig:
         cookie=cookie,
         origin=origin,
         timeout=timeout,
+        retry_attempts=_env_int("HONO_RETRY_ATTEMPTS", 4),
+        retry_base_sleep=_env_float("HONO_RETRY_BASE_SLEEP", 2.0),
+        retry_max_sleep=_env_float("HONO_RETRY_MAX_SLEEP", 60.0),
     )
+
+
+def _compute_sleep(attempt: int, retry_after: str | None, base: float, maximum: float) -> float:
+    if retry_after:
+        try:
+            return min(float(retry_after) + random.uniform(0, 1), maximum)
+        except ValueError:
+            pass
+    exponential = base * (2 ** (attempt - 1))
+    return min(exponential + random.uniform(0, base), maximum)
 
 
 def call_smart_chat(question: str, conversation_id: str, config: SmartApiConfig | None = None) -> tuple[str, dict[str, Any]]:
@@ -49,26 +85,60 @@ def call_smart_chat(question: str, conversation_id: str, config: SmartApiConfig 
     if config.token:
         headers["Authorization"] = f"Bearer {config.token}"
 
-    response = requests.post(
-        f"{config.base_url}{config.chat_path}",
-        json={
-            "conversationId": conversation_id,
-            "messages": [{"role": "user", "content": question}],
-        },
-        headers=headers,
-        timeout=config.timeout,
-    )
-    response.raise_for_status()
+    url = f"{config.base_url}{config.chat_path}"
+    body = {
+        "conversationId": conversation_id,
+        "messages": [{"role": "user", "content": question}],
+    }
 
-    payload = parse_chat_response(response)
-    return extract_answer(payload), payload
+    last_error: Exception | None = None
+    for attempt in range(1, config.retry_attempts + 1):
+        try:
+            response = requests.post(url, json=body, headers=headers, timeout=config.timeout)
+        except requests.RequestException as exc:
+            last_error = exc
+            if attempt < config.retry_attempts:
+                sleep = _compute_sleep(attempt, None, config.retry_base_sleep, config.retry_max_sleep)
+                print(
+                    f"[AVISO SMART] conexao_falhou conv={conversation_id} "
+                    f"attempt={attempt}/{config.retry_attempts} sleep={sleep:.2f}s "
+                    f"erro={type(exc).__name__}"
+                )
+                time.sleep(sleep)
+                continue
+            raise
+
+        if response.status_code in {401, 403}:
+            response.raise_for_status()
+
+        if response.status_code in SMART_RETRYABLE_STATUS and attempt < config.retry_attempts:
+            sleep = _compute_sleep(
+                attempt,
+                response.headers.get("Retry-After"),
+                config.retry_base_sleep,
+                config.retry_max_sleep,
+            )
+            print(
+                f"[AVISO SMART] status={response.status_code} conv={conversation_id} "
+                f"attempt={attempt}/{config.retry_attempts} sleep={sleep:.2f}s"
+            )
+            last_error = requests.HTTPError(response=response)
+            time.sleep(sleep)
+            continue
+
+        response.raise_for_status()
+        payload = parse_chat_response(response)
+        return extract_answer(payload), payload
+
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("Falha ao chamar a API SMART sem erro registrado.")
 
 
 def parse_chat_response(response: requests.Response) -> dict[str, Any]:
     content_type = response.headers.get("content-type", "")
     if "text/event-stream" in content_type:
         return parse_sse_response(response.text)
-
     try:
         return response.json()
     except ValueError:
@@ -249,7 +319,7 @@ def extract_tools_called(payload: dict[str, Any]) -> list[ToolCall]:
     seen: set[str] = set()
 
     for item in _iter_dicts(payload):
-        for key in ("mcpTools", "toolsCalled", "toolCalls", "tools_called", "tools"):
+        for key in TOOL_LIST_KEYS:
             raw_tools = item.get(key)
             if not isinstance(raw_tools, list):
                 continue

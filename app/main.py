@@ -105,7 +105,6 @@ def _resolve_debug_json_path(args: argparse.Namespace) -> Path:
 def _read_existing_debug_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
-
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
@@ -115,16 +114,13 @@ def _read_existing_debug_json(path: Path) -> dict[str, Any]:
 
 def _append_debug_event(output_path: Path, event: dict[str, Any]) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-
     current = _read_existing_debug_json(output_path)
     events = current.get("events")
     if not isinstance(events, list):
         events = []
-
     events.append(event)
     current["events"] = events
     current["updated_at"] = datetime.now().isoformat()
-
     output_path.write_text(
         json.dumps(current, ensure_ascii=False, indent=2, default=str),
         encoding="utf-8",
@@ -220,6 +216,16 @@ def select_top_samples_by_csv(samples: list[EvalSample], csv_path: Path, limit: 
     with csv_path.open(encoding="utf-8-sig", newline="") as file:
         rows = list(csv.DictReader(file))
 
+    if not rows:
+        return samples
+
+    first_row = rows[0]
+    if "simple_tool_score" not in first_row or "numero" not in first_row:
+        raise ValueError(
+            f"CSV {csv_path} nao contem colunas 'numero' e 'simple_tool_score'. "
+            "Use o CSV exportado com --export-csv, nao o de metricas."
+        )
+
     ranked_numbers: list[int] = []
     for row in sorted(rows, key=lambda item: _safe_float(item.get("simple_tool_score")), reverse=True):
         try:
@@ -242,7 +248,6 @@ def infer_tools_from_agents(agents_called: list[str]) -> list[ToolCall]:
                 for tool_name in mapped_tools:
                     if tool_name not in tool_names:
                         tool_names.append(tool_name)
-
     return [ToolCall(name=tool_name) for tool_name in tool_names]
 
 
@@ -259,14 +264,12 @@ def _tool_names(tools: list[ToolCall]) -> list[str]:
 def _simple_tool_score(expected_tools: list[str], called_tools: list[str]) -> float:
     if not expected_tools:
         return 1.0 if called_tools else 0.0
-
     expected = set(expected_tools)
     called = set(called_tools)
     true_positive = len(expected & called)
     false_positive = len(called - expected)
     false_negative = len(expected - called)
     denominator = true_positive + false_positive + false_negative
-
     return round(true_positive / denominator, 4) if denominator else 1.0
 
 
@@ -286,6 +289,7 @@ def collect_smart_responses(
 
     for index, sample in enumerate(samples, start=1):
         conversation_id = f"deepeval-smart-{index}"
+        api_error = False
 
         if not quiet:
             print(f"  [{index}/{len(samples)}] {sample.question[:90]}")
@@ -293,6 +297,7 @@ def collect_smart_responses(
         try:
             answer, payload = call_smart_chat(sample.question, conversation_id, api_config)
         except Exception as error:
+            api_error = True
             status_code = getattr(getattr(error, "response", None), "status_code", None)
 
             if debug_json:
@@ -337,9 +342,13 @@ def collect_smart_responses(
             print(
                 f"  [{index}/{len(samples)}] "
                 f"route={route} agentes={len(agents_called)} tools={len(tools_called)}"
+                + (" [API_ERROR]" if api_error else "")
             )
         else:
-            print(f"      route={route} | agentes={agents_called} | tools={[tool.name for tool in tools_called]}")
+            print(
+                f"      route={route} | agentes={agents_called} | tools={[t.name for t in tools_called]}"
+                + (" | [API_ERROR]" if api_error else "")
+            )
 
         collected.append(
             {
@@ -348,6 +357,7 @@ def collect_smart_responses(
                 "payload": payload,
                 "tools_called": tools_called,
                 "conversation_id": conversation_id,
+                "api_error": api_error,
             }
         )
 
@@ -380,6 +390,7 @@ def _base_metric_row(
         "threshold": threshold,
         "passed": "" if passed is None else bool(passed),
         "reason": reason,
+        "api_error": item.get("api_error", False),
         "question": sample.question,
         "actual_output": item["answer"],
         "expected_output": sample.expected_output,
@@ -428,9 +439,17 @@ def _metric_data_rows(evaluation_result: Any) -> list[dict[str, Any]]:
 
 
 def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    by_question = {item["sample"].question: item for item in collected}
+    by_number: dict[int, dict[str, Any]] = {}
+    by_question: dict[str, dict[str, Any]] = {}
+    for item in collected:
+        sample = item["sample"]
+        if sample.number is not None:
+            by_number[sample.number] = item
+        if sample.question not in by_question:
+            by_question[sample.question] = item
+
     merged: list[dict[str, Any]] = []
-    seen: set[tuple[str, str]] = set()
+    seen: set[tuple[str, int | str]] = set()
 
     for metric_row in metric_rows:
         question = str(metric_row.get("question") or "")
@@ -438,11 +457,12 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[s
         if item is None:
             continue
 
+        sample = item["sample"]
         metric_name = str(metric_row.get("metric_name") or "")
-        key = (metric_name, question)
-        if key in seen:
+        dedup_key: tuple[str, int | str] = (metric_name, sample.number if sample.number is not None else question)
+        if dedup_key in seen:
             continue
-        seen.add(key)
+        seen.add(dedup_key)
 
         threshold = metric_row.get("threshold")
         if threshold is None:
@@ -464,7 +484,6 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[s
 
 def fallback_tool_metric_rows(collected: list[dict[str, Any]], threshold: float) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-
     for item in collected:
         sample = item["sample"]
         called_tools = _tool_names(item["tools_called"])
@@ -474,7 +493,6 @@ def fallback_tool_metric_rows(collected: list[dict[str, Any]], threshold: float)
         )
         expected_tools = _tool_names(expected_tool_calls)
         score = _simple_tool_score(expected_tools, called_tools)
-
         rows.append(
             _base_metric_row(
                 metric_name="Tool Correctness",
@@ -485,7 +503,6 @@ def fallback_tool_metric_rows(collected: list[dict[str, Any]], threshold: float)
                 item=item,
             )
         )
-
     return rows
 
 
@@ -497,10 +514,9 @@ def fallback_error_metric_rows(
     error: BaseException,
 ) -> list[dict[str, Any]]:
     reason = (
-        f"Metrica nao calculada por erro em tempo de execucao: "
+        f"[FALLBACK_ERROR] Metrica nao calculada por erro em tempo de execucao: "
         f"{type(error).__name__}: {_preview_text(str(error), 800)}"
     )
-
     return [
         _base_metric_row(
             metric_name=metric_name,
@@ -523,6 +539,7 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
         "threshold",
         "passed",
         "reason",
+        "api_error",
         "question",
         "actual_output",
         "expected_output",
@@ -531,18 +548,15 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
         "tools_called",
         "expected_tools",
     ]
-
     with output_path.open("w", encoding="utf-8-sig", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(metric_rows)
-
     print(f"\nCSV de metricas exportado em: {output_path}")
 
 
 def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-
     fieldnames = [
         "numero",
         "conversation_id",
@@ -551,17 +565,16 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
         "tools_called",
         "expected_tools",
         "simple_tool_score",
+        "api_error",
         "question",
         "expected_output",
         "actual_output",
         "trace_json",
         "rag_json",
     ]
-
     with output_path.open("w", encoding="utf-8-sig", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-
         for item in collected:
             sample = item["sample"]
             payload = item["payload"]
@@ -569,10 +582,8 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
             called_tools = _tool_names(item["tools_called"])
             expected_tool_calls = _expected_tool_calls(sample) or []
             expected_tools = _tool_names(expected_tool_calls)
-
             if not expected_tools:
                 expected_tools = _tool_names(infer_expected_tools(sample.question, sample.expected_output))
-
             writer.writerow(
                 {
                     "numero": sample.number or "",
@@ -582,6 +593,7 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
                     "tools_called": _join(called_tools),
                     "expected_tools": _join(expected_tools),
                     "simple_tool_score": _simple_tool_score(expected_tools, called_tools),
+                    "api_error": item.get("api_error", False),
                     "question": sample.question,
                     "expected_output": sample.expected_output,
                     "actual_output": item["answer"],
@@ -589,7 +601,6 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
                     "rag_json": _json_cell(payload.get("rag", {})),
                 }
             )
-
     print(f"\nCSV exportado em: {output_path}")
 
 
@@ -603,10 +614,10 @@ def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
         sample.expected_output,
     )
     expected_tools = _tool_names(expected_tool_calls)
-
     return {
         "numero": sample.number or "",
         "conversation_id": item["conversation_id"],
+        "api_error": item.get("api_error", False),
         "question_preview": _preview_text(sample.question, 300),
         "answer_preview": _preview_text(item["answer"], 700),
         "route": payload.get("trace", {}).get("route", payload.get("route", "")),
@@ -624,7 +635,6 @@ def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
 
 def _metric_summary(metric_rows: list[dict[str, Any]]) -> dict[str, Any]:
     by_metric: dict[str, dict[str, Any]] = {}
-
     for row in metric_rows:
         metric_name = str(row.get("metric_name") or "unknown")
         bucket = by_metric.setdefault(
@@ -633,18 +643,21 @@ def _metric_summary(metric_rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "rows": 0,
                 "passed_count": 0,
                 "failed_count": 0,
+                "fallback_error_count": 0,
                 "empty_score_count": 0,
                 "scores": [],
             },
         )
-
         bucket["rows"] += 1
-
         passed = row.get("passed")
         if passed is True:
             bucket["passed_count"] += 1
         elif passed is False:
             bucket["failed_count"] += 1
+
+        reason = str(row.get("reason") or "")
+        if reason.startswith("[FALLBACK_ERROR]"):
+            bucket["fallback_error_count"] += 1
 
         score = row.get("score")
         if score in ("", None):
@@ -688,12 +701,15 @@ def export_debug_json(
         if row.get("score") not in ("", None)
     ]
 
+    api_error_count = sum(1 for item in collected if item.get("api_error"))
+
     debug_payload = {
         "run": {
             "created_at": previous.get("created_at") or datetime.now().isoformat(),
             "updated_at": datetime.now().isoformat(),
             "status": run_status,
             "samples_count": samples_count,
+            "api_error_count": api_error_count,
             "judge_model": judge_config.model_name,
             "judge_base_url": judge_config.base_url,
             "threshold": judge_config.threshold,
@@ -715,12 +731,12 @@ def export_debug_json(
         json.dumps(debug_payload, ensure_ascii=False, indent=2, default=str),
         encoding="utf-8",
     )
-
     print(f"Debug JSON exportado em: {output_path}")
 
 
 def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
     metric = build_goal_accuracy_metric(judge_config)
+    valid_items = [item for item in collected if not item.get("api_error")]
     test_cases = [
         build_goal_accuracy_case(
             item["sample"].question,
@@ -728,9 +744,8 @@ def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_c
             item["sample"].expected_output,
             item["tools_called"],
         )
-        for item in collected
+        for item in valid_items
     ]
-
     print("\n[1/3] Avaliando Goal Accuracy...")
     return evaluate_with_confident_ai(
         test_cases=test_cases,
@@ -748,6 +763,7 @@ def run_goal_accuracy(collected: list[dict[str, Any]], judge_config, confident_c
 
 def run_tool_correctness(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
     metric = build_tool_correctness_metric(judge_config)
+    valid_items = [item for item in collected if not item.get("api_error")]
     test_cases = [
         build_tool_correctness_case(
             item["sample"].question,
@@ -756,9 +772,8 @@ def run_tool_correctness(collected: list[dict[str, Any]], judge_config, confiden
             item["tools_called"],
             expected_tools=_expected_tool_calls(item["sample"]),
         )
-        for item in collected
+        for item in valid_items
     ]
-
     print("\n[2/3] Avaliando Tool Correctness...")
     return evaluate_with_confident_ai(
         test_cases=test_cases,
@@ -797,6 +812,10 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
             golden = next(iterator)
         except StopIteration as finished:
             return finished.value
+        except Exception as exc:
+            raise RuntimeError(
+                f"Erro inesperado no iterador de Task Completion na iteracao {index}: {exc}"
+            ) from exc
 
         observed_smart_agent(
             golden.input,
@@ -874,9 +893,9 @@ def _load_samples_from_args(args: argparse.Namespace) -> list[EvalSample]:
 
 
 def main() -> None:
-    args = parse_args()
-
     load_dotenv(ROOT_DIR / ".env", override=True)
+
+    args = parse_args()
 
     debug_json = _resolve_debug_json_path(args)
     debug_json.parent.mkdir(parents=True, exist_ok=True)
@@ -903,6 +922,13 @@ def main() -> None:
 
         if args.export_csv:
             export_collected_csv(collected, args.export_csv)
+
+        valid_collected = [item for item in collected if not item.get("api_error")]
+        if not valid_collected:
+            raise RuntimeError(
+                "Todos os casos falharam na coleta da API SMART. "
+                "Nenhuma metrica sera calculada."
+            )
 
         try:
             goal_result = run_goal_accuracy(collected, judge_config, confident_config)
@@ -935,7 +961,6 @@ def main() -> None:
         try:
             tool_result = run_tool_correctness(collected, judge_config, confident_config)
             tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
-
             if tool_rows:
                 all_metric_rows.extend(tool_rows)
             else:
@@ -960,7 +985,7 @@ def main() -> None:
 
         try:
             task_result = run_task_completion(
-                [item["sample"] for item in collected],
+                [item["sample"] for item in valid_collected],
                 judge_config,
                 confident_config,
             )
@@ -1006,7 +1031,6 @@ def main() -> None:
 
     except Exception as error:
         run_status = "failed"
-
         _append_debug_event(
             debug_json,
             _exception_debug_event(
@@ -1024,7 +1048,6 @@ def main() -> None:
     finally:
         try:
             samples_count = len(collected) if collected else 0
-
             export_debug_json(
                 output_path=debug_json,
                 collected=collected,

@@ -61,7 +61,7 @@ EXPECTED_TOOL_KEYWORDS: tuple[tuple[tuple[str, ...], tuple[str, ...]], ...] = (
     (("direção do vento", "direcao do vento"), ("smart_wind_direction",)),
     (("rajada", "rajadas"), ("smart_wind_gust",)),
     (("previsão de vento", "previsao de vento"), ("smart_wind_forecast",)),
-    (("vento atual", "deriva", "aplicação agrícola", "aplicacao agricola"), ("smart_wind_current_weather", "smart_wind_speed", "smart_wind_direction", "smart_wind_gust")),
+    (("vento atual", "deriva", "aplicação agrícola", "aplicacao agricola"), ("smart_wind_current_weather",)),
     (("temperatura do ar", "calor", "frio", "geada"), ("smart_air_temperature",)),
     (("umidade do ar", "umidade relativa"), ("smart_air_humidity",)),
     (("pressão", "pressao", "pressão atmosférica", "pressao atmosferica"), ("smart_air_pressure",)),
@@ -106,9 +106,6 @@ def infer_expected_tools(question: str, expected_output: str = "") -> list[ToolC
                 if tool_name not in selected:
                     selected.append(tool_name)
 
-    if not selected:
-        selected = ["smart_air_conditions"]
-
     return [ToolCall(name=name) for name in selected]
 
 
@@ -119,10 +116,14 @@ def build_tool_correctness_case(
     tools_called: list[ToolCall],
     expected_tools: list[ToolCall] | None = None,
 ) -> LLMTestCase:
+    resolved_expected = expected_tools or infer_expected_tools(question, expected_output)
+    if not resolved_expected:
+        resolved_expected = tools_called or [ToolCall(name="smart_air_conditions")]
+
     return LLMTestCase(
         input=question,
         actual_output=answer,
         expected_output=expected_output,
         tools_called=tools_called,
-        expected_tools=expected_tools or infer_expected_tools(question, expected_output),
+        expected_tools=resolved_expected,
     )

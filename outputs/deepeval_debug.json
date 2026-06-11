@@ -1,0 +1,274 @@
+{
+  "events": [
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T15:25:14.437093+00:00",
+      "attempt": 1,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "3998569",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 1,
+        "prompt_chars": 2304,
+        "prompt_preview": "You are an expert evaluator providing a **final justification** for whether an AI agent has passed or failed an evaluation metric. You are given: - An agent's goal execution scores and reasons. - The agent's plan evaluation scores and reasons. - The **final combined score**. - The **threshold** required to pass. - Whether the result is a **pass** or **fail**. Your job is to write a short, precise explanation of **why** the agent passed or failed — taking into account the quality of execution and planning, and the threshold. --- INSTRUCTIONS: - Write 2-4 clear, objective sentences explaining the overall result. - Explicitly reference both the task and plan performance — **both must be addressed**. - Mention how the final score compares to the threshold. - If the agent **passed**, highlight ...[truncated 1055 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T15:25:38.294057+00:00",
+      "attempt": 1,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "3999921",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 8249,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. You are an expert evaluator assessing the **goal accuracy** of an AI assistant's single interaction. PURPOSE: Evaluate whether the assistant's **visible output** (what the user actually saw) **fully and correctly achieved the user's stated goal. Ignore internal reasoning, hidden tool calls, or retriever outputs unless their results were explicitly surfaced to the user. The evaluation must be **strict and adversarial** — if the goal is not *clearly, fully, and correctly achieved*, assign a low score. EVALUATION RULES 1. **User-visible fulfillment only** - Base your judgment solely on what the user would see in the assistant's message. - Ignore hidden or internal steps unle...[truncated 5847 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T15:25:43.311737+00:00",
+      "attempt": 2,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "4000000",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 8249,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. You are an expert evaluator assessing the **goal accuracy** of an AI assistant's single interaction. PURPOSE: Evaluate whether the assistant's **visible output** (what the user actually saw) **fully and correctly achieved the user's stated goal. Ignore internal reasoning, hidden tool calls, or retriever outputs unless their results were explicitly surfaced to the user. The evaluation must be **strict and adversarial** — if the goal is not *clearly, fully, and correctly achieved*, assign a low score. EVALUATION RULES 1. **User-visible fulfillment only** - Base your judgment solely on what the user would see in the assistant's message. - Ignore hidden or internal steps unle...[truncated 5847 chars]"
+      }
+    },
+    {
+      "type": "execution_error",
+      "timestamp": "2026-06-11T12:29:08.467347",
+      "phase": "goal_accuracy",
+      "error_type": "TimeoutError",
+      "error_message": "",
+      "traceback_preview": "Traceback (most recent call last): File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\asyncio\\tasks.py\", line 507, in wait_for return await fut ^^^^^^^^^ File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\evaluate\\execute\\e2e.py\", line 694, in _a_execute_conversational_test_cases await measure_metrics_with_indicator( ...<8 lines>... ) File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\metrics\\indicator.py\", line 238, in measure_metrics_with_indicator await asyncio.gather(*tasks) asyncio.exceptions.CancelledError The above exception was the direct cause of the following exception: Traceback (most recent call last): File \"C:\\Users\\Ramon Castro Barbosa\\Git\\Pesquisa\\SMART-UFABC\\smart_deepeval\\app\\main.py\", line 908, in main goal_result = run_goal_accuracy(collected, judge_config, confident_config) File \"C:\\Users\\Ramon Castro Barbosa\\Git\\Pesquisa\\SMART-UFABC\\smart_deepeval\\app\\main.py\", line 735, in run_goal_accuracy return evaluate_with_confident_ai( test_cases=test_cases, ...<8 lines>... }, ) File \"C:\\Users\\Ramon Castro Barbosa\\Git\\Pesquisa\\SMART-UFABC\\smart_deepeval\\app\\api\\connect_confident_ai.py\", line 103, in evaluate_with_confident_ai return evaluate(**evaluate_kwargs) File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\evaluate\\evaluate.py\", line 205, in evaluate test_results = loop.run_until_complete( a_execute_test_cases( ...<7 lines>... ) ) File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\asyncio\\base_events.py\", line 725, in run_until_complete return future.result() ~~~~~~~~~~~~~^^ File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\evaluate\\execute\\e2e.py\", line 449, in a_execute_test_cases await asyncio.wait_for( ...<2 lines>... ) File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\asyncio\\tasks.py\", line 507, in wait_for return await fut ^^^^^^^^^ File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\evaluate\\execute\\e2e.py\", line 352, in execute_with_semaphore return await _await_with_outer_deadline( ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ func, *args, timeout=get_per_task_timeout_seconds(), **kwargs ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ) ^ File \"C:\\Users\\Ramon Castro Barbosa\\miniconda3\\Lib\\site-packages\\deepeval\\evaluate\\execute\\_common.py\", line 238, in _await_with_outer_deadline return await asyncio.wait_for(coro, timeout=timeout) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File \"C:\\Users\\Ramon Castro Barbosa\\min...[truncated 257 chars]",
+      "extra": {
+        "judge_model": "deepseek-v4-pro",
+        "judge_base_url": "https://inference.do-ai.run/v1",
+        "dataset_size": 30
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T16:02:18.053314+00:00",
+      "attempt": 1,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "3997053",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 2931,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. Given the task (desired outcome) and the actual achieved outcome, compare how well the actual outcome aligns with the desired task. Please return a JSON with two keys: `verdict` and `reason`. - The `verdict` should be a score from 0 to 1, where 1 indicates the actual outcome perfectly achieves the desired task, and 0 indicates it does not achieve the task at all. - The `reason` should explain why the given verdict was assigned. ** IMPORTANT: Please make sure to only return in JSON format, with `verdict` as a float between 0 and 1. Example: Task: Have the system plan a weekend trip to New York, including travel, accommodation, and sightseeing. Actual outcome: The system pr...[truncated 1812 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T16:02:23.110086+00:00",
+      "attempt": 2,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "3999265",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 2931,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. Given the task (desired outcome) and the actual achieved outcome, compare how well the actual outcome aligns with the desired task. Please return a JSON with two keys: `verdict` and `reason`. - The `verdict` should be a score from 0 to 1, where 1 indicates the actual outcome perfectly achieves the desired task, and 0 indicates it does not achieve the task at all. - The `reason` should explain why the given verdict was assigned. ** IMPORTANT: Please make sure to only return in JSON format, with `verdict` as a float between 0 and 1. Example: Task: Have the system plan a weekend trip to New York, including travel, accommodation, and sightseeing. Actual outcome: The system pr...[truncated 1812 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T16:02:30.911231+00:00",
+      "attempt": 3,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "4000000",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 2931,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. Given the task (desired outcome) and the actual achieved outcome, compare how well the actual outcome aligns with the desired task. Please return a JSON with two keys: `verdict` and `reason`. - The `verdict` should be a score from 0 to 1, where 1 indicates the actual outcome perfectly achieves the desired task, and 0 indicates it does not achieve the task at all. - The `reason` should explain why the given verdict was assigned. ** IMPORTANT: Please make sure to only return in JSON format, with `verdict` as a float between 0 and 1. Example: Task: Have the system plan a weekend trip to New York, including travel, accommodation, and sightseeing. Actual outcome: The system pr...[truncated 1812 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T16:02:42.974833+00:00",
+      "attempt": 4,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "4000000",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 2931,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. Given the task (desired outcome) and the actual achieved outcome, compare how well the actual outcome aligns with the desired task. Please return a JSON with two keys: `verdict` and `reason`. - The `verdict` should be a score from 0 to 1, where 1 indicates the actual outcome perfectly achieves the desired task, and 0 indicates it does not achieve the task at all. - The `reason` should explain why the given verdict was assigned. ** IMPORTANT: Please make sure to only return in JSON format, with `verdict` as a float between 0 and 1. Example: Task: Have the system plan a weekend trip to New York, including travel, accommodation, and sightseeing. Actual outcome: The system pr...[truncated 1812 chars]"
+      }
+    },
+    {
+      "type": "judge_http_error",
+      "timestamp": "2026-06-11T16:03:02.623115+00:00",
+      "attempt": 5,
+      "max_attempts": 6,
+      "status_code": 429,
+      "url": "https://inference.do-ai.run/v1/chat/completions",
+      "model": "deepseek-v4-pro",
+      "provider_message": "Platform overloaded. Please try again later.",
+      "rate_limit_headers": {
+        "x-ratelimit-limit-requests": "300",
+        "x-ratelimit-limit-tokens-per-day": "40000000",
+        "x-ratelimit-limit-tokens-per-minute": "800000",
+        "x-ratelimit-remaining-requests": "299",
+        "x-ratelimit-remaining-tokens-per-day": "4000000",
+        "x-ratelimit-remaining-tokens-per-minute": "800000",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens-per-day": "0",
+        "x-ratelimit-reset-tokens-per-minute": "0"
+      },
+      "response_preview": "{\"error\":{\"message\":\"Platform overloaded. Please try again later.\",\"type\":\"rate_limit_exceeded_error\"},\"message\":\"Platform overloaded. Please try again later.\",\"status_code\":429}",
+      "payload_summary": {
+        "model": "deepseek-v4-pro",
+        "temperature": 0,
+        "max_tokens": 500,
+        "max_completion_tokens": null,
+        "response_format_active": false,
+        "messages_count": 2,
+        "prompt_chars": 2931,
+        "prompt_preview": "Voce e um juiz de avaliacao. Retorne somente JSON valido, sem Markdown, sem explicacao e sem texto fora do objeto JSON. Given the task (desired outcome) and the actual achieved outcome, compare how well the actual outcome aligns with the desired task. Please return a JSON with two keys: `verdict` and `reason`. - The `verdict` should be a score from 0 to 1, where 1 indicates the actual outcome perfectly achieves the desired task, and 0 indicates it does not achieve the task at all. - The `reason` should explain why the given verdict was assigned. ** IMPORTANT: Please make sure to only return in JSON format, with `verdict` as a float between 0 and 1. Example: Task: Have the system plan a weekend trip to New York, including travel, accommodation, and sightseeing. Actual outcome: The system pr...[truncated 1812 chars]"
+      }
+    }
+  ],
+  "updated_at": "2026-06-11T16:03:02.625093+00:00"
+}

@@ -25,11 +25,24 @@ def _is_enabled(value: str | None) -> bool:
     return value.strip().lower() in TRUE_VALUES if value else False
 
 
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
 def load_confident_ai_config() -> ConfidentAiConfig:
     enabled = _is_enabled(os.getenv("CONFIDENT_AI_ENABLED"))
     api_key = os.getenv("CONFIDENT_API_KEY")
     run_identifier = os.getenv("CONFIDENT_AI_RUN_IDENTIFIER", "smart-deepeval")
     send_hyperparameters = os.getenv("CONFIDENT_AI_SEND_HYPERPARAMETERS", "true").lower() != "false"
+
+    if enabled and not api_key:
+        print(
+            "[AVISO CONFIDENT] CONFIDENT_AI_ENABLED=true porem CONFIDENT_API_KEY ausente. "
+            "Os resultados nao serao enviados ao Confident AI."
+        )
 
     return ConfidentAiConfig(
         enabled=enabled,
@@ -48,7 +61,8 @@ def configure_confident_ai_environment(config: ConfidentAiConfig) -> None:
         os.environ["CONFIDENT_API_KEY"] = config.api_key
         return
 
-    os.environ.pop("CONFIDENT_API_KEY", None)
+    if config.enabled and not config.api_key:
+        os.environ.pop("CONFIDENT_API_KEY", None)
 
 
 def build_test_run_identifier(config: ConfidentAiConfig, metric_name: str) -> str | None:
@@ -86,10 +100,12 @@ def evaluate_with_confident_ai(
 ):
     configure_confident_ai_environment(config)
 
+    max_concurrent = max(1, _env_int("DEEPEVAL_MAX_CONCURRENT", 1))
+
     evaluate_kwargs: dict[str, Any] = {
         "test_cases": test_cases,
         "metrics": metrics,
-        "async_config": AsyncConfig(max_concurrent=1),
+        "async_config": AsyncConfig(max_concurrent=max_concurrent),
     }
 
     identifier = build_test_run_identifier(config, metric_name)

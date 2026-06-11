@@ -212,6 +212,13 @@ def _compute_sleep(
     return min(exponential + jitter, max_sleep)
 
 
+def _deadline_exceeded(started_at: float, total_deadline: float, next_sleep: float) -> bool:
+    if total_deadline <= 0:
+        return False
+    elapsed = time.monotonic() - started_at
+    return (elapsed + next_sleep) >= total_deadline
+
+
 class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
     def __init__(
         self,
@@ -314,9 +321,11 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         max_attempts = _env_int("DEEPEVAL_JUDGE_RETRY_ATTEMPTS", 6)
         base_sleep = float(os.getenv("DEEPEVAL_JUDGE_RETRY_BASE_SLEEP", "2"))
         max_sleep = float(os.getenv("DEEPEVAL_JUDGE_RETRY_MAX_SLEEP", "90"))
+        total_deadline = float(os.getenv("DEEPEVAL_JUDGE_TOTAL_DEADLINE", "0"))
         debug_json_path = os.getenv("DEEPEVAL_DEBUG_JSON", "outputs/deepeval_debug.json")
         url = self._chat_completions_url()
         last_error: Exception | None = None
+        started_at = time.monotonic()
 
         for attempt in range(1, max_attempts + 1):
             try:
@@ -329,13 +338,19 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             except requests.RequestException as exc:
                 last_error = exc
                 sleep_time = _compute_sleep(attempt, None, base_sleep, max_sleep)
+                if attempt >= max_attempts or _deadline_exceeded(started_at, total_deadline, sleep_time):
+                    print(
+                        f"[AVISO JUIZ] conexao_falhou model={self.model_name} "
+                        f"attempt={attempt}/{max_attempts} sem_retry "
+                        f"erro={type(exc).__name__}"
+                    )
+                    break
                 print(
                     f"[AVISO JUIZ] conexao_falhou model={self.model_name} "
                     f"attempt={attempt}/{max_attempts} sleep={sleep_time:.2f}s "
                     f"erro={type(exc).__name__}"
                 )
-                if attempt < max_attempts:
-                    time.sleep(sleep_time)
+                time.sleep(sleep_time)
                 continue
 
             if response.status_code < 400:
@@ -380,7 +395,11 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                 }
             )
 
-            if response.status_code in RETRYABLE_STATUS_CODES and attempt < max_attempts:
+            if (
+                response.status_code in RETRYABLE_STATUS_CODES
+                and attempt < max_attempts
+                and not _deadline_exceeded(started_at, total_deadline, sleep_time)
+            ):
                 print(
                     f"[AVISO JUIZ] status={response.status_code} model={self.model_name} "
                     f"attempt={attempt}/{max_attempts} sleep={sleep_time:.2f}s "
@@ -390,6 +409,16 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                 time.sleep(sleep_time)
                 last_error = requests.HTTPError(response=response)
                 continue
+
+            if response.status_code in RETRYABLE_STATUS_CODES:
+                print(
+                    f"[AVISO JUIZ] status={response.status_code} model={self.model_name} "
+                    f"attempt={attempt}/{max_attempts} sem_retry "
+                    f"message={provider_message} "
+                    f"debug={debug_json_path}"
+                )
+                last_error = requests.HTTPError(response=response)
+                break
 
             try:
                 response.raise_for_status()

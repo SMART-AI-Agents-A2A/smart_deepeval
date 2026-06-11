@@ -18,8 +18,12 @@ def build_task_completion_metric(config: JudgeConfig) -> TaskCompletionMetric:
 def build_observed_smart_agent(api_config: SmartApiConfig, metric: TaskCompletionMetric):
     @observe(type="agent", metrics=[metric])
     def observed_smart_agent(question: str, conversation_id: str, expected_output: str = "") -> str:
-        answer, payload = call_smart_chat(question, conversation_id, api_config)
-        tools_called = extract_tools_called(payload)
+        try:
+            answer, payload = call_smart_chat(question, conversation_id, api_config)
+            tools_called = extract_tools_called(payload)
+        except Exception as error:
+            answer = f"Erro ao consultar a API SMART: {type(error).__name__}: {error}"
+            tools_called = []
 
         span_kwargs = {
             "input": question,
