@@ -177,28 +177,74 @@ def slope_agregado(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
     models = list(df["modelo"].unique())
     metrics = sorted(df["metric_name"].dropna().unique())
     x = list(range(len(metrics)))
+    last_x = x[-1]
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for model, color in zip(models, PALETTE):
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    end_scores: list[tuple[float, int]] = []
+    all_scores: list[list[float]] = []
+
+    for idx, (model, color) in enumerate(zip(models, PALETTE)):
         sub = df[df["modelo"] == model]
         scores = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+        all_scores.append(scores)
+        if not np.isnan(scores[-1]):
+            end_scores.append((scores[-1], idx))
+
+    end_scores_sorted = sorted(end_scores, key=lambda t: t[0])
+    label_y: dict[int, float] = {}
+    min_gap = 0.06
+    placed: list[float] = []
+    for score, idx in end_scores_sorted:
+        y = score
+        for p in sorted(placed):
+            if abs(y - p) < min_gap:
+                y = p + min_gap
+        placed.append(y)
+        label_y[idx] = y
+
+    for idx, (model, color) in enumerate(zip(models, PALETTE)):
+        scores = all_scores[idx]
         ax.plot(x, scores, color=color, linewidth=2.2, zorder=3,
                 marker="o", markersize=13, markerfacecolor=color,
-                markeredgecolor="white", markeredgewidth=2, label=model)
+                markeredgecolor="white", markeredgewidth=2)
+
         for xi, score in zip(x, scores):
-            ax.text(xi, score + 0.03, f"{score:.2f}",
-                    ha="center", va="bottom", fontsize=9, color=color, fontweight="bold")
+            if not np.isnan(score):
+                ax.text(xi, score + 0.05, f"{score:.2f}",
+                        ha="center", va="bottom", fontsize=8.5,
+                        color=color, fontweight="bold",
+                        bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.75))
+
+        if idx in label_y:
+            ly = label_y[idx]
+            end_score = scores[-1]
+            if abs(ly - end_score) > 0.01:
+                ax.plot([last_x + 0.05, last_x + 0.10], [end_score, ly],
+                        color=color, linewidth=0.8, zorder=2)
+            ax.text(last_x + 0.12, ly, model,
+                    ha="left", va="center", fontsize=8.5,
+                    color=color, fontweight="bold")
 
     ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
-               linewidth=1.3, zorder=2, label=f"threshold {threshold:.1f}")
+               linewidth=1.3, zorder=2,
+               label=f"threshold {threshold:.1f}")
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=10)
     ax.set_ylim(0, 1.15)
-    ax.set_xlim(-0.5, len(metrics) - 0.5)
+    ax.set_xlim(-0.5, last_x + 1.2)
     ax.set_ylabel("Score médio")
-    ax.set_title("Score por métrica — todos os modelos")
-    ax.legend(fontsize=9, framealpha=0, loc="lower right")
+    ax.set_title("Score médio por métrica e modelo — agregado")
+    ax.legend(fontsize=9, framealpha=0, loc="upper left")
     saver.save("slope_agregado.png")
+
+
+def _tool_avg_by_count(tc: pd.DataFrame, col: str) -> dict[int, tuple[float, int]]:
+    from collections import defaultdict
+    groups: dict[int, list[float]] = defaultdict(list)
+    for _, row in tc.iterrows():
+        groups[int(row[col])].append(float(row["score"]))
+    return {k: (sum(v) / len(v), len(v)) for k, v in groups.items()}
 
 
 def dispersao_por_modelo(df: pd.DataFrame, saver: Saver, threshold: float, modelo: str, idx: int) -> None:
@@ -210,22 +256,46 @@ def dispersao_por_modelo(df: pd.DataFrame, saver: Saver, threshold: float, model
     tc["extras"] = tc["tools_extra_list"].apply(len)
     tc["missing"] = tc["tools_missing_list"].apply(len)
     color = PALETTE[idx % len(PALETTE)]
-    rng = np.random.default_rng(42)
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4.5), sharey=True)
-    for ax, col, xlabel in zip(axes,
-                                ["extras", "missing"],
-                                ["Ferramentas a mais", "Ferramentas faltando"]):
-        jitter = rng.uniform(-0.12, 0.12, len(tc))
-        ax.scatter(tc[col] + jitter, tc["score"],
-                   color=color, alpha=0.7, s=50, zorder=3)
-        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.2, zorder=2)
-        ax.set_xlabel(xlabel, fontsize=10)
-        ax.set_ylim(-0.05, 1.1)
-        ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-    axes[0].set_ylabel("Tool Correctness score")
-    fig.suptitle(f"Dispersão: Tool Correctness — {modelo}", fontsize=11)
+    for ax, col, titulo, legenda_x in zip(
+        axes,
+        ["extras", "missing"],
+        [
+            "Score médio vs ferramentas a mais",
+            "Score médio vs ferramentas faltando",
+        ],
+        [
+            "Nº de ferramentas extras chamadas\n(0 = chamou só as necessárias  |  7 = chamou 7 a mais do que precisava)",
+            "Nº de ferramentas esperadas não chamadas\n(0 = chamou todas  |  3 = deixou de chamar 3 necessárias)",
+        ],
+    ):
+        stats = _tool_avg_by_count(tc, col)
+        xs = sorted(stats.keys())
+        ys = [stats[x][0] for x in xs]
+        ns = [stats[x][1] for x in xs]
+        sizes = [max(60, n * 40) for n in ns]
+
+        ax.plot(xs, ys, color=color, linewidth=1.8, zorder=2, alpha=0.6)
+        sc = ax.scatter(xs, ys, s=sizes, color=color, zorder=3,
+                        edgecolors="white", linewidths=1.5, alpha=0.9)
+
+        for x, y, n in zip(xs, ys, ns):
+            ax.text(x, y + 0.04, f"{y:.2f}\n(n={n})",
+                    ha="center", va="bottom", fontsize=7.5, color=color)
+
+        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
+                   linewidth=1.2, zorder=1, label=f"threshold {threshold:.1f}")
+        ax.set_xticks(xs)
+        ax.set_xticklabels([str(x) for x in xs], fontsize=9)
+        ax.set_xlabel(legenda_x, fontsize=9, labelpad=8)
+        ax.set_ylabel("Score médio (Tool Correctness)", fontsize=9)
+        ax.set_title(titulo, fontsize=10)
+        ax.set_ylim(0, 1.15)
+        ax.legend(fontsize=8, framealpha=0)
+
+    fig.suptitle(f"Tool Correctness — impacto de ferramentas extras e faltando  |  {modelo}", fontsize=11)
     safe = modelo.replace("/", "-").replace(" ", "_")
     saver.save(f"dispersao_{safe}.png")
 
@@ -238,26 +308,67 @@ def dispersao_agregado(df: pd.DataFrame, saver: Saver, threshold: float) -> None
     tc["extras"] = tc["tools_extra_list"].apply(len)
     tc["missing"] = tc["tools_missing_list"].apply(len)
     models = list(tc["modelo"].unique())
-    rng = np.random.default_rng(42)
 
-    fig, axes = plt.subplots(1, 2, figsize=(11, 5), sharey=True)
-    for ax, col, xlabel in zip(axes,
-                                ["extras", "missing"],
-                                ["Ferramentas a mais", "Ferramentas faltando"]):
+    for col, titulo, legenda_x, filename in [
+        (
+            "extras",
+            "Score médio vs ferramentas a mais — todos os modelos",
+            "Nº de ferramentas extras chamadas além das esperadas\n"
+            "(0 = chamou só as necessárias  |  7 = chamou 7 a mais do que precisava naquele caso)",
+            "dispersao_extras_agregado.png",
+        ),
+        (
+            "missing",
+            "Score médio vs ferramentas faltando — todos os modelos",
+            "Nº de ferramentas esperadas que não foram chamadas\n"
+            "(0 = chamou todas  |  3 = deixou de chamar 3 ferramentas necessárias naquele caso)",
+            "dispersao_missing_agregado.png",
+        ),
+    ]:
+        all_xs: set[int] = set()
+        for model in models:
+            sub = tc[tc["modelo"] == model]
+            all_xs.update(int(v) for v in sub[col].unique())
+        xs_sorted = sorted(all_xs)
+
+        fig, ax = plt.subplots(figsize=(max(9, len(xs_sorted) * 1.2 + 2), 5))
+
         for model, color in zip(models, PALETTE):
             sub = tc[tc["modelo"] == model]
-            jitter = rng.uniform(-0.12, 0.12, len(sub))
-            ax.scatter(sub[col] + jitter, sub["score"],
-                       color=color, alpha=0.65, s=45, label=model, zorder=3)
-        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.2, zorder=2)
-        ax.set_xlabel(xlabel, fontsize=10)
-        ax.set_ylim(-0.05, 1.1)
-        ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
+            stats = _tool_avg_by_count(sub, col)
+            xs = sorted(stats.keys())
+            ys = [stats[x][0] for x in xs]
+            ns = [stats[x][1] for x in xs]
+            sizes = [max(55, n * 38) for n in ns]
 
-    axes[0].set_ylabel("Tool Correctness score")
-    axes[0].legend(fontsize=9, framealpha=0)
-    fig.suptitle("Dispersão: Tool Correctness — todos os modelos", fontsize=11)
-    saver.save("dispersao_agregado.png")
+            ax.plot(xs, ys, color=color, linewidth=1.8, zorder=2, alpha=0.6, label=model)
+            ax.scatter(xs, ys, s=sizes, color=color, zorder=3,
+                       edgecolors="white", linewidths=1.5, alpha=0.9)
+
+            for x, y, n in zip(xs, ys, ns):
+                ax.annotate(
+                    f"{y:.2f}",
+                    xy=(x, y),
+                    xytext=(0, 11),
+                    textcoords="offset points",
+                    ha="center", va="bottom",
+                    fontsize=7.5, color=color, fontweight="bold",
+                )
+
+        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
+                   linewidth=1.2, zorder=1, label=f"threshold {threshold:.1f}")
+        ax.set_xticks(xs_sorted)
+        ax.set_xticklabels([str(x) for x in xs_sorted], fontsize=10)
+        ax.set_xlabel(legenda_x, fontsize=9, labelpad=10)
+        ax.set_ylabel("Score médio (Tool Correctness)", fontsize=10)
+        ax.set_title(titulo, fontsize=11)
+        ax.set_ylim(0, 1.2)
+        ax.legend(fontsize=9, framealpha=0, loc="lower left")
+        ax.text(0.99, 0.02,
+                "Tamanho do ponto proporcional ao nº de casos naquele grupo.",
+                transform=ax.transAxes, ha="right", va="bottom",
+                fontsize=8, color="#777777")
+        saver.save(filename)
 
 
 def write_summary(df: pd.DataFrame, output_dir: Path, threshold: float, labels: list[str]) -> None:
