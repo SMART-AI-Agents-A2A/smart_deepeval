@@ -1,16 +1,21 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from pathlib import Path
 import json
 import os
+import random
 import re
+import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 import requests
 from deepeval.models import DeepEvalBaseLLM
 from pydantic import BaseModel
+
+
+RETRYABLE_STATUS_CODES = {408, 409, 425, 429, 500, 502, 503, 504}
 
 
 def _clean_optional_env(value: str | None) -> str | None:
@@ -28,11 +33,52 @@ def _first_env(*names: str) -> str | None:
     return None
 
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "y", "sim", "s"}
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _compact_text(value: Any, limit: int | None = None) -> str:
+    if limit is None:
+        limit = _env_int("DEEPEVAL_DEBUG_PREVIEW_CHARS", 800)
+    text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, default=str)
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    return f"{text[:limit]}...[truncated {len(text) - limit} chars]"
+
+
+def _preview(value: str, limit: int = 800) -> str:
+    collapsed = " ".join(value.split())
+    if len(collapsed) <= limit:
+        return collapsed
+    return f"{collapsed[:limit]}..."
+
+
+def _safe_json_loads(text: str) -> Any:
+    try:
+        return json.loads(text)
+    except Exception:
+        return text
+
+
 def _strip_json_fence(content: str) -> str:
     stripped = content.strip()
     if not stripped.startswith("```"):
         return stripped
-
     lines = stripped.splitlines()
     if len(lines) >= 3:
         return "\n".join(lines[1:-1]).strip()
@@ -43,11 +89,9 @@ def _extract_json_object(content: str) -> str:
     cleaned = _strip_json_fence(content)
     if cleaned.startswith("{") and cleaned.endswith("}"):
         return cleaned
-
     start = cleaned.find("{")
     if start == -1:
         return cleaned
-
     depth = 0
     in_string = False
     escape = False
@@ -69,15 +113,7 @@ def _extract_json_object(content: str) -> str:
             depth -= 1
             if depth == 0:
                 return cleaned[start : index + 1]
-
     return cleaned
-
-
-def _preview(value: str, limit: int = 800) -> str:
-    collapsed = " ".join(value.split())
-    if len(collapsed) <= limit:
-        return collapsed
-    return f"{collapsed[:limit]}..."
 
 
 def _extract_between(text: str, start: str, end: str) -> str:
@@ -88,79 +124,46 @@ def _extract_between(text: str, start: str, end: str) -> str:
     match = pattern.search(text)
     return match.group(1).strip() if match else ""
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
-
-
-def _env_bool(name: str, default: bool = False) -> bool:
-    value = os.getenv(name)
-    if value is None:
-        return default
-    return value.strip().lower() in {"1", "true", "yes", "y", "sim", "s"}
-
-
-def _env_int(name: str, default: int) -> int:
-    try:
-        return int(os.getenv(name, str(default)))
-    except ValueError:
-        return default
-
-
-def _compact_text(value: Any, limit: int | None = None) -> str:
-    if limit is None:
-        limit = _env_int("DEEPEVAL_DEBUG_PREVIEW_CHARS", 800)
-
-    text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, default=str)
-    text = " ".join(text.split())
-
-    if len(text) <= limit:
-        return text
-
-    return f"{text[:limit]}...[truncated {len(text) - limit} chars]"
-
-
-def _safe_json_loads(text: str) -> Any:
-    try:
-        return json.loads(text)
-    except Exception:
-        return text
-
 
 def _summarize_payload(payload: dict[str, Any]) -> dict[str, Any]:
     messages = payload.get("messages") or []
     prompt_text = ""
-
     if isinstance(messages, list):
         prompt_text = "\n".join(
             str(message.get("content", ""))
             for message in messages
             if isinstance(message, dict)
         )
-
     summary: dict[str, Any] = {
         "model": payload.get("model"),
         "temperature": payload.get("temperature"),
         "max_tokens": payload.get("max_tokens"),
         "max_completion_tokens": payload.get("max_completion_tokens"),
+        "response_format_active": "response_format" in payload,
         "messages_count": len(messages) if isinstance(messages, list) else 0,
         "prompt_chars": len(prompt_text),
         "prompt_preview": _compact_text(prompt_text),
     }
-
     if _env_bool("DEEPEVAL_DEBUG_PAYLOAD", False):
         summary["payload_full"] = payload
-
     return summary
+
+
+def _rate_limit_headers(response: requests.Response) -> dict[str, str]:
+    relevant = {}
+    for header in response.headers:
+        lower = header.lower()
+        if any(k in lower for k in ("retry", "ratelimit", "x-ratelimit", "x-rate-limit")):
+            relevant[header] = response.headers[header]
+    return relevant
 
 
 def _append_debug_event(event: dict[str, Any]) -> None:
     debug_path = _clean_optional_env(os.getenv("DEEPEVAL_DEBUG_JSON"))
     if not debug_path:
         return
-
     path = Path(debug_path)
     path.parent.mkdir(parents=True, exist_ok=True)
-
     current: dict[str, Any]
     if path.exists():
         try:
@@ -171,11 +174,9 @@ def _append_debug_event(event: dict[str, Any]) -> None:
             current = {}
     else:
         current = {}
-
     current.setdefault("events", [])
     current["events"].append(event)
     current["updated_at"] = _now_iso()
-
     path.write_text(
         json.dumps(current, ensure_ascii=False, indent=2, default=str),
         encoding="utf-8",
@@ -184,15 +185,31 @@ def _append_debug_event(event: dict[str, Any]) -> None:
 
 def _provider_error_message(response: requests.Response) -> str:
     parsed = _safe_json_loads(response.text)
-
     if isinstance(parsed, dict):
         error = parsed.get("error")
         if isinstance(error, dict) and isinstance(error.get("message"), str):
             return error["message"]
         if isinstance(parsed.get("message"), str):
             return parsed["message"]
-
     return _compact_text(response.text, 300)
+
+
+def _compute_sleep(
+    attempt: int,
+    retry_after: str | None,
+    base_sleep: float,
+    max_sleep: float,
+) -> float:
+    if retry_after:
+        try:
+            wait = float(retry_after)
+            jitter = random.uniform(0, 1)
+            return min(wait + jitter, max_sleep)
+        except ValueError:
+            pass
+    exponential = base_sleep * (2 ** (attempt - 1))
+    jitter = random.uniform(0, base_sleep)
+    return min(exponential + jitter, max_sleep)
 
 
 class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
@@ -227,22 +244,18 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         configured = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_RESPONSE_FORMAT"))
         if configured is not None:
             return configured.lower() in {"1", "true", "yes", "on"}
-
         return not self._uses_cloudflare_gateway()
 
     def _headers(self) -> dict[str, str]:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
-
         gateway_token = _first_env("CF_AIG_TOKEN", "CLOUDFLARE_API_TOKEN")
         if gateway_token:
             headers["cf-aig-authorization"] = f"Bearer {gateway_token}"
-
         byok_alias = _first_env("CF_AIG_BYOK_ALIAS", "CLOUDFLARE_AI_GATEWAY_BYOK_ALIAS")
         if byok_alias:
             headers["cf-aig-byok-alias"] = byok_alias
-
         return headers
 
     def _payload(
@@ -273,17 +286,7 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                 },
             ]
 
-        #########################################
-
-        # payload: dict[str, Any] = {
-        #     "model": self.model_name,
-        #     "messages": messages,
-        #     "temperature": 0,
-        #     "max_tokens": int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048")),
-        # }
-        
-        max_tokens = int(os.getenv("DEEPEVAL_JUDGE_MAX_TOKENS", "2048"))
-
+        max_tokens = _env_int("DEEPEVAL_JUDGE_MAX_TOKENS", 2048)
         payload: dict[str, Any] = {
             "model": self.model_name,
             "messages": messages,
@@ -294,8 +297,6 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         else:
             payload["temperature"] = 0
             payload["max_tokens"] = max_tokens
-            
-        #########################################
 
         if schema and not force_no_response_format and self._should_send_response_format():
             payload["response_format"] = {
@@ -310,64 +311,101 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         return payload
 
     def _request(self, payload: dict[str, Any]) -> str:
-        response = requests.post(
-            self._chat_completions_url(),
-            headers=self._headers(),
-            json=payload,
-            timeout=self.timeout,
-        )
-        try:
-            if response.status_code >= 400:
-                provider_message = _provider_error_message(response)
+        max_attempts = _env_int("DEEPEVAL_JUDGE_RETRY_ATTEMPTS", 6)
+        base_sleep = float(os.getenv("DEEPEVAL_JUDGE_RETRY_BASE_SLEEP", "2"))
+        max_sleep = float(os.getenv("DEEPEVAL_JUDGE_RETRY_MAX_SLEEP", "90"))
+        debug_json_path = os.getenv("DEEPEVAL_DEBUG_JSON", "outputs/deepeval_debug.json")
+        url = self._chat_completions_url()
+        last_error: Exception | None = None
 
-                debug_event = {
+        for attempt in range(1, max_attempts + 1):
+            try:
+                response = requests.post(
+                    url,
+                    headers=self._headers(),
+                    json=payload,
+                    timeout=self.timeout,
+                )
+            except requests.RequestException as exc:
+                last_error = exc
+                sleep_time = _compute_sleep(attempt, None, base_sleep, max_sleep)
+                print(
+                    f"[AVISO JUIZ] conexao_falhou model={self.model_name} "
+                    f"attempt={attempt}/{max_attempts} sleep={sleep_time:.2f}s "
+                    f"erro={type(exc).__name__}"
+                )
+                if attempt < max_attempts:
+                    time.sleep(sleep_time)
+                continue
+
+            if response.status_code < 400:
+                data = response.json()
+                choices = data.get("choices", [])
+                if choices:
+                    message = choices[0].get("message", {})
+                    content = message.get("content", "")
+                    if isinstance(content, list):
+                        return "".join(
+                            part.get("text", "") for part in content if isinstance(part, dict)
+                        )
+                    if isinstance(content, str):
+                        return content
+                    for key in ("reasoning_content", "reasoning", "refusal"):
+                        value = message.get(key)
+                        if isinstance(value, str) and value.strip():
+                            return value
+                    if "text" in choices[0] and isinstance(choices[0]["text"], str):
+                        return choices[0]["text"]
+                    return ""
+                return data.get("output_text") or data.get("response") or ""
+
+            provider_message = _provider_error_message(response)
+            rl_headers = _rate_limit_headers(response)
+            retry_after = response.headers.get("Retry-After")
+            sleep_time = _compute_sleep(attempt, retry_after, base_sleep, max_sleep)
+
+            _append_debug_event(
+                {
                     "type": "judge_http_error",
                     "timestamp": _now_iso(),
+                    "attempt": attempt,
+                    "max_attempts": max_attempts,
                     "status_code": response.status_code,
-                    "url": response.url,
-                    "model": payload.get("model"),
+                    "url": url,
+                    "model": self.model_name,
                     "provider_message": provider_message,
+                    "rate_limit_headers": rl_headers,
                     "response_preview": _compact_text(response.text),
                     "payload_summary": _summarize_payload(payload),
                 }
-                _append_debug_event(debug_event)
+            )
 
+            if response.status_code in RETRYABLE_STATUS_CODES and attempt < max_attempts:
                 print(
-                    f"\n[ERRO JUIZ] status={response.status_code} "
-                    f"model={payload.get('model')} "
-                    f"message={provider_message}"
+                    f"[AVISO JUIZ] status={response.status_code} model={self.model_name} "
+                    f"attempt={attempt}/{max_attempts} sleep={sleep_time:.2f}s "
+                    f"message={provider_message} "
+                    f"debug={debug_json_path}"
                 )
-                print(f"[ERRO JUIZ] detalhes salvos em: {os.getenv('DEEPEVAL_DEBUG_JSON', 'outputs/deepeval_debug.json')}")
+                time.sleep(sleep_time)
+                last_error = requests.HTTPError(response=response)
+                continue
 
+            try:
                 response.raise_for_status()
-        except requests.HTTPError as error:
-            detail = response.text.strip()
-            if response.status_code == 401:
-                raise RuntimeError(
-                    "Falha de autenticacao no provedor usado como juiz. "
-                    "Confira MODEL_ACCESS_KEY, DIGITALOCEAN_TOKEN, OPENAI_API_KEY ou OPEN_API_KEY. "
-                    f"Resposta do provedor: {detail or '401 Unauthorized'}"
-                ) from error
-            raise
+            except requests.HTTPError as error:
+                detail = response.text.strip()
+                if response.status_code == 401:
+                    raise RuntimeError(
+                        "Falha de autenticacao no provedor usado como juiz. "
+                        "Confira MODEL_ACCESS_KEY, DIGITALOCEAN_TOKEN, OPENAI_API_KEY ou OPEN_API_KEY. "
+                        f"Resposta do provedor: {detail or '401 Unauthorized'}"
+                    ) from error
+                raise
 
-        data = response.json()
-        choices = data.get("choices", [])
-        if choices:
-            message = choices[0].get("message", {})
-            content = message.get("content", "")
-            if isinstance(content, list):
-                return "".join(part.get("text", "") for part in content if isinstance(part, dict))
-            if isinstance(content, str):
-                return content
-            for key in ("reasoning_content", "reasoning", "refusal"):
-                value = message.get(key)
-                if isinstance(value, str) and value.strip():
-                    return value
-            if "text" in choices[0] and isinstance(choices[0]["text"], str):
-                return choices[0]["text"]
-            return ""
-
-        return data.get("output_text") or data.get("response") or ""
+        if last_error is not None:
+            raise last_error
+        return ""
 
     def _parse_schema_response(self, content: str, schema: type[BaseModel]) -> BaseModel:
         cleaned = _extract_json_object(content)
@@ -466,7 +504,6 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         except requests.HTTPError:
             if not schema:
                 raise
-
             payload = self._payload(prompt, None, force_no_response_format=True)
             if self._should_send_response_format():
                 payload["response_format"] = {"type": "json_object"}
@@ -515,7 +552,7 @@ def load_judge_config() -> JudgeConfig:
         "OPENAI_API_KEY",
         "OPEN_API_KEY",
     )
-    timeout = int(os.getenv("DEEPEVAL_JUDGE_TIMEOUT", "120"))
+    timeout = _env_int("DEEPEVAL_JUDGE_TIMEOUT", 120)
 
     model: str | OpenAICompatibleJudgeModel = model_name
     if base_url:
@@ -542,8 +579,6 @@ def configure_judge_environment() -> JudgeConfig:
         "OPENAI_API_KEY",
         "OPEN_API_KEY",
     )
-
     if judge_api_key:
         os.environ["OPENAI_API_KEY"] = judge_api_key
-
     return load_judge_config()
