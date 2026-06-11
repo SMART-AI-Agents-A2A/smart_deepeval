@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 import matplotlib
@@ -58,10 +57,6 @@ def load_all(csv_paths: list[Path], labels: list[str]) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True)
 
 
-def fig_w(n_models: int, base: float = 9.0) -> float:
-    return max(base, base + (n_models - 2) * 1.8)
-
-
 class Saver:
     def __init__(self, output_dir: Path, pdf_path: Path):
         self.output_dir = output_dir
@@ -86,17 +81,49 @@ class Saver:
         print(f"  {filename}")
 
 
-def chart_01_score_medio(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
-    models = df["modelo"].unique()
+def _annotate_bars(ax, fmt: str = "{:.2f}", color: str | None = None) -> None:
+    for container in ax.containers:
+        for bar in container:
+            h = bar.get_height()
+            if np.isnan(h) or h == 0:
+                continue
+            c = color or bar.get_facecolor()
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                h + 0.015,
+                fmt.format(h),
+                ha="center", va="bottom", fontsize=8, color=c,
+            )
+
+
+def barras_por_modelo(df: pd.DataFrame, saver: Saver, threshold: float, modelo: str, idx: int) -> None:
+    sub = df[df["modelo"] == modelo]
+    metrics = sorted(sub["metric_name"].dropna().unique())
+    means = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+    color = PALETTE[idx % len(PALETTE)]
+
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    bars = ax.bar(metrics, means, color=color, width=0.5, zorder=3)
+    ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.4,
+               label=f"threshold {threshold:.1f}", zorder=4)
+    _annotate_bars(ax, color=color)
+    ax.set_ylim(0, 1.15)
+    ax.set_ylabel("Score médio")
+    ax.set_title(f"Score médio por métrica — {modelo}")
+    ax.legend(fontsize=9, framealpha=0)
+    safe = modelo.replace("/", "-").replace(" ", "_")
+    saver.save(f"barras_{safe}.png")
+
+
+def barras_agregado(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
+    models = list(df["modelo"].unique())
     metrics = sorted(df["metric_name"].dropna().unique())
     n_models = len(models)
     n_metrics = len(metrics)
-    w = fig_w(n_models)
-
-    x = np.arange(n_metrics)
     width = 0.7 / n_models
-    fig, ax = plt.subplots(figsize=(w, 5))
+    x = np.arange(n_metrics)
 
+    fig, ax = plt.subplots(figsize=(max(8, 3 * n_metrics + n_models), 5))
     for i, (model, color) in enumerate(zip(models, PALETTE)):
         sub = df[df["modelo"] == model]
         means = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
@@ -104,204 +131,220 @@ def chart_01_score_medio(df: pd.DataFrame, saver: Saver, threshold: float) -> No
         bars = ax.bar(x + offset, means, width=width * 0.92, color=color, label=model, zorder=3)
         for bar, val in zip(bars, means):
             if not np.isnan(val):
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.015,
+                ax.text(bar.get_x() + bar.get_width() / 2, val + 0.015,
                         f"{val:.2f}", ha="center", va="bottom", fontsize=8, color=color)
 
     ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.4,
                label=f"threshold {threshold:.1f}", zorder=4)
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=10)
-    ax.set_ylim(0, 1.05)
+    ax.set_ylim(0, 1.15)
     ax.set_ylabel("Score médio")
-    ax.set_title("Score médio por métrica e modelo")
+    ax.set_title("Score médio por métrica e modelo — agregado")
     ax.legend(fontsize=9, framealpha=0)
-    saver.save("01_score_medio_por_metrica.png")
+    saver.save("barras_agregado.png")
 
 
-def chart_02_pass_rate(df: pd.DataFrame, saver: Saver) -> None:
-    models = df["modelo"].unique()
-    metrics = sorted(df["metric_name"].dropna().unique())
-    n_models = len(models)
-    n_metrics = len(metrics)
-    w = fig_w(n_models)
+def slope_por_modelo(df: pd.DataFrame, saver: Saver, threshold: float, modelo: str, idx: int) -> None:
+    sub = df[df["modelo"] == modelo]
+    metrics = sorted(sub["metric_name"].dropna().unique())
+    scores = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+    color = PALETTE[idx % len(PALETTE)]
+    x = list(range(len(metrics)))
 
-    x = np.arange(n_metrics)
-    width = 0.7 / n_models
-    fig, ax = plt.subplots(figsize=(w, 5))
+    fig, ax = plt.subplots(figsize=(6, 4.5))
+    ax.plot(x, scores, color=color, linewidth=2.2, zorder=3,
+            marker="o", markersize=13, markerfacecolor=color,
+            markeredgecolor="white", markeredgewidth=2)
+    for xi, score in zip(x, scores):
+        ax.text(xi, score + 0.03, f"{score:.2f}",
+                ha="center", va="bottom", fontsize=10, color=color, fontweight="bold")
 
-    for i, (model, color) in enumerate(zip(models, PALETTE)):
-        sub = df[df["modelo"] == model]
-        rates = [sub.loc[sub["metric_name"] == m, "passed"].mean() * 100 for m in metrics]
-        offset = (i - (n_models - 1) / 2) * width
-        bars = ax.bar(x + offset, rates, width=width * 0.92, color=color, label=model, zorder=3)
-        for bar, val in zip(bars, rates):
-            if not np.isnan(val):
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1,
-                        f"{val:.0f}%", ha="center", va="bottom", fontsize=8, color=color)
-
+    ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
+               linewidth=1.3, zorder=2, label=f"threshold {threshold:.1f}")
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=10)
-    ax.set_ylim(0, 110)
-    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _: f"{v:.0f}%"))
-    ax.set_ylabel("Pass rate")
-    ax.set_title("Pass rate por métrica e modelo")
+    ax.set_ylim(0, 1.15)
+    ax.set_xlim(-0.5, len(metrics) - 0.5)
+    ax.set_ylabel("Score médio")
+    ax.set_title(f"Score por métrica — {modelo}")
     ax.legend(fontsize=9, framealpha=0)
-    saver.save("02_pass_rate_por_metrica.png")
+    safe = modelo.replace("/", "-").replace(" ", "_")
+    saver.save(f"slope_{safe}.png")
 
 
-def chart_03_linha_por_caso(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
+def slope_agregado(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
+    models = list(df["modelo"].unique())
     metrics = sorted(df["metric_name"].dropna().unique())
-    n_metrics = len(metrics)
-    models = df["modelo"].unique()
-    n_models = len(models)
+    x = list(range(len(metrics)))
 
-    fig, axes = plt.subplots(1, n_metrics, figsize=(5 * n_metrics, 5), sharey=True)
-    if n_metrics == 1:
-        axes = [axes]
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for model, color in zip(models, PALETTE):
+        sub = df[df["modelo"] == model]
+        scores = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+        ax.plot(x, scores, color=color, linewidth=2.2, zorder=3,
+                marker="o", markersize=13, markerfacecolor=color,
+                markeredgecolor="white", markeredgewidth=2, label=model)
+        for xi, score in zip(x, scores):
+            ax.text(xi, score + 0.03, f"{score:.2f}",
+                    ha="center", va="bottom", fontsize=9, color=color, fontweight="bold")
 
-    for ax, metric in zip(axes, metrics):
-        for model, color in zip(models, PALETTE):
-            sub = (df[(df["modelo"] == model) & (df["metric_name"] == metric)]
-                   .sort_values("numero"))
-            if sub.empty:
-                continue
-            ax.plot(sub["numero"], sub["score"], color=color, linewidth=1.4,
-                    label=model, zorder=3)
-            ax.scatter(sub["numero"], sub["score"], color=color, s=22, zorder=4)
+    ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
+               linewidth=1.3, zorder=2, label=f"threshold {threshold:.1f}")
+    ax.set_xticks(x)
+    ax.set_xticklabels(metrics, fontsize=10)
+    ax.set_ylim(0, 1.15)
+    ax.set_xlim(-0.5, len(metrics) - 0.5)
+    ax.set_ylabel("Score médio")
+    ax.set_title("Score por métrica — todos os modelos")
+    ax.legend(fontsize=9, framealpha=0, loc="lower right")
+    saver.save("slope_agregado.png")
 
+
+def dispersao_por_modelo(df: pd.DataFrame, saver: Saver, threshold: float, modelo: str, idx: int) -> None:
+    tc = df[(df["modelo"] == modelo) &
+            df["metric_name"].str.lower().str.contains("tool correctness", na=False)].copy()
+    if tc.empty:
+        return
+
+    tc["extras"] = tc["tools_extra_list"].apply(len)
+    tc["missing"] = tc["tools_missing_list"].apply(len)
+    color = PALETTE[idx % len(PALETTE)]
+    rng = np.random.default_rng(42)
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.5), sharey=True)
+    for ax, col, xlabel in zip(axes,
+                                ["extras", "missing"],
+                                ["Ferramentas a mais", "Ferramentas faltando"]):
+        jitter = rng.uniform(-0.12, 0.12, len(tc))
+        ax.scatter(tc[col] + jitter, tc["score"],
+                   color=color, alpha=0.7, s=50, zorder=3)
         ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.2, zorder=2)
+        ax.set_xlabel(xlabel, fontsize=10)
         ax.set_ylim(-0.05, 1.1)
-        ax.set_xlabel("Nº do caso")
-        ax.set_title(metric, fontsize=10)
-        if ax == axes[0]:
-            ax.set_ylabel("Score")
+        ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
 
-    handles = [plt.Line2D([0], [0], color=c, linewidth=2, label=m)
-               for m, c in zip(models, PALETTE)]
-    handles.append(plt.Line2D([0], [0], color=THRESHOLD_COLOR, linewidth=1.4,
-                               linestyle="--", label=f"threshold {threshold:.1f}"))
-    fig.legend(handles=handles, loc="lower center", ncol=min(n_models + 1, 5),
-               fontsize=9, framealpha=0, bbox_to_anchor=(0.5, -0.06))
-    fig.suptitle("Score por caso — linha com data points", fontsize=12, y=1.02)
-    saver.save("03_score_por_caso_linha.png")
+    axes[0].set_ylabel("Tool Correctness score")
+    fig.suptitle(f"Dispersão: Tool Correctness — {modelo}", fontsize=11)
+    safe = modelo.replace("/", "-").replace(" ", "_")
+    saver.save(f"dispersao_{safe}.png")
 
 
-def chart_04_dispersao_score_tools(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
+def dispersao_agregado(df: pd.DataFrame, saver: Saver, threshold: float) -> None:
     tc = df[df["metric_name"].str.lower().str.contains("tool correctness", na=False)].copy()
     if tc.empty:
         return
 
-    tc["tools_extras_count"] = tc["tools_extra_list"].apply(len)
-    tc["tools_missing_count"] = tc["tools_missing_list"].apply(len)
+    tc["extras"] = tc["tools_extra_list"].apply(len)
+    tc["missing"] = tc["tools_missing_list"].apply(len)
+    models = list(tc["modelo"].unique())
+    rng = np.random.default_rng(42)
 
-    models = tc["modelo"].unique()
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
-
+    fig, axes = plt.subplots(1, 2, figsize=(11, 5), sharey=True)
     for ax, col, xlabel in zip(axes,
-                                ["tools_extras_count", "tools_missing_count"],
+                                ["extras", "missing"],
                                 ["Ferramentas a mais", "Ferramentas faltando"]):
         for model, color in zip(models, PALETTE):
             sub = tc[tc["modelo"] == model]
-            jitter = np.random.default_rng(42).uniform(-0.15, 0.15, len(sub))
+            jitter = rng.uniform(-0.12, 0.12, len(sub))
             ax.scatter(sub[col] + jitter, sub["score"],
-                       color=color, alpha=0.65, s=40, label=model, zorder=3)
-
-        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--",
-                   linewidth=1.2, zorder=2)
+                       color=color, alpha=0.65, s=45, label=model, zorder=3)
+        ax.axhline(threshold, color=THRESHOLD_COLOR, linestyle="--", linewidth=1.2, zorder=2)
         ax.set_xlabel(xlabel, fontsize=10)
         ax.set_ylim(-0.05, 1.1)
         ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
 
     axes[0].set_ylabel("Tool Correctness score")
     axes[0].legend(fontsize=9, framealpha=0)
-    fig.suptitle("Dispersão: Tool Correctness score vs excesso / falta de ferramentas", fontsize=11)
-    saver.save("04_dispersao_tool_correctness.png")
+    fig.suptitle("Dispersão: Tool Correctness — todos os modelos", fontsize=11)
+    saver.save("dispersao_agregado.png")
 
 
-def chart_05_heatmap_casos(df: pd.DataFrame, saver: Saver) -> None:
-    models = list(df["modelo"].unique())
-    metrics = sorted(df["metric_name"].dropna().unique())
-    cases = sorted(df["numero"].dropna().unique())
+def write_summary(df: pd.DataFrame, output_dir: Path, threshold: float, labels: list[str]) -> None:
+    metrics_info: dict[str, str] = {}
+    for m in sorted(df["metric_name"].dropna().unique()):
+        if "geval" in m.lower() or "g-eval" in m.lower():
+            metrics_info[m] = (
+                "Mede se a resposta final atingiu o objetivo do usuario.\n"
+                "  Um LLM compara a resposta com a esperada e avalia se a conclusao\n"
+                "  foi correta, direta e tecnicamente justificada.\n"
+                "  Score alto = resposta atingiu o objetivo.\n"
+                "  Score baixo = resposta vaga, errada ou sem conclusao clara."
+            )
+        elif "tool" in m.lower():
+            metrics_info[m] = (
+                "Mede se o agente chamou as ferramentas certas.\n"
+                "  Combina dois criterios: (1) deterministico — quantas esperadas foram\n"
+                "  chamadas vs. total chamado (excesso penaliza); (2) por LLM — se a\n"
+                "  selecao foi otima para a tarefa. Score final = minimo dos dois."
+            )
+        elif "task" in m.lower():
+            metrics_info[m] = (
+                "Mede se a tarefa foi cumprida, analisando o trace de execucao.\n"
+                "  Um LLM extrai o objetivo e o resultado do trace e avalia se a tarefa\n"
+                "  foi satisfeita. Diferente do GEval, foca em 'a tarefa foi feita?'\n"
+                "  e nao em 'a resposta bate com o gabarito?'"
+            )
+        else:
+            metrics_info[m] = "Metrica customizada."
 
-    n_models = len(models)
-    n_metrics = len(metrics)
-    n_cases = len(cases)
+    lines: list[str] = []
+    lines.append("=" * 62)
+    lines.append("RESUMO DA AVALIACAO — API SMART com DeepEval")
+    lines.append("=" * 62)
+    lines.append("")
+    lines.append("O QUE CADA METRICA SIGNIFICA")
+    lines.append("-" * 40)
+    for name, desc in metrics_info.items():
+        lines.append(f"\n{name}")
+        lines.append(f"  {desc}")
 
-    fig, axes = plt.subplots(1, n_models,
-                              figsize=(max(4, n_metrics * 1.4) * n_models, max(8, n_cases * 0.32)),
-                              sharey=True)
-    if n_models == 1:
-        axes = [axes]
+    lines.append("")
+    lines.append("-" * 40)
+    lines.append("PASS RATE")
+    lines.append(f"  Percentual de casos com score >= threshold ({threshold:.1f}).")
+    lines.append("  Exemplo: 47% = 14 de 30 casos aprovados.")
+    lines.append("")
+    lines.append("SCORE MEDIO")
+    lines.append("  Media aritmetica dos scores de todos os casos.")
+    lines.append("  Varia de 0.0 (pessimo) a 1.0 (perfeito).")
+    lines.append("")
+    lines.append("=" * 62)
+    lines.append("RESULTADOS POR MODELO")
+    lines.append("=" * 62)
 
-    im = None
-    for ax, model in zip(axes, models):
-        sub = df[df["modelo"] == model]
-        pivot = (sub.pivot_table(index="numero", columns="metric_name",
-                                  values="score", aggfunc="mean")
-                 .reindex(index=cases, columns=metrics)
-                 .fillna(0))
+    for label in labels:
+        sub = df[df["modelo"] == label]
+        if sub.empty:
+            continue
+        lines.append(f"\nModelo: {label}")
+        lines.append("-" * 40)
+        for metric in sorted(sub["metric_name"].dropna().unique()):
+            ms = sub[sub["metric_name"] == metric]
+            avg = ms["score"].mean()
+            pr = ms["passed"].mean() * 100
+            n_pass = int(ms["passed"].sum())
+            n_total = len(ms)
+            status = "PASSOU" if avg >= threshold else "abaixo do threshold"
+            lines.append(f"  {metric}")
+            lines.append(f"    score medio : {avg:.3f}  ({status})")
+            lines.append(f"    pass rate   : {pr:.0f}%  ({n_pass}/{n_total} casos)")
 
-        im = ax.imshow(pivot.values, aspect="auto", cmap="RdYlGn",
-                       vmin=0, vmax=1, interpolation="nearest")
-        ax.set_xticks(range(n_metrics))
-        ax.set_xticklabels(metrics, rotation=35, ha="right", fontsize=8)
-        ax.set_title(model, fontsize=10)
-        if ax == axes[0]:
-            ax.set_yticks(range(n_cases))
-            ax.set_yticklabels([str(int(c)) for c in cases], fontsize=7)
-            ax.set_ylabel("Nº do caso")
+    lines.append("")
+    lines.append("=" * 62)
+    lines.append("NOTA METODOLOGICA")
+    lines.append("=" * 62)
+    lines.append("")
+    lines.append("A escolha do modelo juiz influencia os resultados.")
+    lines.append("Para o artigo: reporte os modelos separadamente e discuta a")
+    lines.append("variancia entre eles como limitacao metodologica.")
 
-    if im is not None:
-        fig.colorbar(im, ax=axes[-1], fraction=0.03, label="Score")
-    fig.suptitle("Heatmap de scores por caso e métrica", fontsize=12, y=1.01)
-    saver.save("05_heatmap_scores.png")
-
-
-def chart_06_ferramentas_faltou_sobrou(df: pd.DataFrame, saver: Saver) -> None:
-    tc = df[df["metric_name"].str.lower().str.contains("tool correctness", na=False)]
-    if tc.empty:
-        return
-
-    models = list(tc["modelo"].unique())
-    n = len(models)
-    w = fig_w(n, base=11)
-    fig, axes = plt.subplots(1, n, figsize=(w, 6), sharey=False)
-    if n == 1:
-        axes = [axes]
-
-    all_tools: set[str] = set()
-    for _, row in tc.iterrows():
-        all_tools.update(row["tools_missing_list"])
-        all_tools.update(row["tools_extra_list"])
-
-    for ax, model in zip(axes, models):
-        sub = tc[tc["modelo"] == model]
-        missing: dict[str, int] = {}
-        extra: dict[str, int] = {}
-        for _, row in sub.iterrows():
-            for t in row["tools_missing_list"]:
-                missing[t] = missing.get(t, 0) + 1
-            for t in row["tools_extra_list"]:
-                extra[t] = extra.get(t, 0) + 1
-
-        tools = sorted(all_tools)
-        miss_vals = [missing.get(t, 0) for t in tools]
-        extra_vals = [extra.get(t, 0) for t in tools]
-        y = np.arange(len(tools))
-
-        ax.barh(y, [-v for v in miss_vals], color="#e15759", label="faltou", zorder=3)
-        ax.barh(y, extra_vals, color="#76b7b2", label="sobrou", zorder=3)
-        ax.axvline(0, color="#888", linewidth=0.8)
-        ax.set_yticks(y)
-        ax.set_yticklabels([t.replace("smart_", "") for t in tools], fontsize=8)
-        ax.set_title(model, fontsize=10)
-        ax.set_xlabel("← faltou  |  sobrou →", fontsize=8)
-        ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _: str(abs(int(v)))))
-        if ax == axes[0]:
-            ax.legend(fontsize=8, framealpha=0)
-
-    fig.suptitle("Ferramentas faltantes vs extras por modelo", fontsize=12)
-    saver.save("06_ferramentas_faltou_sobrou.png")
+    out_path = output_dir / "resumo_metricas.txt"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines), encoding="utf-8")
+    print(f"  resumo_metricas.txt")
+    print("")
+    print("\n".join(lines))
 
 
 def latest_csv() -> Path:
@@ -314,18 +357,18 @@ def latest_csv() -> Path:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Gera 6 gráficos PNG + PDF a partir dos CSVs de métricas DeepEval."
+        description="Gera graficos PNG + PDF a partir dos CSVs de metricas DeepEval."
     )
     parser.add_argument("--csv", type=Path, nargs="+", default=None, metavar="CSV",
-                        help="Um ou mais CSVs de métricas. Se omitido, usa o mais recente em outputs/.")
+                        help="Um ou mais CSVs de metricas.")
     parser.add_argument("--labels", type=str, nargs="+", default=None, metavar="LABEL",
-                        help="Rótulo para cada CSV (mesmo número que --csv).")
+                        help="Rotulo para cada CSV.")
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUTPUT_DIR,
-                        help="Pasta de saída.")
+                        help="Pasta de saida.")
     parser.add_argument("--pdf-name", type=str, default="relatorio.pdf",
                         help="Nome do PDF consolidado.")
     parser.add_argument("--threshold", type=float, default=0.7,
-                        help="Threshold de corte visual (padrão: 0.7).")
+                        help="Threshold de corte visual (padrao: 0.7).")
     return parser.parse_args()
 
 
@@ -336,26 +379,33 @@ def main() -> None:
         csv_paths = args.csv
         labels = args.labels if args.labels else [p.stem for p in csv_paths]
         if len(labels) != len(csv_paths):
-            raise ValueError("--labels deve ter o mesmo número de itens que --csv.")
+            raise ValueError("--labels deve ter o mesmo numero de itens que --csv.")
     else:
         csv_paths = [latest_csv()]
         labels = [csv_paths[0].stem]
 
     print(f"Modelos: {labels}")
-    print(f"Saída:   {args.out_dir}")
+    print(f"Saida:   {args.out_dir}")
 
     df = load_all(csv_paths, labels)
     pdf_path = args.out_dir / args.pdf_name
 
     with Saver(args.out_dir, pdf_path) as saver:
-        chart_01_score_medio(df, saver, args.threshold)
-        chart_02_pass_rate(df, saver)
-        chart_03_linha_por_caso(df, saver, args.threshold)
-        chart_04_dispersao_score_tools(df, saver, args.threshold)
-        chart_05_heatmap_casos(df, saver)
-        chart_06_ferramentas_faltou_sobrou(df, saver)
+        for idx, label in enumerate(labels):
+            barras_por_modelo(df, saver, args.threshold, label, idx)
+        barras_agregado(df, saver, args.threshold)
 
-    print(f"PDF: {pdf_path}")
+        for idx, label in enumerate(labels):
+            slope_por_modelo(df, saver, args.threshold, label, idx)
+        slope_agregado(df, saver, args.threshold)
+
+        for idx, label in enumerate(labels):
+            dispersao_por_modelo(df, saver, args.threshold, label, idx)
+        dispersao_agregado(df, saver, args.threshold)
+
+        write_summary(df, args.out_dir, args.threshold, labels)
+
+    print(f"\nPDF: {pdf_path}")
 
 
 if __name__ == "__main__":
