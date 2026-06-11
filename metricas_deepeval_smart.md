@@ -152,3 +152,76 @@ No projeto SMART, essa metrica roda via tracing/observed agent, entao pode ser m
 | **Task Completion** | Conclusao da tarefa de ponta a ponta |
 
 Essas metricas se complementam. Uma resposta pode passar em uma e falhar em outra, e isso ajuda a identificar se o problema esta na resposta final, na selecao de ferramentas ou na execucao completa da tarefa.
+
+## O Que Cada Ferramenta Faz e Nao Faz
+
+### G-Eval
+
+| Aspecto | Descricao |
+|---|---|
+| O que faz | Avalia a qualidade tecnica da resposta final, verifica se a resposta atende ao objetivo central da pergunta, analisa conclusao explicita, recomendacao acionavel e justificativa tecnica |
+| O que nao faz | Nao verifica diretamente se as tools corretas foram chamadas, nao garante que os dados dos sensores estejam corretos na origem e nao exige igualdade numerica literal com o `db.json` |
+| Utilidade | Mede se a resposta final e util, coerente, clara e tecnicamente defensavel |
+| Justificativa | A API SMART usa dados atuais e dinamicos. O G-Eval permite julgar coerencia tecnica sem punir automaticamente diferencas numericas causadas por sensores e dados em tempo real |
+
+**Detalhamento:**  
+O G-Eval usa `input`, `actual_output` e `expected_output`. No SMART, o `expected_output` funciona como referencia tecnica, nao como uma resposta que precisa ser copiada literalmente. Isso e importante porque valores de temperatura, umidade, vento, chuva, radiacao e solo podem mudar conforme horario, fonte e estado dos sensores.
+
+### Tool Correctness
+
+| Aspecto | Descricao |
+|---|---|
+| O que faz | Avalia se a API SMART chamou as ferramentas esperadas para responder a pergunta |
+| O que nao faz | Nao avalia a qualidade textual da resposta, nao julga a recomendacao final e nao garante que o dado retornado pela tool esteja correto |
+| Utilidade | Diagnostica falhas de roteamento, selecao de agentes e chamadas de tools |
+| Justificativa | O SMART e uma arquitetura agentic com agentes e ferramentas especializadas. Logo, nao basta responder bem; o sistema precisa buscar os dados certos |
+
+**Detalhamento:**  
+Tool Correctness compara `tools_called` com `expected_tools` e gera diagnosticos estruturados:
+
+| Campo | Uso |
+|---|---|
+| `tools_correct` | Tools esperadas que foram chamadas corretamente |
+| `tools_missing` | Tools que deveriam ter sido chamadas e nao foram |
+| `tools_extra` | Tools chamadas sem necessidade |
+
+Essa metrica ajuda a descobrir se o problema esta no `ai.orchestrate.ts`, na inferencia de agentes, ou na selecao das ferramentas tecnicas.
+
+### Task Completion
+
+| Aspecto | Descricao |
+|---|---|
+| O que faz | Avalia se a tarefa foi concluida de ponta a ponta |
+| O que nao faz | Nao e a melhor metrica para descobrir qual tool especifica faltou e nao substitui a analise tecnica detalhada do G-Eval |
+| Utilidade | Mede se o usuario recebeu uma resposta funcional para o objetivo solicitado |
+| Justificativa | Muitas perguntas do SMART exigem decisao agronomica, avaliacao de risco e recomendacao pratica. Task Completion verifica se esse fechamento realmente aconteceu |
+
+**Detalhamento:**  
+Task Completion avalia o fluxo completo:
+
+1. Pergunta do usuario
+2. Execucao da API SMART
+3. Resposta final
+4. Resultado esperado
+
+Ela e mais pesada porque roda via tracing/observed agent. Por isso pode ser mais lenta e mais sujeita a timeout em modelos ou provedores instaveis.
+
+## Por Que Usar as Tres Juntas
+
+Nenhuma metrica sozinha cobre todo o comportamento esperado da API SMART.
+
+| Metrica | Papel |
+|---|---|
+| **G-Eval** | Avalia a qualidade tecnica da resposta |
+| **Tool Correctness** | Avalia se o sistema buscou os dados certos |
+| **Task Completion** | Avalia se a tarefa foi concluida |
+
+Essa combinacao permite separar tres tipos de problema:
+
+| Tipo de problema | Onde aparece |
+|---|---|
+| A API chamou dados corretos, mas respondeu mal | G-Eval baixo |
+| A resposta parece boa, mas faltaram tools importantes | Tool Correctness baixo |
+| O sistema tentou responder, mas nao concluiu bem a tarefa | Task Completion baixo |
+
+Essa abordagem e adequada porque o SMART nao e apenas um gerador de texto. Ele e uma API agentic com orquestrador, agentes especializados, tools tecnicas e resposta final em linguagem natural. Avaliar apenas o texto seria insuficiente; avaliar apenas tools tambem seria incompleto.

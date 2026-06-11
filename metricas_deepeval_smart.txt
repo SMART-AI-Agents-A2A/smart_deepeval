@@ -148,3 +148,117 @@ Task Completion:
 Mede conclusao da tarefa de ponta a ponta.
 
 Essas metricas se complementam. Uma resposta pode passar em uma e falhar em outra, e isso ajuda a identificar se o problema esta na resposta final, na selecao de ferramentas ou na execucao completa da tarefa.
+
+
+O QUE CADA FERRAMENTA DE AVALIACAO FAZ E NAO FAZ
+
+
+1. G-EVAL
+
+O que faz:
+
+- Avalia a qualidade tecnica da resposta final.
+- Verifica se a resposta atende ao objetivo central da pergunta.
+- Analisa se ha conclusao explicita quando a pergunta exige decisao.
+- Considera se a recomendacao e acionavel e tecnicamente justificada.
+- Usa o expected_output como referencia tecnica, nao como copia literal obrigatoria.
+- Permite avaliar respostas dinamicas geradas com dados atuais da API SMART.
+
+O que nao faz:
+
+- Nao verifica diretamente se as tools corretas foram chamadas.
+- Nao garante que os dados retornados pelos sensores estejam corretos na origem.
+- Nao deve exigir igualdade numerica literal com o db.json quando a API usa dados atuais.
+- Nao substitui revisao agronomica humana em decisoes de campo reais.
+
+Utilidade na avaliacao:
+
+- Mede se a resposta final e util para o usuario.
+- Ajuda a avaliar qualidade de raciocinio, conclusao e recomendacao.
+- E mais adequada que uma comparacao rigida quando os dados sao dinamicos.
+- Ajuda a detectar respostas vagas, contraditorias ou sem decisao clara.
+
+O que justifica o uso:
+
+A API SMART responde com dados em tempo real ou dados atuais vindos de sensores, OpenWeather, InfluxDB, RAG e agentes especializados. Como esses valores mudam, uma metrica rigida baseada em igualdade com o expected_output pode punir respostas corretas. O G-Eval permite julgar a coerencia tecnica da resposta mesmo quando os numeros atuais diferem da referencia do db.json.
+
+
+2. TOOL CORRECTNESS
+
+O que faz:
+
+- Avalia se a API SMART chamou as ferramentas esperadas.
+- Compara tools_called com expected_tools.
+- Identifica tools corretas, faltantes e extras.
+- Mede a qualidade da selecao de ferramentas pelo orquestrador.
+- Ajuda a descobrir se a resposta foi baseada nas fontes/agentes certos.
+
+O que nao faz:
+
+- Nao avalia se o texto final ficou bom.
+- Nao julga se a recomendacao final foi tecnicamente bem escrita.
+- Nao garante que o dado retornado por uma tool esteja correto.
+- Nao mede se o usuario ficou satisfeito com a resposta.
+- Nao substitui G-Eval ou Task Completion.
+
+Utilidade na avaliacao:
+
+- Mostra se o problema esta no roteamento dos agentes/tools.
+- Ajuda a ajustar o ai.orchestrate.ts ou a logica de selecao de agentes.
+- Permite diagnosticar falhas como ausencia de tools de ar, chuva, vento, solo ou radiacao.
+- E essencial para avaliar uma arquitetura agentic, onde o caminho de execucao importa.
+
+O que justifica o uso:
+
+O projeto SMART nao e apenas um chatbot textual. Ele possui agentes e tools especializadas para consultar solo, ar, chuva, vento, radiacao e outros dados. Por isso, nao basta a resposta parecer boa: ela precisa ter usado as ferramentas corretas para sustentar a conclusao. Tool Correctness mede exatamente essa aderencia entre pergunta, ferramentas esperadas e ferramentas realmente chamadas.
+
+
+3. TASK COMPLETION
+
+O que faz:
+
+- Avalia se a tarefa foi concluida de ponta a ponta.
+- Considera o fluxo completo entre pergunta, execucao da API e resposta final.
+- Mede se o usuario recebeu uma resposta funcional para o objetivo pedido.
+- Usa tracing/observed agent para avaliar a execucao observada.
+- Ajuda a validar o comportamento geral do sistema, nao apenas um trecho isolado.
+
+O que nao faz:
+
+- Nao e a melhor metrica para diagnosticar qual tool especifica faltou.
+- Nao substitui Tool Correctness na analise de ferramentas.
+- Nao substitui G-Eval na analise fina da qualidade tecnica da resposta.
+- Pode ser mais lenta e mais sensivel a timeout, pois reexecuta parte do fluxo.
+
+Utilidade na avaliacao:
+
+- Mede se o sistema realmente resolveu a tarefa.
+- Ajuda a detectar respostas parciais ou execucoes incompletas.
+- E util para avaliar o comportamento final do SMART como produto.
+- Complementa G-Eval e Tool Correctness ao olhar a tarefa inteira.
+
+O que justifica o uso:
+
+Mesmo que a API chame as tools certas e produza uma resposta tecnicamente razoavel, ainda e necessario saber se a tarefa do usuario foi efetivamente concluida. Task Completion avalia esse fechamento de ponta a ponta. No SMART, isso e importante porque muitas perguntas exigem decisao agronomica, avaliacao de risco e recomendacao pratica, nao apenas listagem de dados.
+
+
+POR QUE USAR AS TRES JUNTAS
+
+Nenhuma das tres metricas sozinha cobre todo o comportamento esperado da API SMART.
+
+- G-Eval avalia a qualidade tecnica da resposta.
+- Tool Correctness avalia se o sistema buscou os dados certos.
+- Task Completion avalia se a tarefa foi concluida.
+
+Juntas, elas permitem separar tres tipos de problema:
+
+1. Problema de resposta final:
+A API ate chamou dados corretos, mas respondeu mal. Isso aparece em G-Eval.
+
+2. Problema de orquestracao:
+A resposta pode parecer boa, mas faltaram tools importantes. Isso aparece em Tool Correctness.
+
+3. Problema de execucao completa:
+O sistema ate tentou responder, mas nao concluiu bem a tarefa. Isso aparece em Task Completion.
+
+Essa combinacao e justificada porque o SMART e uma API agentic com orquestrador, agentes especializados, tools tecnicas e resposta final em linguagem natural. Avaliar apenas texto seria insuficiente; avaliar apenas tools tambem seria incompleto.
