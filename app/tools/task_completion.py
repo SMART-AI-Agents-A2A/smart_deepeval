@@ -11,6 +11,7 @@ def build_task_completion_metric(config: JudgeConfig) -> TaskCompletionMetric:
         threshold=config.threshold,
         model=config.model,
         include_reason=config.include_reason,
+        async_mode=False,
     )
 
 

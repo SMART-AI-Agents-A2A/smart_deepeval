@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import os
 
 from deepeval.metrics import ToolCorrectnessMetric
@@ -81,12 +82,18 @@ def load_available_smart_tools() -> list[ToolCall]:
 
 def build_tool_correctness_metric(config: JudgeConfig) -> ToolCorrectnessMetric:
     use_llm_tool_selection = os.getenv("DEEPEVAL_TOOL_SELECTION_WITH_LLM", "false").lower() == "true"
-    return ToolCorrectnessMetric(
-        available_tools=load_available_smart_tools() if use_llm_tool_selection else None,
-        threshold=config.threshold,
-        model=config.model,
-        include_reason=config.include_reason,
-    )
+
+    metric_kwargs = {
+        "available_tools": load_available_smart_tools() if use_llm_tool_selection else None,
+        "threshold": config.threshold,
+        "model": config.model,
+        "include_reason": config.include_reason,
+    }
+
+    if "async_mode" in inspect.signature(ToolCorrectnessMetric).parameters:
+        metric_kwargs["async_mode"] = False
+
+    return ToolCorrectnessMetric(**metric_kwargs)
 
 
 def infer_expected_tools(question: str, expected_output: str = "") -> list[ToolCall]:

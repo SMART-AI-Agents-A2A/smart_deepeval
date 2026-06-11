@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from deepeval import evaluate
+from deepeval.evaluate import AsyncConfig
 
 
 TRUE_VALUES = {"1", "true", "yes", "y", "sim", "s"}
@@ -88,7 +89,9 @@ def evaluate_with_confident_ai(
     evaluate_kwargs: dict[str, Any] = {
         "test_cases": test_cases,
         "metrics": metrics,
+        "async_config": AsyncConfig(max_concurrent=1),
     }
+
     identifier = build_test_run_identifier(config, metric_name)
     if identifier:
         evaluate_kwargs["identifier"] = identifier

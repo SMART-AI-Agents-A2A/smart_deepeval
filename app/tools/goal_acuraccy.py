@@ -24,6 +24,7 @@ def build_goal_accuracy_metric(config: JudgeConfig) -> GoalAccuracyMetric:
         threshold=config.threshold,
         model=config.model,
         include_reason=config.include_reason,
+        async_mode=False,
     )
 
 

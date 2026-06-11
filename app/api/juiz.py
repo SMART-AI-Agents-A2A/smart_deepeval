@@ -213,7 +213,7 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             if response.status_code >= 400:
                 print("\n[ERRO JUIZ] Status:", response.status_code)
                 print("[ERRO JUIZ] URL:", response.url)
-                print("[ERRO JUIZ] Resposta da Cloudflare:")
+                print("[ERRO JUIZ] Resposta do provedor:")
                 print(response.text)
                 print("[ERRO JUIZ] Payload enviado:")
                 print(payload)
@@ -222,10 +222,9 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             detail = response.text.strip()
             if response.status_code == 401:
                 raise RuntimeError(
-                    "Falha de autenticacao no Cloudflare AI Gateway usado como juiz. "
-                    "Preencha OPENAI_API_KEY quando o Gateway deve repassar a chave da OpenAI, "
-                    "ou CF_AIG_TOKEN quando o Gateway esta autenticado/BYOK. "
-                    f"Resposta do Gateway: {detail or '401 Unauthorized'}"
+                    "Falha de autenticacao no provedor usado como juiz. "
+                    "Confira MODEL_ACCESS_KEY, DIGITALOCEAN_TOKEN, OPENAI_API_KEY ou OPEN_API_KEY. "
+                    f"Resposta do provedor: {detail or '401 Unauthorized'}"
                 ) from error
             raise
 
