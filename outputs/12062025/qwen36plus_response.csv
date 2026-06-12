@@ -1,0 +1,301 @@
+﻿numero,conversation_id,route,agents_called,tools_called,expected_tools,optional_tools,tools_correct,tools_optional,tools_missing,tools_extra,api_error,question,expected_output,evaluation_expected_output,expected_criteria,actual_output,trace_json,rag_json
+45,deepeval-smart-1,multi-agent,Solo|Ar|Radiacao,smart_soil_data|smart_air_temperature|smart_air_current_weather|smart_air_humidity|smart_radiation_solar,smart_soil_data|smart_radiation_solar|smart_air_temperature|smart_air_humidity|smart_air_current_weather,,smart_soil_data|smart_air_temperature|smart_air_current_weather|smart_air_humidity|smart_radiation_solar,,,,False,"A lavoura está em condição de atenção por calor hoje, considerando temperatura máxima, umidade relativa mínima, radiação solar e umidade do solo?","A lavoura está em condição de atenção por calor. A temperatura máxima prevista é de 34 °C, a umidade relativa mínima é de 53%, a radiação solar máxima é de 890 W/m² e a umidade do solo está em 22%. A recomendação é evitar manejo entre 11:00 e 15:00 e reavaliar a necessidade de gotejamento no fim da tarde. A justificativa é que calor, radiação e baixa umidade relativa elevam a demanda hídrica da planta. Se o cafeeiro estiver em fase reprodutiva, o risco de impacto fisiológico é maior. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário. Origem técnica da recomendação: Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não há condição de atenção por calor na lavoura hoje.  
+
+**Risco:**  
+- Umidade do solo ligeiramente baixa (16,4–16,5%) pode indicar estresse hídrico em condições extremas, mas não crítica com os dados atuais.  
+- Umidade relativa mínima de 74% (OpenWeather) e radiação solar de até 219 W/m² podem contribuir para estresse térmico em períodos prolongados, mas não há valores críticos registrados.  
+
+**Recomendacao:**  
+- Monitorar a umidade do solo e a radiação solar nas próximas 24 horas, especialmente se houver previsão de aumento de temperatura acima de 22°C.  
+- Verificar a necessidade de irrigação se a umidade do solo cair abaixo de 15% em leituras consecutivas.  
+
+**Dados coletados:**  
+**Sensor InfluxDB/Edaphic (Solo):**  
+- Umidade do Solo: 16,48 % (12/06/2026 14:15:04).  
+- **Fonte dos dados:** InfluxDB; ferramenta MCP: smart_soil_data.  
+
+**Sensor InfluxDB (Ar - Temperatura):**  
+- Temperatura do Ar: 19,5 °C (12/06/2026 14:15:03).  
+- **Fonte dos dados:** InfluxDB; ferramenta MCP: smart_air_temperature.  
+
+**OpenWeather (Ar - Temperatura e Umidade):**  
+- Temperatura: 19,93 °C (12/06/2026 14:15:14).  
+- Umidade Relativa: 74 % (12/06/2026 14:15:14).  
+- **Fonte dos dados:** OpenWeather; ferramenta MCP: smart_air_current_weather.  
+
+**Sensor InfluxDB (Ar - Umidade):**  
+- Umidade Relativa: 81,8 % (12/06/2026 14:15:03).  
+- **Fonte dos dados:** InfluxDB; ferramenta MCP: smart_air_humidity.  
+
+**Sensor InfluxDB (Radiação Solar):**  
+- Radiação Solar: 219 W/m² (12/06/2026 14:11:04).  
+- **Fonte dos dados:** InfluxDB; ferramenta MCP: smart_radiation_solar.  
+
+**Motivo tecnico da recomendacao:**  
+A temperatura média (19,5–19,9°C) e a umidade relativa (74–81,8%) estão dentro de faixas toleráveis para o cafezal, sem sinais de estresse térmico agudo. A umidade do solo (16,4–16,5%) é ligeiramente baixa, mas não crítica para ações imediatas.  
+
+**Origem tecnica da recomendacao:**  
+Baseado em critérios de estresse térmico para cafeeiros, que consideram temperaturas acima de 22°C, umidade relativa abaixo de 60% e radiação solar superior a 300 W/m² como fatores de risco. Os dados atuais não atingem esses limiares.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 6 chamada(s) de agente: Solo, Ar, Ar, Ar, Ar, Radiacao.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""6 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 6 chamada(s) de agente: Solo, Ar, Ar, Ar, Ar, Radiacao.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51737005},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51487076}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51737005},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.51487076}],""sourceCount"":2,""enabled"":true}"
+87,deepeval-smart-2,multi-agent,Ar|Chuva,smart_air_pressure|smart_air_current_weather|smart_rain_forecast,smart_air_pressure|smart_air_current_weather,smart_rain_forecast,smart_air_pressure|smart_air_current_weather,smart_rain_forecast,,,False,O aumento da pressão atmosférica indica melhora no tempo para amanhã e pode abrir uma janela de manejo?,"O aumento da pressão indica tendência de maior estabilidade para amanhã. A pressão passou de 1009 hPa para 1014 hPa, a chance de chuva caiu para 22% e o vento previsto é de 8 km/h. A recomendação é planejar atividades de campo para o período da manhã, mantendo checagem da previsão antes da execução. A justificativa é que pressão em elevação geralmente está associada a tempo mais estável, o que favorece inspeção, manejo manual e eventualmente aplicação, desde que vento e umidade também estejam adequados. Fonte dos dados: OpenWeather. Motivo técnico da recomendação: A recomendação usa pressão atmosférica, tendência de chuva, vento e mudança de direção como sinais de instabilidade. Mesmo que esses dados não substituam uma análise meteorológica completa, eles ajudam a decidir se uma operação sensível deve ser antecipada, adiada ou feita com cautela nas próximas horas. Origem técnica da recomendação: Baseada no uso de monitoramento agrometeorológico descrito por Meireles et al. e na lógica de agricultura de precisão do Manual de Agricultura de Precisão, que defende organizar dados ambientais para apoiar decisões. A leitura de pressão e tendência de chuva é uma prática meteorológica operacional de apoio, não uma regra isolada dos documentos.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: pressao atmosferica quando a pergunta envolver estabilidade do tempo ou tendencia meteorologica; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: pressao atmosferica quando a pergunta envolver estabilidade do tempo ou tendencia meteorologica; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não, a pressão atmosférica não indica claramente melhora no tempo para amanhã, pois os dados mostram variações e inconsistências entre fontes.  
+
+**Risco:** A previsão de chuva de 100% às 18:00 do dia 12/06/2026 limita a janela de manejo imediata.  
+
+**Recomendacao:** Monitorar a previsao de chuva para o dia 13/06/2026 (0% de precipitacao após 03:00) e reavaliar a janela de manejo com base na estabilidade da pressão.  
+
+**Motivo tecnico da recomendacao:** A pressão atmosférica registrada no InfluxDB (91,69 hPa) e na OpenWeather (1014 hPa) apresenta discrepâncias, dificultando a interpretação. A previsao de chuva para o final do dia 12/06/2026 indica risco de interrupcao.  
+
+**Origem tecnica da recomendacao:** A pressão atmosférica é um indicador de estabilidade do tempo, mas requer consistência entre fontes e ausência de precipitacao para definir janelas de manejo.  
+
+---  
+**Dados coletados**  
+**Sensor InfluxDB**  
+- Última leitura AtmPressure: 91,69 hPa em 12/06/2026 14:15:03.  
+- Primeira leitura AtmPressure: 91,92 hPa em 12/06/2026 08:16:03.  
+
+**OpenWeather**  
+- Leitura atual pressure: 1014 hPa em 12/06/2026 14:15:14.  
+- Previsao 1 probabilidade de precipitacao: 100 % em 12/06/2026 18:00:00.  
+
+**OpenWeather (chuva)**  
+- Previsao 8 probabilidade de precipitacao: 0 % em 13/06/2026 15:00:00.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 3 chamada(s) de agente: Ar, Ar, Chuva.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""ar"",""agentName"":""3 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 3 chamada(s) de agente: Ar, Ar, Chuva.""},""references"":[]}","{""instance"":""smart-rag"",""sources"":[],""sourceCount"":0,""enabled"":false}"
+84,deepeval-smart-3,agent,Solo|solo,smart_soil_data,smart_soil_data,,smart_soil_data,,,,False,A umidade atual do solo indica risco de compactação se houver entrada de máquinas na área irrigada por gotejamento?,"A umidade atual indica risco moderado de compactação. O valor registrado é de 33%, com chuva recente de 9 mm nas últimas 24 horas. A recomendação é evitar máquinas pesadas e reduzir passadas repetidas, principalmente próximas às linhas de plantio e gotejo. A justificativa é que compactação pode reduzir infiltração, limitar crescimento radicular e prejudicar a distribuição da água no solo. Em uma área irrigada por gotejamento, preservar a estrutura do solo é essencial para que a água aplicada alcance bem a zona radicular. Fonte dos dados: InfluxDB. Motivo técnico da recomendação: A recomendação considera que solo úmido após chuva ou irrigação pode reduzir a trafegabilidade, aumentar risco de compactação e dificultar operações no campo. A decisão não deve se basear apenas no volume de chuva, mas também na umidade atual do solo, na tendência de novas chuvas e na sensibilidade da operação planejada. Origem técnica da recomendação: Baseada em Cararo e Souza Dias, que destacam a importância de características físicas do solo, infiltração, retenção de água e manejo racional; e no Manual de Agricultura de Precisão, que orienta usar dados para definir decisões operacionais. A recomendação sobre tráfego e compactação é uma prática conservacionista de cuidado com solo úmido.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não há indicação de risco imediato de compactação com base na umidade do solo, que está em 16,48% (12/06/2026 14:15:04).  
+
+**Risco:** A umidade do solo está próxima ao limite mínimo recomendado para cafezais (16,47% - Soares, 2001), mas não há dados sobre estrutura do solo, tráfego anterior ou condições de compactação.  
+
+**Recomendacao:** Evite entrada de máquinas se o solo estiver com textura frágil ou após chuvas recentes. Verifique a estrutura do solo e histórico de tráfego para avaliação completa.  
+
+**Dados coletados:**  
+- **Sensor InfluxDB/Edaphic:**  
+  - Umidade do Solo: 16,48% (12/06/2026 14:15:04).  
+  - Leituras anteriores: 16,47% (08:16:03), 16,43% (14:13:03), 16,44% (14:11:04).  
+
+**Motivo tecnico da recomendacao:** A umidade do solo está dentro da faixa crítica, mas compactação depende de fatores como textura, tráfego e antecedentes hídricos, que não foram coletados.  
+
+**Origem tecnica da recomendacao:** Dados do RAG indicam que a umidade abaixo de 16,47% pode afetar o desenvolvimento do cafeeiro, mas não há relação direta com compactação.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta corresponde ao dominio do agente Solo."",""Acionei o agente Solo para avaliar_solo_e_manejo.""],""route"":""agent"",""selectedAgent"":""solo"",""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""Solo"",""action"":""avaliar_solo_e_manejo"",""status"":""completed"",""summary"":""Solo consultou dados via A2A/MCP.""},""references"":[{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.42450732},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.42077997}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.42450732},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.42077997}],""sourceCount"":2,""enabled"":true}"
+62,deepeval-smart-4,multi-agent,Solo|Ar|Chuva|Radiacao|Vento,smart_soil_data|smart_air_humidity|smart_air_current_weather|smart_rain_accumulated|smart_rain_forecast|smart_air_temperature|smart_radiation_solar|smart_wind_speed|smart_wind_forecast|smart_wind_direction|smart_wind_gust,smart_soil_data|smart_rain_forecast|smart_air_humidity|smart_air_current_weather,,smart_soil_data|smart_air_humidity|smart_air_current_weather|smart_rain_forecast,,,smart_rain_accumulated|smart_air_temperature|smart_radiation_solar|smart_wind_speed|smart_wind_forecast|smart_wind_direction|smart_wind_gust,False,"A lavoura está em condição adequada para receber adubação, considerando umidade do solo, previsão de chuva, risco de vento e possibilidade de fertirrigação pelo gotejamento?","A lavoura está em condição adequada com cautela para adubação. A umidade do solo está em 27%, a previsão de chuva é de 6 mm, com 48% de probabilidade, o vento médio é de 9 km/h e a umidade relativa é de 72%. A recomendação é avaliar se a aplicação será via solo, foliar ou fertirrigação. Se for fertirrigação, o gotejamento pode ser vantajoso por aplicar água e nutrientes próximos à zona radicular, mas exige filtragem e manejo correto para evitar entupimento. A justificativa é que umidade adequada melhora aproveitamento, enquanto chuva forte pode causar perdas. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação considera que solo úmido após chuva ou irrigação pode reduzir a trafegabilidade, aumentar risco de compactação e dificultar operações no campo. A decisão não deve se basear apenas no volume de chuva, mas também na umidade atual do solo, na tendência de novas chuvas e na sensibilidade da operação planejada. Origem técnica da recomendação: Baseada em Cararo e Souza Dias, que destacam a importância de características físicas do solo, infiltração, retenção de água e manejo racional; e no Manual de Agricultura de Precisão, que orienta usar dados para definir decisões operacionais. A recomendação sobre tráfego e compactação é uma prática conservacionista de cuidado com solo úmido.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não, a lavoura não está em condição adequada para receber adubação devido ao risco elevado de rajadas de vento.  
+
+**Risco:**  
+- **Rajadas de vento:** Medidas do sensor InfluxDB mostram rajadas de **22,36 km/h (6,21 m/s)** às 14:10:03, acima do limiar seguro para operações de fertirrigação (geralmente abaixo de 20 km/h).  
+- **Condições instáveis:** A direção do vento variou entre 282,5° e 324,1°, indicando turbulência que pode afetar a distribuição do fertilizante.  
+
+**Recomendacao:**  
+Adie a adubação por enquanto. Aguarde a redução das rajadas de vento (menos de 20 km/h) e confirme a previsão de chuva (100% de probabilidade às 18h do dia 12/06/2026). Verifique novamente as condições antes de iniciar a fertirrigação.  
+
+**Dados coletados:**  
+- **Sensor InfluxDB/Edaphic (Vento):**  
+  - Rajadas: 22,36 km/h (6,21 m/s) em 12/06/2026 14:10:03.  
+  - Velocidade do vento: 11,16 km/h (3,10 m/s) em 12/06/2026 14:15:03.  
+- **OpenWeather (Chuva):**  
+  - Previsão de 100% de precipitação às 18h do dia 12/06/2026 (0,41 mm).  
+- **Sensor InfluxDB (Solo):**  
+  - Umidade do solo: 16,48 % em 12/06/2026 14:15:04.  
+
+**Motivo tecnico da recomendacao:**  
+Rajadas acima de 20 km/h aumentam o risco de deriva de fertilizantes e danos às plantas, mesmo com previsão de chuva. A operação deve ser evitada até que as condições se estabilizem.  
+
+**Origem tecnica da recomendacao:**  
+Normas de manejo agrícola recomendam evitar aplicação de fertilizantes em condições de vento forte para preservar eficiência e evitar perdas.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""15 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.48809904},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.48450506}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.48809904},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.48450506}],""sourceCount"":2,""enabled"":true}"
+14,deepeval-smart-5,multi-agent,Vento,smart_wind_speed|smart_wind_current_weather|smart_wind_gust,smart_radiation_solar|smart_wind_gust|smart_wind_current_weather|smart_wind_speed|smart_wind_direction|smart_air_humidity,smart_rain_forecast,smart_wind_speed|smart_wind_current_weather|smart_wind_gust,,smart_radiation_solar|smart_wind_direction|smart_air_humidity,,False,"As rajadas de vento registradas nas últimas 24 horas indicam risco operacional para manejo, pulverização ou avaliação da florada no café?","As rajadas indicam risco baixo para a lavoura, mas moderado para operações sensíveis. A rajada máxima foi de 28 km/h, a velocidade média do vento foi de 10 km/h e o horário mais crítico foi 14:30. A recomendação é evitar pulverização e avaliações delicadas da florada nos horários de maior rajada. A justificativa é que rajadas não necessariamente danificam a planta, mas reduzem a segurança e a precisão de operações como aplicação, inspeção de flores e manejo manual. Para validar a resposta, o agente deve mostrar o valor máximo, o horário e a média do período, pois a média isolada pode mascarar eventos críticos. Fonte dos dados: InfluxDB. Motivo técnico da recomendação: A recomendação busca reduzir risco de deriva, evaporação da calda, lavagem por chuva e baixa eficiência da operação. Vento, rajadas, direção predominante, chuva próxima, temperatura e umidade relativa definem se uma aplicação foliar ou fitossanitária tem boa chance de atingir o alvo. Quando há rajadas, chuva provável ou radiação elevada, a resposta deve preferir janela mais segura em vez de recomendar aplicação imediata. Origem técnica da recomendação: A base documental vem de Cararo e Souza Dias, que listam vento, chuva, umidade relativa, radiação e temperatura como fatores climáticos relevantes ao manejo; e do Manual de Agricultura de Precisão, que reforça a tomada de decisão por dados. A parte sobre reduzir deriva, evitar chuva após aplicação e escolher janela operacional é uma recomendação técnica de cuidado agronômico e operacional, não um limiar numérico específico retirado dos PDFs.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Sim, há risco operacional devido a rajadas de vento acima de 40 km/h registradas nas últimas 24 horas.  
+
+**Risco:**  
+- Rajadas de vento de até **41,72 km/h** (OpenWeather, 12/06/2026 14:15:14) podem causar deriva de agroquímicos, danos à florada e dificultar operações de manejo.  
+- Valores do InfluxDB mostram rajadas de até **22,36 km/h**, o que também pode afetar a eficiência de pulverizações.  
+
+**Recomendacao:**  
+- Adie operações de pulverização, manejo de floração e avaliação de frutificação até que as rajadas sejam menores que **30 km/h**.  
+- Monitore a previsão de vento para evitar atividades em janelas com rajadas acima de **40 km/h**.  
+
+**Dados coletados:**  
+**Sensor InfluxDB** (avaliar_vento_e_deriva):  
+- Velocidade do vento: 10,44 km/h a 18,32 km/h (11/06/2026 14:16:04 a 12/06/2026 14:15:03).  
+- Rajadas: 14,83 km/h a 22,36 km/h (11/06/2026 14:16:04 a 12/06/2026 14:15:03).  
+
+**OpenWeather** (avaliar_vento_e_deriva):  
+- Velocidade do vento: 26,39 km/h (7,33 m/s) em 12/06/2026 14:15:14.  
+- Rajadas: 41,72 km/h (11,59 m/s) em 12/06/2026 14:15:14.  
+
+**Motivo tecnico da recomendacao:**  
+Rajadas acima de 30 km/h aumentam o risco de deriva e danos à floração, conforme práticas agrícolas para cafezais.  
+
+**Origem tecnica da recomendacao:**  
+Baseado em limites de velocidade do vento para operações agrícolas, considerando riscos de deriva e danos à cultura.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 4 chamada(s) de agente: Vento, Vento, Vento, Vento.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""vento"",""agentName"":""4 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 4 chamada(s) de agente: Vento, Vento, Vento, Vento.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.5760138},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.5676705}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.5760138},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.5676705}],""sourceCount"":2,""enabled"":true}"
+35,deepeval-smart-6,multi-agent,Solo|Chuva,smart_soil_data|smart_rain_accumulated,smart_soil_data|smart_rain_accumulated|smart_radiation_solar|smart_air_humidity|smart_air_current_weather,,smart_soil_data|smart_rain_accumulated,,smart_radiation_solar|smart_air_humidity|smart_air_current_weather,,False,Existe risco de encharcamento localizado ou baixa aeração do solo em áreas mais baixas da Fazenda NSAAB se a chuva prevista ocorrer junto com irrigação por gotejamento?,"Existe risco moderado de excesso localizado em áreas mais baixas. A umidade do solo está em 34%, a chuva acumulada nas últimas 24 horas foi de 18 mm e a previsão indica mais 22 mm em três dias, com 70% de probabilidade. A recomendação é suspender o gotejamento nas áreas com maior umidade e monitorar drenagem. A justificativa é que o excesso de água pode reduzir a aeração do solo e prejudicar o sistema radicular, além de favorecer doenças. A resposta deve reconhecer que o risco não é uniforme: áreas baixas e com drenagem lenta podem exigir manejo diferente do restante do talhão. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; chuva acumulada quando chuva recente alterar risco operacional, compactacao, lavagem ou solo umido; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; chuva acumulada quando chuva recente alterar risco operacional, compactacao, lavagem ou solo umido; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não há risco imediato de encharcamento ou baixa aeração do solo nas áreas mais baixas da Fazenda NSAAB com as condições atuais.  
+
+**Risco:**  
+- **Encharcamento:** Risco baixo, pois a umidade do solo está em 16,48% (valor seco) e a chuva acumulada foi de 0,05 mm (mínima).  
+- **Aeração:** Não há sinais de comprometimento, já que o solo não está saturado.  
+
+**Recomendacao:**  
+Pode-se continuar com a irrigação por gotejamento, mas monitore a chuva prevista e a umidade do solo em áreas baixas, pois pequenas variações podem afetar a drenagem.  
+
+**Dados coletados:**  
+- **Sensor InfluxDB/Edaphic (Solo):**  
+  - Umidade do Solo: 16,47% (12/06/2026 08:16:03) a 16,48% (12/06/2026 14:15:04).  
+  - Ponto selecionado SoilMoisture: 16,48% (12/06/2026 14:15:04).  
+
+- **Sensor InfluxDB (Chuva):**  
+  - Chuva Acumulada: 0,05 mm (12/06/2026 08:16:03) a 0 mm (12/06/2026 14:15:03).  
+
+**Motivo tecnico da recomendacao:** A umidade do solo está abaixo do limiar crítico para encharcamento (geralmente acima de 30%), e a chuva registrada é insuficiente para causar sobrecarga hídrica.  
+
+**Origem tecnica da recomendacao:** Baseado em dados de sensores de solo e chuva, que indicam condições secas e baixa precipitação, reduzindo riscos de encharcamento.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 2 chamada(s) de agente: Solo, Chuva.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""2 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 2 chamada(s) de agente: Solo, Chuva.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.46102276},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.45938176}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.46102276},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.45938176}],""sourceCount"":2,""enabled"":true}"
+46,deepeval-smart-7,multi-agent,Solo|Ar|Chuva|Radiacao|Vento,smart_soil_data|smart_air_humidity|smart_air_current_weather|smart_rain_accumulated|smart_rain_forecast|smart_air_temperature|smart_radiation_solar|smart_wind_speed|smart_wind_forecast|smart_wind_direction|smart_wind_gust,smart_soil_data|smart_rain_forecast|smart_radiation_solar|smart_air_humidity|smart_air_current_weather,,smart_soil_data|smart_air_humidity|smart_air_current_weather|smart_rain_forecast|smart_radiation_solar,,,smart_rain_accumulated|smart_air_temperature|smart_wind_speed|smart_wind_forecast|smart_wind_direction|smart_wind_gust,False,A previsão de chuva dos próximos sete dias permite reduzir a frequência de irrigação por gotejamento sem comprometer a lavoura?,"A previsão permite reduzir parcialmente a frequência de irrigação, mas não suspender o monitoramento. O acumulado previsto é de 38 mm em sete dias, com maior concentração nos três primeiros dias, e a umidade atual do solo é de 26%. A recomendação é reduzir o número de acionamentos do gotejamento e decidir com base na leitura diária do sensor. A justificativa é que chuvas concentradas podem não manter umidade adequada durante toda a semana, especialmente se ocorrerem dias quentes e com alta radiação depois. O gotejamento deve atuar como suplementação precisa, não como rotina fixa. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+**Resposta:** Não, a redução da frequência de irrigação por gotejamento não é recomendada no momento, pois a umidade do solo está baixa (16,4-16,5%) e a previsão de chuva (0,41 mm em 12/06/2026 18:00) pode não ser suficiente para suprir a demanda hídrica.  
+
+**Risco:**  
+- **Solo seco:** Umidade do solo abaixo de 17% indica risco de estresse hídrico.  
+- **Chuva insuficiente:** 0,41 mm de precipitação prevista pode não compensar a evapotranspiração.  
+- **Temperatura elevada:** 19,9 °C e radiação solar de 219 W/m² aumentam a demanda hídrica.  
+
+**Recomendacao:**  
+- **Manter a irrigação programada** até que a umidade do solo atinja níveis seguros (acima de 18%).  
+- **Monitorar a chuva real** com sensores e ajustar a programação após a precipitação de 12/06/2026.  
+- **Evitar redução prematura** para evitar déficit hídrico no cafeeiro.  
+
+**Dados coletados:**  
+- **Sensor InfluxDB/Edaphic (Solo):**  
+  - Umidade do Solo: 16,4-16,5% (12/06/2026 08:16:03 a 14:15:04).  
+  - Temperatura do Solo: 16,4-16,5 °C (12/06/2026 08:16:03 a 14:15:04).  
+- **OpenWeather (Ar):**  
+  - Umidade do Ar: 74% (12/06/2026 14:15:14).  
+  - Temperatura do Ar: 19,93 °C (12/06/2026 14:15:14).  
+- **Sensor InfluxDB (Chuva):**  
+  - Chuva acumulada: 0,05 mm (12/06/2026 08:16:03) a 0 mm (12/06/2026 14:15:03).  
+- **OpenWeather (Chuva):**  
+  - Previsão: 0,41 mm em 12/06/2026 18:00 (100% de probabilidade).  
+- **Sensor InfluxDB (Radiacao):**  
+  - Radiação Solar: 219 W/m² (12/06/2026 14:11:04).  
+
+**Motivo tecnico da recomendacao:** A umidade do solo está crítica (abaixo de 17%), e a chuva prevista é insuficiente para substituir a irrigação. A demanda hídrica está elevada devido à temperatura e radiação.  
+**Origem tecnica da recomendacao:** Baseado em práticas de manejo de irrigação para café, que priorizam a manutenção da umidade do solo acima de 17% para evitar estresse hídrico.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""solo"",""agentName"":""15 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 15 chamada(s) de agente: Solo, Solo, Ar, Ar, Chuva, Chuva, Ar, Ar, Radiacao, Vento, Vento, Vento, Vento, Vento, Vento.""},""references"":[{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.48809823},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.48724622}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.48809823},{""key"":""admin_Biosci-2006-291.pdf"",""score"":0.48724622}],""sourceCount"":2,""enabled"":true}"
+17,deepeval-smart-8,multi-agent,Vento,smart_wind_speed|smart_wind_forecast|smart_wind_gust,smart_radiation_solar|smart_wind_speed|smart_wind_gust|smart_wind_forecast|smart_wind_current_weather|smart_wind_direction|smart_air_humidity|smart_air_current_weather,smart_rain_forecast,smart_wind_speed|smart_wind_forecast|smart_wind_gust,,smart_radiation_solar|smart_wind_current_weather|smart_wind_direction|smart_air_humidity|smart_air_current_weather,,False,"A previsão de vento dos próximos três dias pode afetar polinização, aplicação foliar, pulverização ou trabalho manual na lavoura de café?","A previsão indica impacto moderado nas atividades sensíveis ao vento. Para polinização e avaliação da florada, o risco é baixo pela manhã e moderado à tarde. Para aplicação foliar ou defensivos, o risco é moderado por causa das rajadas previstas. A velocidade do vento deve variar entre 6 km/h e 18 km/h, com direção predominante de leste e rajadas de até 25 km/h. A recomendação é concentrar operações delicadas no início da manhã e evitar aplicação durante a tarde. A justificativa é que vento não afeta todas as operações da mesma forma: algumas são apenas desconfortáveis, enquanto pulverizações podem perder eficiência e segurança. Fonte dos dados: OpenWeather. Motivo técnico da recomendação: A recomendação busca reduzir risco de deriva, evaporação da calda, lavagem por chuva e baixa eficiência da operação. Vento, rajadas, direção predominante, chuva próxima, temperatura e umidade relativa definem se uma aplicação foliar ou fitossanitária tem boa chance de atingir o alvo. Quando há rajadas, chuva provável ou radiação elevada, a resposta deve preferir janela mais segura em vez de recomendar aplicação imediata. Origem técnica da recomendação: A base documental vem de Cararo e Souza Dias, que listam vento, chuva, umidade relativa, radiação e temperatura como fatores climáticos relevantes ao manejo; e do Manual de Agricultura de Precisão, que reforça a tomada de decisão por dados. A parte sobre reduzir deriva, evitar chuva após aplicação e escolher janela operacional é uma recomendação técnica de cuidado agronômico e operacional, não um limiar numérico específico retirado dos PDFs.","CRITERIOS DE AVALIACAO DA RESPOSTA SMART
+
+A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.
+Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.
+Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.
+Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.
+
+Criterios esperados:
+- Responder diretamente ao objetivo da pergunta com conclusao explicita.
+- Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.
+- Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.
+- Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; previsao de vento quando a decisao for para janela futura; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.
+- Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.
+- Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","Responder diretamente ao objetivo da pergunta com conclusao explicita.|Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.|Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.|Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; previsao de vento quando a decisao for para janela futura; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.|Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.|Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial.","
+
+Resposta: Sim, há risco moderado de impacto nas operações devido a rajadas de vento acima de 20 km/h.  
+Risco: Rajadas de vento podem causar deriva de agroquímicos, danos à polinização e dificuldades no trabalho manual.  
+Recomendacao: Adiar pulverizações e aplicações foliares até que as rajadas se reduzam. Monitorar a janela de 14:10 a 14:15, quando as rajadas atingiram 22,36 km/h.  
+Dados coletados:  
+**Sensor InfluxDB**  
+- Velocidade do vento: 18,32 km/h (12/06/2026 14:10:03); 11,16 km/h (12/06/2026 14:15:03).  
+- Rajadas: 22,36 km/h (12/06/2026 14:10:03); 14,47 km/h (12/06/2026 14:15:03).  
+**OpenWeather**  
+- Dados não estruturados, sem valores pontuais disponíveis.  
+
+Motivo tecnico da recomendacao: Rajadas acima de 20 km/h aumentam o risco de deriva e danos a culturas sensíveis como o café.  
+Origem tecnica da recomendacao: Normas de segurança para aplicações agrícolas indicam que rajadas acima de 15 km/h exigem cautela.","{""thinking"":[""Consultei o RAG da Cloudflare antes de responder."",""A pergunta exige combinacao de multiplos sinais ou agentes especializados."",""Acionei 4 chamada(s) de agente: Vento, Vento, Vento, Vento.""],""route"":""multi-agent"",""selectedAgent"":null,""agentCall"":{""called"":true,""agentId"":""vento"",""agentName"":""4 agentes"",""action"":""executar_plano_multiagente"",""status"":""completed"",""summary"":""Acionei 4 chamada(s) de agente: Vento, Vento, Vento, Vento.""},""references"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.55225885},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.534669}]}","{""instance"":""smart-rag"",""sources"":[{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.55225885},{""key"":""Fenologiadocafeeiro.pdf"",""score"":0.534669}],""sourceCount"":2,""enabled"":true}"

@@ -1,0 +1,152 @@
+[
+  {
+    "numero": 45,
+    "conversationId": "postman-45",
+    "prompt": "A lavoura está em condição de atenção por calor hoje, considerando temperatura máxima, umidade relativa mínima, radiação solar e umidade do solo?"
+  },
+  {
+    "numero": 87,
+    "conversationId": "postman-87",
+    "prompt": "O aumento da pressão atmosférica indica melhora no tempo para amanhã e pode abrir uma janela de manejo?"
+  },
+  {
+    "numero": 84,
+    "conversationId": "postman-84",
+    "prompt": "A umidade atual do solo indica risco de compactação se houver entrada de máquinas na área irrigada por gotejamento?"
+  },
+  {
+    "numero": 62,
+    "conversationId": "postman-62",
+    "prompt": "A lavoura está em condição adequada para receber adubação, considerando umidade do solo, previsão de chuva, risco de vento e possibilidade de fertirrigação pelo gotejamento?"
+  },
+  {
+    "numero": 14,
+    "conversationId": "postman-14",
+    "prompt": "As rajadas de vento registradas nas últimas 24 horas indicam risco operacional para manejo, pulverização ou avaliação da florada no café?"
+  },
+  {
+    "numero": 35,
+    "conversationId": "postman-35",
+    "prompt": "Existe risco de encharcamento localizado ou baixa aeração do solo em áreas mais baixas da Fazenda NSAAB se a chuva prevista ocorrer junto com irrigação por gotejamento?"
+  },
+  {
+    "numero": 46,
+    "conversationId": "postman-46",
+    "prompt": "A previsão de chuva dos próximos sete dias permite reduzir a frequência de irrigação por gotejamento sem comprometer a lavoura?"
+  },
+  {
+    "numero": 17,
+    "conversationId": "postman-17",
+    "prompt": "A previsão de vento dos próximos três dias pode afetar polinização, aplicação foliar, pulverização ou trabalho manual na lavoura de café?"
+  },
+  {
+    "numero": 43,
+    "conversationId": "postman-43",
+    "prompt": "A diferença entre temperatura do solo e temperatura do ar indica algum desequilíbrio que mereça atenção no manejo do cafeeiro?"
+  },
+  {
+    "numero": 20,
+    "conversationId": "postman-20",
+    "prompt": "A combinação de radiação solar, temperatura do ar e umidade relativa indica risco de estresse térmico para os pés de café hoje?"
+  },
+  {
+    "numero": 47,
+    "conversationId": "postman-47",
+    "prompt": "A baixa previsão de chuva para os próximos dias aumenta o risco de estresse hídrico e exige planejamento antecipado de irrigação?"
+  },
+  {
+    "numero": 36,
+    "conversationId": "postman-36",
+    "prompt": "O vento previsto para hoje compromete a uniformidade de pulverização nos cafeeiros e aumenta o risco de perda de produto?"
+  },
+  {
+    "numero": 80,
+    "conversationId": "postman-80",
+    "prompt": "A radiação solar e a umidade do ar de hoje favorecem a secagem natural dos grãos ou o risco de chuva ainda limita essa operação?"
+  },
+  {
+    "numero": 34,
+    "conversationId": "postman-34",
+    "prompt": "A lavoura de café pode ficar 48 horas sem irrigação por gotejamento sem comprometer a fase atual de desenvolvimento?"
+  },
+  {
+    "numero": 3,
+    "conversationId": "postman-3",
+    "prompt": "Hoje é necessário irrigar os pés de café por gotejamento ou é mais prudente aguardar a chuva prevista, considerando a umidade atual do solo, temperatura do solo, temperatura do ar, umidade relativa do ar, radiação solar e previsão de chuva para as próximas 24 horas?"
+  },
+  {
+    "numero": 33,
+    "conversationId": "postman-33",
+    "prompt": "Há risco de perda rápida de umidade no bulbo molhado do gotejamento hoje, considerando temperatura do solo, temperatura do ar, radiação solar e vento?"
+  },
+  {
+    "numero": 27,
+    "conversationId": "postman-27",
+    "prompt": "Para hoje, a melhor decisão agronômica é irrigar por gotejamento, aguardar chuva, apenas monitorar ou adiar qualquer intervenção?"
+  },
+  {
+    "numero": 65,
+    "conversationId": "postman-65",
+    "prompt": "A condição de vento hoje permite aplicação foliar nos pés de café sem risco elevado de deriva?"
+  },
+  {
+    "numero": 1,
+    "conversationId": "postman-1",
+    "prompt": "Considerando que os pés de café da Fazenda NSAAB estão em período de florada ou pré-florada, as condições climáticas de hoje favorecem a polinização e o pegamento das flores, levando em conta velocidade do vento, direção do vento, rajadas, temperatura do ar, umidade relativa do ar e possibilidade de chuva nas próximas horas?"
+  },
+  {
+    "numero": 61,
+    "conversationId": "postman-61",
+    "prompt": "A previsão das próximas 72 horas favorece a manutenção da florada ou exige cuidado especial com irrigação e vento?"
+  },
+  {
+    "numero": 5,
+    "conversationId": "postman-5",
+    "prompt": "A chuva prevista para os próximos três dias é suficiente para substituir a irrigação por gotejamento ou ainda existe risco de déficit hídrico localizado na zona radicular do cafeeiro?"
+  },
+  {
+    "numero": 40,
+    "conversationId": "postman-40",
+    "prompt": "Se a umidade do solo estiver em queda, é melhor irrigar por gotejamento pela manhã ou no fim da tarde, considerando temperatura, vento, umidade relativa e chance de chuva?"
+  },
+  {
+    "numero": 15,
+    "conversationId": "postman-15",
+    "prompt": "A direção predominante do vento hoje pode comprometer alguma operação agrícola na Fazenda NSAAB, especialmente pulverização, inspeção da florada ou manejo próximo a áreas sensíveis?"
+  },
+  {
+    "numero": 25,
+    "conversationId": "postman-25",
+    "prompt": "Existe risco de excesso de água no solo nos próximos três dias, considerando chuva recente, chuva prevista, umidade atual do solo e uso de irrigação por gotejamento?"
+  },
+  {
+    "numero": 50,
+    "conversationId": "postman-50",
+    "prompt": "Existe hoje uma janela mais eficiente para irrigação por gotejamento com menor perda por evaporação e melhor aproveitamento pela lavoura?"
+  },
+  {
+    "numero": 2,
+    "conversationId": "postman-2",
+    "prompt": "Para os próximos três dias, o cenário hídrico e climático da Fazenda NSAAB indica estabilidade para a lavoura de café ou exige alguma intervenção com irrigação por gotejamento, considerando umidade do solo, temperatura do solo, temperatura do ar, direção do vento, radiação solar e previsão de chuva?"
+  },
+  {
+    "numero": 24,
+    "conversationId": "postman-24",
+    "prompt": "A chuva das últimas 24 horas melhorou a umidade do solo o suficiente para suspender a irrigação por gotejamento hoje?"
+  },
+  {
+    "numero": 28,
+    "conversationId": "postman-28",
+    "prompt": "As condições climáticas de hoje permitem trabalho de campo com segurança e eficiência, considerando chuva, vento, temperatura, umidade relativa e radiação solar?"
+  },
+  {
+    "numero": 30,
+    "conversationId": "postman-30",
+    "prompt": "Qual é o resumo agronômico das próximas 72 horas para a Fazenda NSAAB, com foco em irrigação por gotejamento, risco de chuva, vento, estresse térmico e fase fenológica do cafeeiro?"
+  },
+  {
+    "numero": 22,
+    "conversationId": "postman-22",
+    "prompt": "A condição atual favorece perda de água pela planta e pelo solo, considerando temperatura, umidade relativa, radiação solar, vento e umidade do solo?"
+  }
+]
