@@ -26,16 +26,7 @@
       "smart_air_current_weather",
       "smart_air_humidity",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 87,
@@ -56,17 +47,6 @@
     "selection_tools_called": [
       "smart_air_pressure",
       "smart_air_current_weather"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: pressao atmosferica quando a pergunta envolver estabilidade do tempo ou tendencia meteorologica; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -87,16 +67,7 @@
     ],
     "selection_tools_called": [
       "smart_soil_data"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 62,
@@ -124,16 +95,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 14,
@@ -160,17 +122,6 @@
       "smart_wind_current_weather",
       "smart_wind_direction",
       "smart_wind_gust"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -200,16 +151,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; chuva acumulada quando chuva recente alterar risco operacional, compactacao, lavagem ou solo umido; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 46,
@@ -238,16 +180,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 17,
@@ -277,17 +210,6 @@
       "smart_wind_gust",
       "smart_wind_current_weather",
       "smart_wind_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; previsao de vento quando a decisao for para janela futura; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -314,16 +236,7 @@
       "smart_soil_data",
       "smart_air_temperature",
       "smart_air_current_weather"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 20,
@@ -349,16 +262,7 @@
       "smart_air_temperature",
       "smart_air_current_weather",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 47,
@@ -388,16 +292,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 36,
@@ -425,17 +320,6 @@
       "smart_wind_current_weather",
       "smart_wind_direction",
       "smart_wind_gust"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -466,16 +350,7 @@
       "smart_rain_accumulated",
       "smart_rain_forecast",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 34,
@@ -505,16 +380,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 3,
@@ -544,16 +410,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 33,
@@ -584,16 +441,7 @@
       "smart_wind_speed",
       "smart_wind_current_weather",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 27,
@@ -623,16 +471,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 65,
@@ -660,17 +499,6 @@
       "smart_wind_current_weather",
       "smart_wind_direction",
       "smart_wind_gust"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -707,16 +535,7 @@
       "smart_wind_current_weather",
       "smart_wind_direction",
       "smart_wind_gust"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 61,
@@ -744,16 +563,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 5,
@@ -781,16 +591,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 40,
@@ -818,16 +619,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 15,
@@ -856,17 +648,6 @@
       "smart_wind_gust",
       "smart_wind_current_weather",
       "smart_wind_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": [
-      "smart_rain_forecast"
     ]
   },
   {
@@ -895,16 +676,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 50,
@@ -932,16 +704,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 2,
@@ -972,16 +735,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 24,
@@ -1009,16 +763,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; chuva acumulada quando chuva recente alterar risco operacional, compactacao, lavagem ou solo umido; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 28,
@@ -1054,16 +799,7 @@
       "smart_wind_speed",
       "smart_wind_current_weather",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 30,
@@ -1095,16 +831,7 @@
       "smart_air_current_weather",
       "smart_rain_accumulated",
       "smart_rain_forecast"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   },
   {
     "numero": 22,
@@ -1133,15 +860,6 @@
       "smart_wind_speed",
       "smart_wind_current_weather",
       "smart_radiation_solar"
-    ],
-    "expected_criteria": [
-      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
-      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
-      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
-      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
-      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
-      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
-    ],
-    "optional_tools": []
+    ]
   }
 ]

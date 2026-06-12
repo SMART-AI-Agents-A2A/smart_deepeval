@@ -6,8 +6,9 @@ python -m app.main `
   --debug-json .\outputs\12062025\gpt54mini_debug.json
 
 
+##############################################
 
-  ython -m app.main `
+  python -m app.main `
   --dataset .\app\db\db_criteria.json `
   --limit 30 `
   --export-csv .\outputs\12062025\deepseekv4pro_response.csv `
