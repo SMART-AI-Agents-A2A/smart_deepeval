@@ -1,0 +1,23 @@
+{
+  "run": {
+    "created_at": "2026-06-12T10:31:03.213483",
+    "updated_at": "2026-06-12T10:31:03.213501",
+    "status": "success",
+    "samples_count": 0,
+    "api_error_count": 0,
+    "judge_model": "openai/gpt-5.4-mini",
+    "judge_base_url": "https://openrouter.ai/api/v1/chat/completions",
+    "threshold": 0.7,
+    "confident_ai_enabled": false
+  },
+  "summary": {
+    "metrics_rows": 0,
+    "passed_count": 0,
+    "failed_count": 0,
+    "average_score": null,
+    "by_metric": {}
+  },
+  "samples": [],
+  "metrics": [],
+  "events": []
+}

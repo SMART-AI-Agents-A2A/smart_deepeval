@@ -32,9 +32,7 @@ python .\analises\graphs.py `
 
 
 
-
-
-
+# TESTAR
   python .\app\main.py `
   --dataset .\app\db\db.json `
   --limit 30 `

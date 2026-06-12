@@ -69,6 +69,7 @@ TEXT = {
         "passed": "Passed",
         "failed": "Failed",
         "pass_rate": "Pass rate",
+        "ci_95": "IC 95%",
         "summary_title": "RESUMO DA AVALIACAO - API SMART com DeepEval",
         "metrics_meaning": "O QUE CADA METRICA SIGNIFICA",
         "results_by_model": "RESULTADOS POR MODELO",
@@ -107,6 +108,7 @@ TEXT = {
         "passed": "Passed",
         "failed": "Failed",
         "pass_rate": "Pass rate",
+        "ci_95": "95% CI",
         "summary_title": "EVALUATION SUMMARY - SMART API with DeepEval",
         "metrics_meaning": "WHAT EACH METRIC MEANS",
         "results_by_model": "RESULTS BY MODEL",
@@ -261,16 +263,67 @@ def _annotate_bars(ax, fmt: str = "{:.2f}", color: str | None = None) -> None:
             )
 
 
+def _ci95(values: pd.Series) -> float:
+    clean = pd.to_numeric(values, errors="coerce").dropna()
+    n = len(clean)
+    if n < 2:
+        return 0.0
+    return float(1.96 * clean.std(ddof=1) / np.sqrt(n))
+
+
+def _mean_ci(values: pd.Series) -> tuple[float, float, int]:
+    clean = pd.to_numeric(values, errors="coerce").dropna()
+    if clean.empty:
+        return np.nan, 0.0, 0
+    return float(clean.mean()), _ci95(clean), int(len(clean))
+
+
+def _bar_ylim(means: list[float], cis: list[float], base: float = 1.15) -> float:
+    tops = [
+        mean + ci
+        for mean, ci in zip(means, cis)
+        if not np.isnan(mean) and not np.isnan(ci)
+    ]
+    return max(base, max(tops + [1.0]) * 1.12)
+
+
+def _annotate_bars_with_ci(ax, bars, means: list[float], cis: list[float], color: str) -> None:
+    for bar, mean, ci in zip(bars, means, cis):
+        if np.isnan(mean):
+            continue
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            mean + ci + 0.02,
+            f"{mean:.2f}",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+            color=color,
+        )
+
+
 def barras_por_modelo(
     df: pd.DataFrame, saver: Saver, threshold: float, modelo: str, idx: int, language: str
 ) -> None:
     sub = df[df["modelo"] == modelo]
     metrics = sorted(sub["metric_name"].dropna().unique())
-    means = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+    stats = [_mean_ci(sub.loc[sub["metric_name"] == m, "score"]) for m in metrics]
+    means = [stat[0] for stat in stats]
+    cis = [stat[1] for stat in stats]
     color = PALETTE[idx % len(PALETTE)]
 
     _, ax = plt.subplots(figsize=(7, 4.5))
-    ax.bar(metrics, means, color=color, width=0.5, zorder=3)
+    bars = ax.bar(
+        metrics,
+        means,
+        yerr=cis,
+        capsize=5,
+        ecolor="#333333",
+        error_kw={"elinewidth": 1.2, "capthick": 1.2},
+        color=color,
+        width=0.5,
+        zorder=3,
+    )
     ax.axhline(
         threshold,
         color=THRESHOLD_COLOR,
@@ -279,10 +332,20 @@ def barras_por_modelo(
         label=f"{_label(language, 'threshold')} {threshold:.1f}",
         zorder=4,
     )
-    _annotate_bars(ax, color=color)
-    ax.set_ylim(0, 1.15)
+    _annotate_bars_with_ci(ax, bars, means, cis, color)
+    ax.set_ylim(0, _bar_ylim(means, cis))
     ax.set_ylabel(_label(language, "avg_score"))
     ax.set_title(_label(language, "avg_by_metric_model", model=modelo))
+    ax.text(
+        0.99,
+        0.02,
+        _label(language, "ci_95"),
+        transform=ax.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#555555",
+    )
     ax.legend(fontsize=9, framealpha=0)
     saver.save(f"barras_{safe_name(modelo)}.png")
 
@@ -294,17 +357,34 @@ def barras_agregado(df: pd.DataFrame, saver: Saver, threshold: float, language: 
     x = np.arange(len(metrics))
 
     _, ax = plt.subplots(figsize=(max(8, 3 * len(metrics) + len(models)), 5))
+    all_means: list[float] = []
+    all_cis: list[float] = []
     for i, model in enumerate(models):
         color = PALETTE[i % len(PALETTE)]
         sub = df[df["modelo"] == model]
-        means = [sub.loc[sub["metric_name"] == m, "score"].mean() for m in metrics]
+        stats = [_mean_ci(sub.loc[sub["metric_name"] == m, "score"]) for m in metrics]
+        means = [stat[0] for stat in stats]
+        cis = [stat[1] for stat in stats]
+        all_means.extend(means)
+        all_cis.extend(cis)
         offset = (i - (len(models) - 1) / 2) * width
-        bars = ax.bar(x + offset, means, width=width * 0.92, color=color, label=model, zorder=3)
-        for bar, val in zip(bars, means):
+        bars = ax.bar(
+            x + offset,
+            means,
+            yerr=cis,
+            capsize=4,
+            ecolor="#333333",
+            error_kw={"elinewidth": 1.1, "capthick": 1.1},
+            width=width * 0.92,
+            color=color,
+            label=model,
+            zorder=3,
+        )
+        for bar, val, ci in zip(bars, means, cis):
             if not np.isnan(val):
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
-                    val + 0.015,
+                    val + ci + 0.02,
                     f"{val:.2f}",
                     ha="center",
                     va="bottom",
@@ -322,9 +402,19 @@ def barras_agregado(df: pd.DataFrame, saver: Saver, threshold: float, language: 
     )
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=10)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0, _bar_ylim(all_means, all_cis))
     ax.set_ylabel(_label(language, "avg_score"))
     ax.set_title(_label(language, "avg_by_metric_all"))
+    ax.text(
+        0.99,
+        0.02,
+        _label(language, "ci_95"),
+        transform=ax.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#555555",
+    )
     ax.legend(fontsize=9, framealpha=0)
     saver.save("barras_agregado.png")
 

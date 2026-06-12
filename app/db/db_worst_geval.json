@@ -1,0 +1,300 @@
+[
+  {
+    "numero": 20,
+    "pergunta": "A combinação de radiação solar, temperatura do ar e umidade relativa indica risco de estresse térmico para os pés de café hoje?",
+    "resposta": "O risco de estresse térmico hoje é alto no período mais quente do dia. A radiação solar está em 850 W/m², a temperatura do ar em 33 °C e a umidade relativa em 55%. A recomendação é evitar manejo no meio do dia, reforçar o monitoramento da umidade do solo e avaliar irrigação por gotejamento no fim da tarde se o solo permanecer seco. A justificativa é que temperaturas elevadas e radiação intensa aumentam transpiração e podem afetar flores, folhas e frutos, especialmente em áreas com menor cobertura do solo ou maior exposição solar. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário.",
+    "origem_tecnica_da_recomendacao": "Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.",
+    "resposta_completa": "O risco de estresse térmico hoje é alto no período mais quente do dia. A radiação solar está em 850 W/m², a temperatura do ar em 33 °C e a umidade relativa em 55%. A recomendação é evitar manejo no meio do dia, reforçar o monitoramento da umidade do solo e avaliar irrigação por gotejamento no fim da tarde se o solo permanecer seco. A justificativa é que temperaturas elevadas e radiação intensa aumentam transpiração e podem afetar flores, folhas e frutos, especialmente em áreas com menor cobertura do solo ou maior exposição solar. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário. Origem técnica da recomendação: Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_radiation_solar",
+      "smart_air_temperature",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 0.6,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Ar",
+      "Radiacao"
+    ],
+    "selection_tools_called": [
+      "smart_air_temperature",
+      "smart_air_current_weather",
+      "smart_radiation_solar"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  },
+  {
+    "numero": 27,
+    "pergunta": "Para hoje, a melhor decisão agronômica é irrigar por gotejamento, aguardar chuva, apenas monitorar ou adiar qualquer intervenção?",
+    "resposta": "A melhor decisão é monitorar antes de irrigar. A umidade do solo está em 23%, a temperatura do solo em 29 °C, a temperatura do ar em 31,8 °C, a umidade relativa em 64% e a previsão de chuva é de 7 mm, com 62% de probabilidade. A recomendação é reavaliar após a janela de chuva prevista; se a chuva falhar e a umidade cair, acionar irrigação por gotejamento de forma complementar. A justificativa é que a condição ainda não exige intervenção imediata, mas há risco de déficit se a chuva não ocorrer. A resposta deve ser uma decisão condicional e auditável, não uma recomendação genérica. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa.",
+    "origem_tecnica_da_recomendacao": "Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "resposta_completa": "A melhor decisão é monitorar antes de irrigar. A umidade do solo está em 23%, a temperatura do solo em 29 °C, a temperatura do ar em 31,8 °C, a umidade relativa em 64% e a previsão de chuva é de 7 mm, com 62% de probabilidade. A recomendação é reavaliar após a janela de chuva prevista; se a chuva falhar e a umidade cair, acionar irrigação por gotejamento de forma complementar. A justificativa é que a condição ainda não exige intervenção imediata, mas há risco de déficit se a chuva não ocorrer. A resposta deve ser uma decisão condicional e auditável, não uma recomendação genérica. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_rain_forecast",
+      "smart_radiation_solar",
+      "smart_air_temperature",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 0.5714,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Solo",
+      "Ar",
+      "Chuva"
+    ],
+    "selection_tools_called": [
+      "smart_soil_data",
+      "smart_air_humidity",
+      "smart_air_current_weather",
+      "smart_rain_accumulated",
+      "smart_rain_forecast"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  },
+  {
+    "numero": 45,
+    "pergunta": "A lavoura está em condição de atenção por calor hoje, considerando temperatura máxima, umidade relativa mínima, radiação solar e umidade do solo?",
+    "resposta": "A lavoura está em condição de atenção por calor. A temperatura máxima prevista é de 34 °C, a umidade relativa mínima é de 53%, a radiação solar máxima é de 890 W/m² e a umidade do solo está em 22%. A recomendação é evitar manejo entre 11:00 e 15:00 e reavaliar a necessidade de gotejamento no fim da tarde. A justificativa é que calor, radiação e baixa umidade relativa elevam a demanda hídrica da planta. Se o cafeeiro estiver em fase reprodutiva, o risco de impacto fisiológico é maior. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário.",
+    "origem_tecnica_da_recomendacao": "Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.",
+    "resposta_completa": "A lavoura está em condição de atenção por calor. A temperatura máxima prevista é de 34 °C, a umidade relativa mínima é de 53%, a radiação solar máxima é de 890 W/m² e a umidade do solo está em 22%. A recomendação é evitar manejo entre 11:00 e 15:00 e reavaliar a necessidade de gotejamento no fim da tarde. A justificativa é que calor, radiação e baixa umidade relativa elevam a demanda hídrica da planta. Se o cafeeiro estiver em fase reprodutiva, o risco de impacto fisiológico é maior. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação considera que temperatura elevada, radiação solar intensa, vento e baixa umidade relativa aumentam a demanda evaporativa da atmosfera. Essa condição acelera perda de água pela planta e pelo solo, aumenta risco de estresse térmico e pode tornar o manejo de campo menos seguro. Por isso, a resposta prioriza horários mais amenos, monitoramento da umidade do solo e uso criterioso do gotejamento quando necessário. Origem técnica da recomendação: Baseada em Meireles et al. (Fenologia do Cafeeiro), que associam extremos de temperatura, deficiência hídrica e condições agrometeorológicas à produtividade, qualidade, pragas e doenças; e em Cararo e Souza Dias, que incluem temperatura, umidade relativa, radiação solar e vento entre os fatores que influenciam a necessidade hídrica do cafeeiro.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_radiation_solar",
+      "smart_air_temperature",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 1.0,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Solo",
+      "Ar",
+      "Radiacao"
+    ],
+    "selection_tools_called": [
+      "smart_soil_data",
+      "smart_air_temperature",
+      "smart_air_current_weather",
+      "smart_air_humidity",
+      "smart_radiation_solar"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  },
+  {
+    "numero": 3,
+    "pergunta": "Hoje é necessário irrigar os pés de café por gotejamento ou é mais prudente aguardar a chuva prevista, considerando a umidade atual do solo, temperatura do solo, temperatura do ar, umidade relativa do ar, radiação solar e previsão de chuva para as próximas 24 horas?",
+    "resposta": "Hoje a melhor decisão é aguardar a chuva prevista e monitorar a umidade do solo antes de acionar o gotejamento. A umidade do solo está em 23%, a temperatura do solo em 29,1 °C, a temperatura do ar em 30,2 °C, a umidade relativa do ar em 68%, a radiação solar máxima prevista em 820 W/m² e a chuva prevista para 24 horas é de 8 mm, com 60% de probabilidade. Esses valores indicam que a lavoura ainda não está em condição crítica, mas pode entrar em estresse se a chuva falhar. A recomendação agronômica é reavaliar no fim do dia: se a umidade cair abaixo de 21% e a chuva não ocorrer, aplicar uma irrigação localizada e moderada por gotejamento, evitando excesso de água e preservando a eficiência do sistema. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa.",
+    "origem_tecnica_da_recomendacao": "Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "resposta_completa": "Hoje a melhor decisão é aguardar a chuva prevista e monitorar a umidade do solo antes de acionar o gotejamento. A umidade do solo está em 23%, a temperatura do solo em 29,1 °C, a temperatura do ar em 30,2 °C, a umidade relativa do ar em 68%, a radiação solar máxima prevista em 820 W/m² e a chuva prevista para 24 horas é de 8 mm, com 60% de probabilidade. Esses valores indicam que a lavoura ainda não está em condição crítica, mas pode entrar em estresse se a chuva falhar. A recomendação agronômica é reavaliar no fim do dia: se a umidade cair abaixo de 21% e a chuva não ocorrer, aplicar uma irrigação localizada e moderada por gotejamento, evitando excesso de água e preservando a eficiência do sistema. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_rain_forecast",
+      "smart_radiation_solar",
+      "smart_air_temperature",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 0.5714,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Solo",
+      "Ar",
+      "Chuva"
+    ],
+    "selection_tools_called": [
+      "smart_soil_data",
+      "smart_air_humidity",
+      "smart_air_current_weather",
+      "smart_rain_accumulated",
+      "smart_rain_forecast"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  },
+  {
+    "numero": 87,
+    "pergunta": "O aumento da pressão atmosférica indica melhora no tempo para amanhã e pode abrir uma janela de manejo?",
+    "resposta": "O aumento da pressão indica tendência de maior estabilidade para amanhã. A pressão passou de 1009 hPa para 1014 hPa, a chance de chuva caiu para 22% e o vento previsto é de 8 km/h. A recomendação é planejar atividades de campo para o período da manhã, mantendo checagem da previsão antes da execução. A justificativa é que pressão em elevação geralmente está associada a tempo mais estável, o que favorece inspeção, manejo manual e eventualmente aplicação, desde que vento e umidade também estejam adequados. Fonte dos dados: OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação usa pressão atmosférica, tendência de chuva, vento e mudança de direção como sinais de instabilidade. Mesmo que esses dados não substituam uma análise meteorológica completa, eles ajudam a decidir se uma operação sensível deve ser antecipada, adiada ou feita com cautela nas próximas horas.",
+    "origem_tecnica_da_recomendacao": "Baseada no uso de monitoramento agrometeorológico descrito por Meireles et al. e na lógica de agricultura de precisão do Manual de Agricultura de Precisão, que defende organizar dados ambientais para apoiar decisões. A leitura de pressão e tendência de chuva é uma prática meteorológica operacional de apoio, não uma regra isolada dos documentos.",
+    "resposta_completa": "O aumento da pressão indica tendência de maior estabilidade para amanhã. A pressão passou de 1009 hPa para 1014 hPa, a chance de chuva caiu para 22% e o vento previsto é de 8 km/h. A recomendação é planejar atividades de campo para o período da manhã, mantendo checagem da previsão antes da execução. A justificativa é que pressão em elevação geralmente está associada a tempo mais estável, o que favorece inspeção, manejo manual e eventualmente aplicação, desde que vento e umidade também estejam adequados. Fonte dos dados: OpenWeather. Motivo técnico da recomendação: A recomendação usa pressão atmosférica, tendência de chuva, vento e mudança de direção como sinais de instabilidade. Mesmo que esses dados não substituam uma análise meteorológica completa, eles ajudam a decidir se uma operação sensível deve ser antecipada, adiada ou feita com cautela nas próximas horas. Origem técnica da recomendação: Baseada no uso de monitoramento agrometeorológico descrito por Meireles et al. e na lógica de agricultura de precisão do Manual de Agricultura de Precisão, que defende organizar dados ambientais para apoiar decisões. A leitura de pressão e tendência de chuva é uma prática meteorológica operacional de apoio, não uma regra isolada dos documentos.",
+    "expected_tools": [
+      "smart_air_pressure",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 1.0,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Ar"
+    ],
+    "selection_tools_called": [
+      "smart_air_pressure",
+      "smart_air_current_weather"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: pressao atmosferica quando a pergunta envolver estabilidade do tempo ou tendencia meteorologica; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": [
+      "smart_rain_forecast"
+    ]
+  },
+  {
+    "numero": 14,
+    "pergunta": "As rajadas de vento registradas nas últimas 24 horas indicam risco operacional para manejo, pulverização ou avaliação da florada no café?",
+    "resposta": "As rajadas indicam risco baixo para a lavoura, mas moderado para operações sensíveis. A rajada máxima foi de 28 km/h, a velocidade média do vento foi de 10 km/h e o horário mais crítico foi 14:30. A recomendação é evitar pulverização e avaliações delicadas da florada nos horários de maior rajada. A justificativa é que rajadas não necessariamente danificam a planta, mas reduzem a segurança e a precisão de operações como aplicação, inspeção de flores e manejo manual. Para validar a resposta, o agente deve mostrar o valor máximo, o horário e a média do período, pois a média isolada pode mascarar eventos críticos. Fonte dos dados: InfluxDB.",
+    "motivo_tecnico_da_recomendacao": "A recomendação busca reduzir risco de deriva, evaporação da calda, lavagem por chuva e baixa eficiência da operação. Vento, rajadas, direção predominante, chuva próxima, temperatura e umidade relativa definem se uma aplicação foliar ou fitossanitária tem boa chance de atingir o alvo. Quando há rajadas, chuva provável ou radiação elevada, a resposta deve preferir janela mais segura em vez de recomendar aplicação imediata.",
+    "origem_tecnica_da_recomendacao": "A base documental vem de Cararo e Souza Dias, que listam vento, chuva, umidade relativa, radiação e temperatura como fatores climáticos relevantes ao manejo; e do Manual de Agricultura de Precisão, que reforça a tomada de decisão por dados. A parte sobre reduzir deriva, evitar chuva após aplicação e escolher janela operacional é uma recomendação técnica de cuidado agronômico e operacional, não um limiar numérico específico retirado dos PDFs.",
+    "resposta_completa": "As rajadas indicam risco baixo para a lavoura, mas moderado para operações sensíveis. A rajada máxima foi de 28 km/h, a velocidade média do vento foi de 10 km/h e o horário mais crítico foi 14:30. A recomendação é evitar pulverização e avaliações delicadas da florada nos horários de maior rajada. A justificativa é que rajadas não necessariamente danificam a planta, mas reduzem a segurança e a precisão de operações como aplicação, inspeção de flores e manejo manual. Para validar a resposta, o agente deve mostrar o valor máximo, o horário e a média do período, pois a média isolada pode mascarar eventos críticos. Fonte dos dados: InfluxDB. Motivo técnico da recomendação: A recomendação busca reduzir risco de deriva, evaporação da calda, lavagem por chuva e baixa eficiência da operação. Vento, rajadas, direção predominante, chuva próxima, temperatura e umidade relativa definem se uma aplicação foliar ou fitossanitária tem boa chance de atingir o alvo. Quando há rajadas, chuva provável ou radiação elevada, a resposta deve preferir janela mais segura em vez de recomendar aplicação imediata. Origem técnica da recomendação: A base documental vem de Cararo e Souza Dias, que listam vento, chuva, umidade relativa, radiação e temperatura como fatores climáticos relevantes ao manejo; e do Manual de Agricultura de Precisão, que reforça a tomada de decisão por dados. A parte sobre reduzir deriva, evitar chuva após aplicação e escolher janela operacional é uma recomendação técnica de cuidado agronômico e operacional, não um limiar numérico específico retirado dos PDFs.",
+    "expected_tools": [
+      "smart_radiation_solar",
+      "smart_wind_gust",
+      "smart_wind_current_weather",
+      "smart_wind_speed",
+      "smart_wind_direction",
+      "smart_air_humidity"
+    ],
+    "selection_score": 0.6667,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Vento"
+    ],
+    "selection_tools_called": [
+      "smart_wind_speed",
+      "smart_wind_current_weather",
+      "smart_wind_direction",
+      "smart_wind_gust"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; rajadas quando houver risco operacional, pulverizacao, florada ou seguranca em campo; vento atual de fonte meteorologica quando for necessario comparar sensor/local e previsao atual; velocidade do vento quando houver deriva, pulverizacao, manejo operacional ou risco por vento; direcao do vento quando houver deriva, pulverizacao ou deslocamento de frente/vento; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": [
+      "smart_rain_forecast"
+    ]
+  },
+  {
+    "numero": 34,
+    "pergunta": "A lavoura de café pode ficar 48 horas sem irrigação por gotejamento sem comprometer a fase atual de desenvolvimento?",
+    "resposta": "A lavoura pode ficar 48 horas sem irrigação, desde que a chuva prevista ocorra e a umidade do solo não caia abaixo do nível de atenção. A umidade do solo está em 26%, a previsão de chuva é de 10 mm, com 62% de probabilidade, a temperatura do ar deve variar de 25 °C a 31 °C e a umidade relativa de 65% a 78%. A recomendação é suspender a irrigação apenas temporariamente e reavaliar após a chuva. A justificativa é que, em sistemas de gotejamento, a decisão deve evitar tanto déficit quanto excesso no bulbo molhado. Em fases reprodutivas, a tolerância ao déficit é menor. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa.",
+    "origem_tecnica_da_recomendacao": "Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "resposta_completa": "A lavoura pode ficar 48 horas sem irrigação, desde que a chuva prevista ocorra e a umidade do solo não caia abaixo do nível de atenção. A umidade do solo está em 26%, a previsão de chuva é de 10 mm, com 62% de probabilidade, a temperatura do ar deve variar de 25 °C a 31 °C e a umidade relativa de 65% a 78%. A recomendação é suspender a irrigação apenas temporariamente e reavaliar após a chuva. A justificativa é que, em sistemas de gotejamento, a decisão deve evitar tanto déficit quanto excesso no bulbo molhado. Em fases reprodutivas, a tolerância ao déficit é menor. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_rain_forecast",
+      "smart_radiation_solar",
+      "smart_air_temperature",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 0.5714,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Solo",
+      "Ar",
+      "Chuva"
+    ],
+    "selection_tools_called": [
+      "smart_soil_data",
+      "smart_air_humidity",
+      "smart_air_current_weather",
+      "smart_rain_accumulated",
+      "smart_rain_forecast"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; previsao de chuva quando a pergunta envolver janela futura, manejo posterior, pulverizacao, adubacao ou risco de chuva; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; temperatura do ar quando calor, frio, geada, estresse ou janela operacional forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  },
+  {
+    "numero": 35,
+    "pergunta": "Existe risco de encharcamento localizado ou baixa aeração do solo em áreas mais baixas da Fazenda NSAAB se a chuva prevista ocorrer junto com irrigação por gotejamento?",
+    "resposta": "Existe risco moderado de excesso localizado em áreas mais baixas. A umidade do solo está em 34%, a chuva acumulada nas últimas 24 horas foi de 18 mm e a previsão indica mais 22 mm em três dias, com 70% de probabilidade. A recomendação é suspender o gotejamento nas áreas com maior umidade e monitorar drenagem. A justificativa é que o excesso de água pode reduzir a aeração do solo e prejudicar o sistema radicular, além de favorecer doenças. A resposta deve reconhecer que o risco não é uniforme: áreas baixas e com drenagem lenta podem exigir manejo diferente do restante do talhão. Fonte dos dados: InfluxDB e OpenWeather.",
+    "motivo_tecnico_da_recomendacao": "A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa.",
+    "origem_tecnica_da_recomendacao": "Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "resposta_completa": "Existe risco moderado de excesso localizado em áreas mais baixas. A umidade do solo está em 34%, a chuva acumulada nas últimas 24 horas foi de 18 mm e a previsão indica mais 22 mm em três dias, com 70% de probabilidade. A recomendação é suspender o gotejamento nas áreas com maior umidade e monitorar drenagem. A justificativa é que o excesso de água pode reduzir a aeração do solo e prejudicar o sistema radicular, além de favorecer doenças. A resposta deve reconhecer que o risco não é uniforme: áreas baixas e com drenagem lenta podem exigir manejo diferente do restante do talhão. Fonte dos dados: InfluxDB e OpenWeather. Motivo técnico da recomendação: A recomendação foi construída para evitar dois erros comuns no manejo do gotejamento: irrigar tarde demais, gerando estresse hídrico, ou irrigar sem necessidade, gerando desperdício, excesso de água no bulbo molhado e possível perda de eficiência. Como o gotejamento aplica água de forma localizada, a decisão precisa considerar a umidade do solo monitorada, a tendência de queda ou recuperação, a chuva prevista e a demanda atmosférica causada por temperatura, radiação, vento e baixa umidade relativa. Origem técnica da recomendação: Baseada em Cararo e Souza Dias (Irrigação em cafeeiros / Café na Amazônia), que recomendam manejo racional por balanço hídrico e/ou umidade do solo; e em Martins et al. (Manejo da irrigação por gotejamento no cafeeiro), que destacam a eficiência do gotejamento, mas alertam que déficit ou excesso de irrigação prejudicam desenvolvimento, produtividade e lucratividade.",
+    "expected_tools": [
+      "smart_soil_data",
+      "smart_rain_accumulated",
+      "smart_radiation_solar",
+      "smart_air_humidity",
+      "smart_air_current_weather"
+    ],
+    "selection_score": 0.6667,
+    "selection_route": "multi-agent",
+    "selection_agents_called": [
+      "Solo",
+      "Ar",
+      "Chuva"
+    ],
+    "selection_tools_called": [
+      "smart_soil_data",
+      "smart_air_humidity",
+      "smart_air_current_weather",
+      "smart_rain_accumulated",
+      "smart_rain_forecast"
+    ],
+    "expected_criteria": [
+      "Responder diretamente ao objetivo da pergunta com conclusao explicita.",
+      "Usar dados atuais coletados pela API SMART; valores numericos da resposta de referencia sao exemplos, nao gabarito fixo.",
+      "Manter coerencia agronomica mesmo quando os valores atuais diferirem da referencia historica.",
+      "Considerar como evidencias essenciais: umidade/temperatura/condutividade do solo quando a pergunta depender de solo, irrigacao, trafegabilidade ou gotejamento; chuva acumulada quando chuva recente alterar risco operacional, compactacao, lavagem ou solo umido; radiacao solar quando calor, estresse, evaporacao, pulverizacao ou demanda hidrica forem relevantes; umidade relativa quando houver calor, evaporacao, pulverizacao, estresse ou doenca; clima atual OpenWeather quando a pergunta exigir dado atual externo ou comparacao meteorologica.",
+      "Informar fonte dos dados, unidade e data/hora quando houver leitura medida ou prevista.",
+      "Incluir motivo tecnico da recomendacao e sinalizar limitacao quando faltar dado essencial."
+    ],
+    "optional_tools": []
+  }
+]

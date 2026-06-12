@@ -1,0 +1,36 @@
+==============================================================
+RESUMO DA AVALIACAO - API SMART com DeepEval
+==============================================================
+
+O QUE CADA METRICA SIGNIFICA
+----------------------------------------
+
+G-Eval [GEval]
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+Task Completion
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+Tool Correctness
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+==============================================================
+RESULTADOS POR MODELO
+==============================================================
+
+Modelo: GPT-5.4-mini
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.850
+    pass rate     : 88% (7/8)
+  Task Completion
+    average score : 0.878
+    pass rate     : 88% (7/8)
+  Tool Correctness
+    average score : 0.750
+    pass rate     : 100% (8/8)
+
+==============================================================
+NOTA METODOLOGICA
+==============================================================
+Reporte os modelos juizes separadamente e discuta a variancia como limitacao metodologica.
