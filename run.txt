@@ -1,5 +1,5 @@
 python -m app.main `
-  --dataset .\app\db\db_criteria.json `
+  --dataset .\app\db\db.json `
   --limit 30 `
   --export-csv .\outputs\12062025\gpt54mini_response.csv `
   --export-metrics-csv .\outputs\12062025\gpt54mini_metrics.csv `
@@ -9,7 +9,7 @@ python -m app.main `
 ##############################################
 
   python -m app.main `
-  --dataset .\app\db\db_criteria.json `
+  --dataset .\app\db\db.json `
   --limit 30 `
   --export-csv .\outputs\12062025\deepseekv4pro_response.csv `
   --export-metrics-csv .\outputs\12062025\deepseekv4pro_metrics.csv `
