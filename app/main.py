@@ -49,6 +49,8 @@ class EvalSample:
     expected_output: str
     number: int | None = None
     expected_tools: list[str] = field(default_factory=list)
+    optional_tools: list[str] = field(default_factory=list)
+    expected_criteria: list[str] = field(default_factory=list)
 
 
 def _find_numbered_value(item: dict[str, Any], prefix: str) -> str | None:
@@ -71,6 +73,46 @@ def _json_cell(value: Any) -> str:
 
 def _join(values: list[str]) -> str:
     return "|".join(values)
+
+
+def _normalize_text_list(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value.strip()] if value.strip() else []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return []
+
+
+def _expected_output_for_evaluation(sample: EvalSample, *, strict: bool = False) -> str:
+    if strict:
+        return sample.expected_output
+
+    lines = [
+        "CRITERIOS DE AVALIACAO DA RESPOSTA SMART",
+        "",
+        "A referencia abaixo deve ser usada como criterio tecnico, nao como gabarito fixo.",
+        "Nao penalize diferencas numericas quando a resposta usar dados atuais coletados pela API SMART.",
+        "Dados de vento, chuva, solo, radiacao, temperatura e umidade sao volateis; avalie se a conclusao e coerente com os dados apresentados no momento da coleta.",
+        "Penalize quando a resposta deixar de responder ao objetivo do usuario, usar unidade incorreta, ignorar dado essencial, inventar dado, ou der recomendacao agronomica incoerente.",
+        "",
+    ]
+
+    if sample.expected_criteria:
+        lines.append("Criterios esperados:")
+        lines.extend(f"- {criterion}" for criterion in sample.expected_criteria)
+        lines.append("")
+
+    if sample.expected_output:
+        lines.extend(
+            [
+                "Referencia tecnica original:",
+                sample.expected_output,
+            ]
+        )
+
+    return "\n".join(lines).strip()
 
 
 def _get_attr(value: Any, *names: str) -> Any:
@@ -176,6 +218,13 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
             or ""
         )
         expected_tools = item.get("expected_tools") or item.get("ferramentas_esperadas") or []
+        optional_tools = item.get("optional_tools") or item.get("ferramentas_opcionais") or []
+        expected_criteria = _normalize_text_list(
+            item.get("expected_criteria")
+            or item.get("criteria")
+            or item.get("criterios")
+            or item.get("criterios_esperados")
+        )
         number = item.get("numero") or item.get("number") or index
 
         if not isinstance(question, str) or not question.strip():
@@ -184,6 +233,8 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
             raise ValueError(f"Item {index} de {path} contem resposta esperada invalida.")
         if not isinstance(expected_tools, list) or not all(isinstance(tool, str) for tool in expected_tools):
             raise ValueError(f"Item {index} de {path} contem expected_tools invalido.")
+        if not isinstance(optional_tools, list) or not all(isinstance(tool, str) for tool in optional_tools):
+            raise ValueError(f"Item {index} de {path} contem optional_tools invalido.")
 
         samples.append(
             EvalSample(
@@ -191,6 +242,8 @@ def load_dataset(path: Path = DEFAULT_DATASET_FILE) -> list[EvalSample]:
                 expected_output=expected_output.strip(),
                 number=number if isinstance(number, int) else index,
                 expected_tools=[tool.strip() for tool in expected_tools if tool.strip()],
+                optional_tools=[tool.strip() for tool in optional_tools if tool.strip()],
+                expected_criteria=expected_criteria,
             )
         )
 
@@ -218,17 +271,33 @@ def _expected_tool_calls(sample: EvalSample) -> list[ToolCall] | None:
     return [ToolCall(name=tool_name) for tool_name in sample.expected_tools]
 
 
+def _optional_tool_names(sample: EvalSample) -> list[str]:
+    return [tool_name for tool_name in sample.optional_tools if tool_name not in sample.expected_tools]
+
+
+def _tools_called_for_tool_correctness(sample: EvalSample, tools_called: list[ToolCall]) -> list[ToolCall]:
+    optional = set(_optional_tool_names(sample))
+    return [tool for tool in tools_called if tool.name not in optional]
+
+
 def _tool_names(tools: list[ToolCall]) -> list[str]:
     return [tool.name for tool in tools]
 
 
-def _tool_diff(expected_tools: list[str], called_tools: list[str]) -> dict[str, list[str]]:
+def _tool_diff(
+    expected_tools: list[str],
+    called_tools: list[str],
+    optional_tools: list[str] | None = None,
+) -> dict[str, list[str]]:
     expected = set(expected_tools)
+    optional = set(optional_tools or [])
+    allowed = expected | optional
     called = set(called_tools)
     return {
         "correct": [tool for tool in called_tools if tool in expected],
+        "optional": [tool for tool in called_tools if tool in optional and tool not in expected],
         "missing": [tool for tool in expected_tools if tool not in called],
-        "extra": [tool for tool in called_tools if tool not in expected],
+        "extra": [tool for tool in called_tools if tool not in allowed],
     }
 
 
@@ -331,6 +400,7 @@ def _base_metric_row(
     passed: bool | None,
     reason: str,
     item: dict[str, Any],
+    strict_expected_output: bool = False,
 ) -> dict[str, Any]:
     sample = item["sample"]
     payload = item["payload"]
@@ -341,7 +411,8 @@ def _base_metric_row(
         sample.expected_output,
     )
     expected_tools = _tool_names(expected_tool_calls)
-    tool_diff = _tool_diff(expected_tools, called_tools)
+    optional_tools = _optional_tool_names(sample)
+    tool_diff = _tool_diff(expected_tools, called_tools, optional_tools)
 
     return {
         "numero": sample.number or "",
@@ -354,11 +425,18 @@ def _base_metric_row(
         "question": sample.question,
         "actual_output": item["answer"],
         "expected_output": sample.expected_output,
+        "evaluation_expected_output": _expected_output_for_evaluation(
+            sample,
+            strict=strict_expected_output,
+        ),
+        "expected_criteria": _join(sample.expected_criteria),
         "route": payload.get("trace", {}).get("route", payload.get("route", "")),
         "agents_called": _join(agents_called),
         "tools_called": _join(called_tools),
         "expected_tools": _join(expected_tools),
+        "optional_tools": _join(optional_tools),
         "tools_correct": _join(tool_diff["correct"]),
+        "tools_optional": _join(tool_diff["optional"]),
         "tools_missing": _join(tool_diff["missing"]),
         "tools_extra": _join(tool_diff["extra"]),
     }
@@ -401,7 +479,12 @@ def _metric_data_rows(evaluation_result: Any) -> list[dict[str, Any]]:
     return rows
 
 
-def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _merge_metric_rows(
+    metric_rows: list[dict[str, Any]],
+    collected: list[dict[str, Any]],
+    *,
+    strict_expected_output: bool = False,
+) -> list[dict[str, Any]]:
     by_number: dict[int, dict[str, Any]] = {}
     by_question: dict[str, dict[str, Any]] = {}
     for item in collected:
@@ -439,6 +522,7 @@ def _merge_metric_rows(metric_rows: list[dict[str, Any]], collected: list[dict[s
                 passed=metric_row.get("passed"),
                 reason=str(metric_row.get("reason") or ""),
                 item=item,
+                strict_expected_output=strict_expected_output,
             )
         )
 
@@ -451,6 +535,7 @@ def fallback_error_metric_rows(
     metric_name: str,
     threshold: float,
     error: BaseException,
+    strict_expected_output: bool = False,
 ) -> list[dict[str, Any]]:
     reason = (
         f"[FALLBACK_ERROR] Metrica nao calculada por erro em tempo de execucao: "
@@ -464,6 +549,7 @@ def fallback_error_metric_rows(
             passed=False,
             reason=reason,
             item=item,
+            strict_expected_output=strict_expected_output,
         )
         for item in collected
     ]
@@ -482,11 +568,15 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
         "question",
         "actual_output",
         "expected_output",
+        "evaluation_expected_output",
+        "expected_criteria",
         "route",
         "agents_called",
         "tools_called",
         "expected_tools",
+        "optional_tools",
         "tools_correct",
+        "tools_optional",
         "tools_missing",
         "tools_extra",
     ]
@@ -497,7 +587,12 @@ def export_metric_results_csv(metric_rows: list[dict[str, Any]], output_path: Pa
     print(f"\nCSV de metricas exportado em: {output_path}")
 
 
-def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> None:
+def export_collected_csv(
+    collected: list[dict[str, Any]],
+    output_path: Path,
+    *,
+    strict_expected_output: bool = False,
+) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "numero",
@@ -506,12 +601,16 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
         "agents_called",
         "tools_called",
         "expected_tools",
+        "optional_tools",
         "tools_correct",
+        "tools_optional",
         "tools_missing",
         "tools_extra",
         "api_error",
         "question",
         "expected_output",
+        "evaluation_expected_output",
+        "expected_criteria",
         "actual_output",
         "trace_json",
         "rag_json",
@@ -528,7 +627,8 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
             expected_tools = _tool_names(expected_tool_calls)
             if not expected_tools:
                 expected_tools = _tool_names(infer_expected_tools(sample.question, sample.expected_output))
-            tool_diff = _tool_diff(expected_tools, called_tools)
+            optional_tools = _optional_tool_names(sample)
+            tool_diff = _tool_diff(expected_tools, called_tools, optional_tools)
             writer.writerow(
                 {
                     "numero": sample.number or "",
@@ -537,12 +637,19 @@ def export_collected_csv(collected: list[dict[str, Any]], output_path: Path) -> 
                     "agents_called": _join(agents_called),
                     "tools_called": _join(called_tools),
                     "expected_tools": _join(expected_tools),
+                    "optional_tools": _join(optional_tools),
                     "tools_correct": _join(tool_diff["correct"]),
+                    "tools_optional": _join(tool_diff["optional"]),
                     "tools_missing": _join(tool_diff["missing"]),
                     "tools_extra": _join(tool_diff["extra"]),
                     "api_error": item.get("api_error", False),
                     "question": sample.question,
                     "expected_output": sample.expected_output,
+                    "evaluation_expected_output": _expected_output_for_evaluation(
+                        sample,
+                        strict=strict_expected_output,
+                    ),
+                    "expected_criteria": _join(sample.expected_criteria),
                     "actual_output": item["answer"],
                     "trace_json": _json_cell(payload.get("trace", {})),
                     "rag_json": _json_cell(payload.get("rag", {})),
@@ -561,18 +668,24 @@ def _debug_sample_row(item: dict[str, Any]) -> dict[str, Any]:
         sample.expected_output,
     )
     expected_tools = _tool_names(expected_tool_calls)
-    tool_diff = _tool_diff(expected_tools, tools_called)
+    optional_tools = _optional_tool_names(sample)
+    tool_diff = _tool_diff(expected_tools, tools_called, optional_tools)
     return {
         "numero": sample.number or "",
         "conversation_id": item["conversation_id"],
         "api_error": item.get("api_error", False),
         "question_preview": _preview_text(sample.question, 300),
         "answer_preview": _preview_text(item["answer"], 700),
+        "expected_output_preview": _preview_text(sample.expected_output, 700),
+        "evaluation_expected_output_preview": _preview_text(_expected_output_for_evaluation(sample), 900),
+        "expected_criteria": sample.expected_criteria,
         "route": payload.get("trace", {}).get("route", payload.get("route", "")),
         "agents_called": agents_called,
         "tools_called": tools_called,
         "expected_tools": expected_tools,
+        "optional_tools": optional_tools,
         "tools_correct": tool_diff["correct"],
+        "tools_optional": tool_diff["optional"],
         "tools_missing": tool_diff["missing"],
         "tools_extra": tool_diff["extra"],
         "tools_count": len(tools_called),
@@ -684,14 +797,23 @@ def export_debug_json(
     print(f"Debug JSON exportado em: {output_path}")
 
 
-def run_g_eval(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
+def run_g_eval(
+    collected: list[dict[str, Any]],
+    judge_config,
+    confident_config: ConfidentAiConfig,
+    *,
+    strict_expected_output: bool = False,
+):
     metric = build_g_eval_metric(judge_config)
     valid_items = [item for item in collected if not item.get("api_error")]
     test_cases = [
         build_g_eval_case(
             item["sample"].question,
             item["answer"],
-            item["sample"].expected_output,
+            _expected_output_for_evaluation(
+                item["sample"],
+                strict=strict_expected_output,
+            ),
             item["tools_called"],
         )
         for item in valid_items
@@ -711,15 +833,24 @@ def run_g_eval(collected: list[dict[str, Any]], judge_config, confident_config: 
     )
 
 
-def run_tool_correctness(collected: list[dict[str, Any]], judge_config, confident_config: ConfidentAiConfig):
+def run_tool_correctness(
+    collected: list[dict[str, Any]],
+    judge_config,
+    confident_config: ConfidentAiConfig,
+    *,
+    strict_expected_output: bool = False,
+):
     metric = build_tool_correctness_metric(judge_config)
     valid_items = [item for item in collected if not item.get("api_error")]
     test_cases = [
         build_tool_correctness_case(
             item["sample"].question,
             item["answer"],
-            item["sample"].expected_output,
-            item["tools_called"],
+            _expected_output_for_evaluation(
+                item["sample"],
+                strict=strict_expected_output,
+            ),
+            _tools_called_for_tool_correctness(item["sample"], item["tools_called"]),
             expected_tools=_expected_tool_calls(item["sample"]),
         )
         for item in valid_items
@@ -739,7 +870,13 @@ def run_tool_correctness(collected: list[dict[str, Any]], judge_config, confiden
     )
 
 
-def run_task_completion(samples: list[EvalSample], judge_config, confident_config: ConfidentAiConfig):
+def run_task_completion(
+    samples: list[EvalSample],
+    judge_config,
+    confident_config: ConfidentAiConfig,
+    *,
+    strict_expected_output: bool = False,
+):
     configure_confident_ai_environment(confident_config)
     metric = build_task_completion_metric(judge_config)
     api_config = load_api_config()
@@ -747,7 +884,13 @@ def run_task_completion(samples: list[EvalSample], judge_config, confident_confi
 
     dataset = EvaluationDataset(
         goldens=[
-            Golden(input=sample.question, expected_output=sample.expected_output)
+            Golden(
+                input=sample.question,
+                expected_output=_expected_output_for_evaluation(
+                    sample,
+                    strict=strict_expected_output,
+                ),
+            )
             for sample in samples
         ]
     )
@@ -814,6 +957,14 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Reduz logs do terminal, mantendo apenas progresso essencial.",
     )
+    parser.add_argument(
+        "--strict-expected-output",
+        action="store_true",
+        help=(
+            "Usa expected_output como gabarito literal. Por padrao, o script trata "
+            "expected_output como referencia tecnica/criterio para dados volateis."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -855,7 +1006,11 @@ def main() -> None:
         )
 
         if args.export_csv:
-            export_collected_csv(collected, args.export_csv)
+            export_collected_csv(
+                collected,
+                args.export_csv,
+                strict_expected_output=args.strict_expected_output,
+            )
 
         valid_collected = [item for item in collected if not item.get("api_error")]
         if not valid_collected:
@@ -865,8 +1020,17 @@ def main() -> None:
             )
 
         try:
-            g_eval_result = run_g_eval(collected, judge_config, confident_config)
-            g_eval_rows = _merge_metric_rows(_metric_data_rows(g_eval_result), collected)
+            g_eval_result = run_g_eval(
+                collected,
+                judge_config,
+                confident_config,
+                strict_expected_output=args.strict_expected_output,
+            )
+            g_eval_rows = _merge_metric_rows(
+                _metric_data_rows(g_eval_result),
+                collected,
+                strict_expected_output=args.strict_expected_output,
+            )
             all_metric_rows.extend(g_eval_rows)
         except Exception as error:
             run_status = "partial_failure"
@@ -889,12 +1053,22 @@ def main() -> None:
                     metric_name="G-Eval",
                     threshold=judge_config.threshold,
                     error=error,
+                    strict_expected_output=args.strict_expected_output,
                 )
             )
 
         try:
-            tool_result = run_tool_correctness(collected, judge_config, confident_config)
-            tool_rows = _merge_metric_rows(_metric_data_rows(tool_result), collected)
+            tool_result = run_tool_correctness(
+                collected,
+                judge_config,
+                confident_config,
+                strict_expected_output=args.strict_expected_output,
+            )
+            tool_rows = _merge_metric_rows(
+                _metric_data_rows(tool_result),
+                collected,
+                strict_expected_output=args.strict_expected_output,
+            )
             if tool_rows:
                 all_metric_rows.extend(tool_rows)
             else:
@@ -904,6 +1078,7 @@ def main() -> None:
                         metric_name="Tool Correctness",
                         threshold=judge_config.threshold,
                         error=RuntimeError("Tool Correctness nao retornou linhas de resultado."),
+                        strict_expected_output=args.strict_expected_output,
                     )
                 )
         except Exception as error:
@@ -927,6 +1102,7 @@ def main() -> None:
                     metric_name="Tool Correctness",
                     threshold=judge_config.threshold,
                     error=error,
+                    strict_expected_output=args.strict_expected_output,
                 )
             )
 
@@ -935,8 +1111,13 @@ def main() -> None:
                 [item["sample"] for item in valid_collected],
                 judge_config,
                 confident_config,
+                strict_expected_output=args.strict_expected_output,
             )
-            task_rows = _merge_metric_rows(_metric_data_rows(task_result), collected)
+            task_rows = _merge_metric_rows(
+                _metric_data_rows(task_result),
+                collected,
+                strict_expected_output=args.strict_expected_output,
+            )
             all_metric_rows.extend(task_rows)
         except Exception as error:
             run_status = "partial_failure"
@@ -959,6 +1140,7 @@ def main() -> None:
                     metric_name="Task Completion",
                     threshold=judge_config.threshold,
                     error=error,
+                    strict_expected_output=args.strict_expected_output,
                 )
             )
 
@@ -967,6 +1149,7 @@ def main() -> None:
             export_collected_csv(
                 collected,
                 ROOT_DIR / "outputs" / f"smart_deepeval_{timestamp}.csv",
+                strict_expected_output=args.strict_expected_output,
             )
 
         metrics_csv = args.export_metrics_csv
