@@ -1,5 +1,5 @@
 python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
->>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\gpt54mini_worst_metrics.csv `
+>>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\gpt54mini_metrics.csv `
 >>   --labels GPT-5.4-mini `
 >>   --out-dir D:\Git\Pesquisas\SMART\DeepEval\analises\graficos_comparativo\tmp_graphs_ci `
 >>   --overwrite `
@@ -8,8 +8,8 @@ python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
 
 
 python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
->>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\gpt54mini_worst_metrics.csv `
->>   --labels GPT-5.4-mini `
+>>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\deepseekv4pro_metrics.csv `
+>>   --labels DeepSeek-V4-Pro `
 >>   --out-dir D:\Git\Pesquisas\SMART\DeepEval\analises\graficos_comparativo\tmp_graphs_ci `
 >>   --overwrite `
 >>   --pdf-name teste_ci.pdf `
