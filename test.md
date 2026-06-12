@@ -43,9 +43,9 @@ python .\analises\graphs.py `
   --debug-json .\outputs\12062025\gpt54mini_debug.json
 
 
-  python .\app\main.py `
+python -m app.main `
   --dataset .\app\db\db_criteria.json `
   --limit 30 `
   --export-csv .\outputs\12062025\gpt54mini_response.csv `
-  --export-metrics-csv .\12062025\outputs\gpt54mini_metrics.csv `
+  --export-metrics-csv .\outputs\12062025\gpt54mini_metrics.csv `
   --debug-json .\outputs\12062025\gpt54mini_debug.json
