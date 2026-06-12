@@ -27,6 +27,26 @@ TOOL_LABELS = {
 }
 
 
+def _normalize_text(value: str) -> str:
+    replacements = str.maketrans(
+        {
+            "á": "a",
+            "à": "a",
+            "ã": "a",
+            "â": "a",
+            "é": "e",
+            "ê": "e",
+            "í": "i",
+            "ó": "o",
+            "ô": "o",
+            "õ": "o",
+            "ú": "u",
+            "ç": "c",
+        }
+    )
+    return value.lower().translate(replacements)
+
+
 def _as_list(value: Any) -> list[str]:
     if not value:
         return []
@@ -35,6 +55,27 @@ def _as_list(value: Any) -> list[str]:
     if isinstance(value, str):
         return [item.strip() for item in value.split("|") if item.strip()]
     return []
+
+
+def _optional_tools_for_item(item: dict[str, Any]) -> list[str]:
+    question = _normalize_text(str(item.get("pergunta") or item.get("question") or ""))
+    optional: list[str] = _as_list(item.get("optional_tools"))
+
+    def add(tool_name: str) -> None:
+        if tool_name not in optional and tool_name not in _as_list(item.get("expected_tools")):
+            optional.append(tool_name)
+
+    if "pressao" in question and any(
+        keyword in question
+        for keyword in ("amanha", "janela", "manejo", "melhora", "estabilidade", "tempo")
+    ):
+        add("smart_rain_forecast")
+
+    if any(keyword in question for keyword in ("pulverizacao", "aplicacao", "deriva")):
+        add("smart_rain_forecast")
+        add("smart_air_humidity")
+
+    return optional
 
 
 def _criteria_for_item(item: dict[str, Any]) -> list[str]:
@@ -68,7 +109,7 @@ def build_dataset(input_path: Path, output_path: Path) -> None:
             raise ValueError("Todos os itens do dataset devem ser objetos JSON.")
         item = dict(raw_item)
         item["expected_criteria"] = _criteria_for_item(item)
-        item.setdefault("optional_tools", [])
+        item["optional_tools"] = _optional_tools_for_item(item)
         output.append(item)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)

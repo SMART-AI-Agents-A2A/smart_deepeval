@@ -103,12 +103,14 @@ def _expected_output_for_evaluation(sample: EvalSample, *, strict: bool = False)
         lines.append("Criterios esperados:")
         lines.extend(f"- {criterion}" for criterion in sample.expected_criteria)
         lines.append("")
-
-    if sample.expected_output:
+    else:
         lines.extend(
             [
-                "Referencia tecnica original:",
-                sample.expected_output,
+                "Criterios esperados:",
+                "- Responder diretamente a pergunta feita.",
+                "- Usar os dados atuais coletados pela API SMART como base da conclusao.",
+                "- Apresentar recomendacao tecnicamente coerente, fonte dos dados e limitacoes.",
+                "",
             ]
         )
 
