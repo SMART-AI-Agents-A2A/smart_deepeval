@@ -30,9 +30,9 @@ python -m app.main `
   python -m app.main `
    --dataset .\app\db\db.json `
    --limit 30 `
-   --export-csv .\outputs\12062025\qwen36plus_response.csv `
-   --export-metrics-csv .\outputs\12062025\qwen36plus_metrics.csv `
-   --debug-json .\outputs\12062025\qwen36plus_debug.json
+   --export-csv .\outputs\12062025\minimax_m3_response.csv `
+   --export-metrics-csv .\outputs\12062025\minimax_m3_metrics.csv `
+   --debug-json .\outputs\12062025\minimax_m3_debug.json
 
 
 ##############################################
