@@ -125,6 +125,42 @@ def _extract_between(text: str, start: str, end: str) -> str:
     return match.group(1).strip() if match else ""
 
 
+def _extract_named_number_field(content: str, field_name: str) -> float | None:
+    patterns = [
+        rf'"{re.escape(field_name)}"\s*:\s*(-?\d+(?:\.\d+)?)',
+        rf"'{re.escape(field_name)}'\s*:\s*(-?\d+(?:\.\d+)?)",
+        rf"\b{re.escape(field_name)}\b\s*[:=]\s*(-?\d+(?:\.\d+)?)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, content, flags=re.IGNORECASE)
+        if not match:
+            continue
+        try:
+            value = float(match.group(1))
+        except ValueError:
+            continue
+        if field_name.lower() in {"score", "verdict"}:
+            return max(0.0, min(1.0, value))
+        return value
+    return None
+
+
+def _extract_named_string_field(content: str, field_name: str) -> str | None:
+    patterns = [
+        rf'"{re.escape(field_name)}"\s*:\s*"((?:[^"\\]|\\.)*)"',
+        rf"'{re.escape(field_name)}'\s*:\s*'((?:[^'\\]|\\.)*)'",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, content, flags=re.IGNORECASE | re.DOTALL)
+        if not match:
+            continue
+        value = match.group(1).encode("utf-8").decode("unicode_escape")
+        cleaned = value.strip()
+        if cleaned:
+            return cleaned
+    return None
+
+
 def _summarize_payload(payload: dict[str, Any]) -> dict[str, Any]:
     messages = payload.get("messages") or []
     prompt_text = ""
@@ -247,6 +283,13 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
     def _uses_cloudflare_gateway(self) -> bool:
         return "gateway.ai.cloudflare.com" in self.base_url
 
+    def _prefers_json_object_format(self) -> bool:
+        configured = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_JSON_MODE"))
+        if configured:
+            return configured.lower() == "json_object"
+        model = self.model_name.lower()
+        return "deepseek" in model or model.endswith("-r1") or "/r1" in model
+
     def _should_send_response_format(self) -> bool:
         configured = _clean_optional_env(os.getenv("DEEPEVAL_JUDGE_RESPONSE_FORMAT"))
         if configured is not None:
@@ -280,7 +323,8 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                     "role": "system",
                     "content": (
                         "Voce e um juiz de avaliacao. Retorne somente JSON valido, "
-                        "sem Markdown, sem explicacao e sem texto fora do objeto JSON."
+                        "sem Markdown, sem explicacao e sem texto fora do objeto JSON. "
+                        "Use apenas os campos exigidos e preserve tipos validos."
                     ),
                 },
                 {
@@ -306,14 +350,17 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             payload["max_tokens"] = max_tokens
 
         if schema and not force_no_response_format and self._should_send_response_format():
-            payload["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": schema.__name__,
-                    "schema": schema.model_json_schema(),
-                    "strict": True,
-                },
-            }
+            if self._prefers_json_object_format():
+                payload["response_format"] = {"type": "json_object"}
+            else:
+                payload["response_format"] = {
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": schema.__name__,
+                        "schema": schema.model_json_schema(),
+                        "strict": True,
+                    },
+                }
 
         return payload
 
@@ -450,6 +497,38 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
                     f"Conteudo recebido: {_preview(content) or '[vazio]'}"
                 ) from second_error or first_error
 
+    def _heuristic_schema_response(
+        self,
+        *,
+        content: str,
+        schema: type[BaseModel],
+    ) -> BaseModel | None:
+        schema_fields = getattr(schema, "model_fields", {})
+
+        if "score" in schema_fields and "reason" in schema_fields:
+            score = _extract_named_number_field(content, "score")
+            reason = _extract_named_string_field(content, "reason")
+            if score is not None:
+                return schema.model_validate(
+                    {
+                        "score": score,
+                        "reason": reason or _preview(content) or "Resposta heuristica extraida do conteudo retornado pelo juiz.",
+                    }
+                )
+
+        if "verdict" in schema_fields and "reason" in schema_fields:
+            verdict = _extract_named_number_field(content, "verdict")
+            reason = _extract_named_string_field(content, "reason")
+            if verdict is not None:
+                return schema.model_validate(
+                    {
+                        "verdict": verdict,
+                        "reason": reason or _preview(content) or "Resposta heuristica extraida do conteudo retornado pelo juiz.",
+                    }
+                )
+
+        return None
+
     def _fallback_schema_response(
         self,
         *,
@@ -504,10 +583,10 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         schema: type[BaseModel],
     ) -> BaseModel:
         repair_prompt = (
-            "Converta a resposta abaixo para JSON valido que siga exatamente o schema informado. "
-            "Retorne somente o JSON, sem Markdown, sem explicacao e sem texto antes ou depois.\n\n"
+            "Retorne apenas um objeto JSON valido. "
+            "Nao explique, nao raciocine, nao descreva o processo, nao use Markdown. "
+            "Se houver score/verdict e reason no texto, extraia esses campos e responda somente com o JSON.\n\n"
             f"SCHEMA:\n{json.dumps(schema.model_json_schema(), ensure_ascii=False)}\n\n"
-            f"PROMPT ORIGINAL:\n{prompt}\n\n"
             f"RESPOSTA A CONVERTER:\n{content or '[resposta vazia]'}"
         )
         payload = self._payload(repair_prompt, None)
@@ -520,6 +599,9 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
         try:
             return self._parse_schema_response(repaired_content, schema)
         except Exception:
+            heuristic = self._heuristic_schema_response(content=repaired_content, schema=schema)
+            if heuristic is not None:
+                return heuristic
             return self._fallback_schema_response(
                 prompt=prompt,
                 content=repaired_content,
@@ -545,6 +627,9 @@ class OpenAICompatibleJudgeModel(DeepEvalBaseLLM):
             try:
                 return self._parse_schema_response(content, schema)
             except Exception:
+                heuristic = self._heuristic_schema_response(content=content, schema=schema)
+                if heuristic is not None:
+                    return heuristic
                 try:
                     return self._repair_schema_response(
                         prompt=prompt,
