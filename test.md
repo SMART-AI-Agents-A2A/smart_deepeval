@@ -21,3 +21,11 @@ python .\analises\graphs.py `
   --out-dir .\analises\graficos_comparativo `
   --pdf-name comparativo_3modelos.pdf `
   --language both
+
+
+python .\analises\graphs.py `
+  --csv .\outputs\gpt54mini_metrics.csv .\outputs\deepseek4pro_metrics.csv .\outputs\minimax3_metrics.csv .\outputs\gemini31pro_preview_metrics.csv `
+  --labels GPT-5.4-mini DeepSeek-V4-Pro MiniMax-M3 `
+  --out-dir .\analises\graficos_comparativo `
+  --pdf-name comparativo_3modelos.pdf `
+  --language both
