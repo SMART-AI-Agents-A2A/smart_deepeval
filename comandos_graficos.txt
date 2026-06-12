@@ -1,0 +1,16 @@
+python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
+>>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\gpt54mini_worst_metrics.csv `
+>>   --labels GPT-5.4-mini `
+>>   --out-dir D:\Git\Pesquisas\SMART\DeepEval\analises\graficos_comparativo\tmp_graphs_ci `
+>>   --overwrite `
+>>   --pdf-name teste_ci.pdf `
+>>   --language pt
+
+
+python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
+>>   --csv D:\Git\Pesquisas\SMART\DeepEval\outputs\12062025\gpt54mini_worst_metrics.csv `
+>>   --labels GPT-5.4-mini `
+>>   --out-dir D:\Git\Pesquisas\SMART\DeepEval\analises\graficos_comparativo\tmp_graphs_ci `
+>>   --overwrite `
+>>   --pdf-name teste_ci.pdf `
+>>   --language en
