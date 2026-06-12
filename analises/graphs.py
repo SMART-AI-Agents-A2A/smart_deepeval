@@ -1121,9 +1121,42 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--overwrite", action="store_true", help="Usa exatamente --out-dir e permite sobrescrever arquivos.")
     parser.add_argument("--pdf-name", type=str, default="relatorio.pdf", help="Nome do PDF consolidado.")
     parser.add_argument("--threshold", type=float, default=0.7, help="Threshold de corte visual.")
-    parser.add_argument("--language", choices=["pt", "en"], default="pt", help="Idioma dos titulos e legendas.")
+    parser.add_argument("--language", choices=["pt", "en", "both"], default="pt", help="Idioma dos titulos e legendas.")
     parser.add_argument("--question-metric", type=str, default=None, help="Metrica usada no grafico por questao. Padrao: media das metricas.")
     return parser.parse_args()
+
+
+def generate_report(
+    df: pd.DataFrame,
+    labels: list[str],
+    output_dir: Path,
+    pdf_name: str,
+    threshold: float,
+    language: str,
+    question_metric: str | None,
+) -> None:
+    pdf_path = output_dir / pdf_name
+    print(f"Saida:   {output_dir}")
+    write_question_mapping(df, output_dir)
+
+    with Saver(output_dir, pdf_path) as saver:
+        for idx, label in enumerate(labels):
+            barras_por_modelo(df, saver, threshold, label, idx, language)
+        barras_agregado(df, saver, threshold, language)
+
+        for idx, label in enumerate(labels):
+            slope_por_modelo(df, saver, threshold, label, idx, language)
+        slope_agregado(df, saver, threshold, language)
+
+        simple_tool_charts(df, saver, labels, language)
+        tool_charts_by_question(df, saver, labels, language)
+
+        question_scores(df, saver, threshold, labels, language, question_metric)
+        pass_fail_charts(df, saver, labels, language)
+        pass_fail_by_question_charts(df, saver, labels, language)
+        write_summary(df, output_dir, threshold, labels, language)
+
+    print(f"\nPDF: {pdf_path}")
 
 
 def main() -> None:
@@ -1138,33 +1171,32 @@ def main() -> None:
         csv_paths = [latest_csv()]
         labels = [csv_paths[0].stem]
 
-    output_dir = resolve_output_dir(args.out_dir, args.overwrite, args.run_name)
-    pdf_path = output_dir / args.pdf_name
-
     print(f"Modelos: {labels}")
-    print(f"Saida:   {output_dir}")
-
     df = load_all(csv_paths, labels, args.threshold)
-    write_question_mapping(df, output_dir)
 
-    with Saver(output_dir, pdf_path) as saver:
-        for idx, label in enumerate(labels):
-            barras_por_modelo(df, saver, args.threshold, label, idx, args.language)
-        barras_agregado(df, saver, args.threshold, args.language)
-
-        for idx, label in enumerate(labels):
-            slope_por_modelo(df, saver, args.threshold, label, idx, args.language)
-        slope_agregado(df, saver, args.threshold, args.language)
-
-        simple_tool_charts(df, saver, labels, args.language)
-        tool_charts_by_question(df, saver, labels, args.language)
-
-        question_scores(df, saver, args.threshold, labels, args.language, args.question_metric)
-        pass_fail_charts(df, saver, labels, args.language)
-        pass_fail_by_question_charts(df, saver, labels, args.language)
-        write_summary(df, output_dir, args.threshold, labels, args.language)
-
-    print(f"\nPDF: {pdf_path}")
+    output_dir = resolve_output_dir(args.out_dir, args.overwrite, args.run_name)
+    if args.language == "both":
+        for language, folder in [("pt", "ptbr"), ("en", "en")]:
+            generate_report(
+                df=df,
+                labels=labels,
+                output_dir=output_dir / folder,
+                pdf_name=args.pdf_name,
+                threshold=args.threshold,
+                language=language,
+                question_metric=args.question_metric,
+            )
+        print(f"\nRelatorios gerados em: {output_dir}")
+    else:
+        generate_report(
+            df=df,
+            labels=labels,
+            output_dir=output_dir,
+            pdf_name=args.pdf_name,
+            threshold=args.threshold,
+            language=args.language,
+            question_metric=args.question_metric,
+        )
 
 
 if __name__ == "__main__":
