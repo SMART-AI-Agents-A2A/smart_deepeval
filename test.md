@@ -15,13 +15,6 @@ python -m app.main --dataset .\app\db\db.json --quiet --export-csv .\outputs\cla
 
 
 # GRÁFICOS
-python .\analises\deepeval.py `
-  --csv .\outputs\gpt54mini_metrics.csv .\outputs\deepseek4pro_metrics.csv .\outputs\minimax3_metrics.csv `
-  --labels GPT-5.4-mini DeepSeek-V4-Pro MiniMax-M3 `
-  --out-dir .\analises\graficos_comparativo `
-  --pdf-name comparativo_3modelos.pdf
-
-
 python .\analises\graphs.py `
   --csv .\outputs\gpt54mini_metrics.csv .\outputs\deepseek4pro_metrics.csv .\outputs\minimax3_metrics.csv `
   --labels GPT-5.4-mini DeepSeek-V4-Pro MiniMax-M3 `
