@@ -32,3 +32,49 @@ python D:\Git\Pesquisas\SMART\DeepEval\analises\graphs.py `
 >>   --overwrite `
 >>   --pdf-name teste_ci.pdf `
 >>   --language en
+
+
+
+# GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2
+
+python .\analises\graphs.py `
+  --csv .\outputs\12062025\gpt54mini_metrics.csv .\outputs\12062025\claudehaiku45_metrics.csv .\outputs\12062025\deepseekv4pro_metrics.csv .\outputs\12062025\deepseekv32_metrics.csv `
+  --labels GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 `
+  --out-dir .\analises\graficos_comparativo `
+  --run-name 12062025_comparativo_4modelos `
+  --pdf-name comparativo_4modelos.pdf `
+  --language both
+
+
+
+# GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3
+
+  python .\analises\graphs.py `
+  --csv .\outputs\12062025\gpt54mini_metrics.csv .\outputs\12062025\claudehaiku45_metrics.csv .\outputs\12062025\deepseekv4pro_metrics.csv .\outputs\12062025\deepseekv32_metrics.csv .\outputs\12062025\minimax_m3_metrics.csv `
+  --labels GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3 `
+  --out-dir .\analises\graficos_comparativo `
+  --run-name 12062025_comparativo_5modelos `
+  --pdf-name comparativo_5modelos.pdf `
+  --language both
+
+
+# GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3 GLM-4.7
+
+  python .\analises\graphs.py `
+  --csv .\outputs\12062025\gpt54mini_metrics.csv .\outputs\12062025\claudehaiku45_metrics.csv .\outputs\12062025\deepseekv4pro_metrics.csv .\outputs\12062025\deepseekv32_metrics.csv .\outputs\12062025\minimax_m3_metrics.csv .\outputs\12062025\glm47_metrics.csv `
+  --labels GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3 GLM-4.7 `
+  --out-dir .\analises\graficos_comparativo `
+  --run-name 12062025_comparativo_6modelos `
+  --pdf-name comparativo_6modelos.pdf `
+  --language both
+
+
+# GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3 GLM-4.7 Gemini-2.5-Flash 
+
+  python .\analises\graphs.py `
+  --csv .\outputs\12062025\gpt54mini_metrics.csv .\outputs\12062025\claudehaiku45_metrics.csv .\outputs\12062025\deepseekv4pro_metrics.csv .\outputs\12062025\deepseekv32_metrics.csv .\outputs\12062025\minimax_m3_metrics.csv .\outputs\12062025\glm47_metrics.csv .\outputs\12062025\gemini25flash_metrics.csv `
+  --labels GPT-5.4-mini Claude-Haiku-4.5 DeepSeek-V4-Pro DeepSeek-V3.2 MiniMax-M3 GLM-4.7 Gemini-2.5-Flash `
+  --out-dir .\analises\graficos_comparativo `
+  --run-name 12062025_comparativo_7modelos `
+  --pdf-name comparativo_7modelos.pdf `
+  --language both

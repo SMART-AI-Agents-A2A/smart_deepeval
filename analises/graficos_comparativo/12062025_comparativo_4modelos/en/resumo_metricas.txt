@@ -1,0 +1,72 @@
+==============================================================
+EVALUATION SUMMARY - SMART API with DeepEval
+==============================================================
+
+WHAT EACH METRIC MEANS
+----------------------------------------
+
+G-Eval [GEval]
+  Evaluates one aspect of the model execution or answer quality.
+
+Task Completion
+  Evaluates one aspect of the model execution or answer quality.
+
+Tool Correctness
+  Evaluates one aspect of the model execution or answer quality.
+
+==============================================================
+RESULTS BY MODEL
+==============================================================
+
+Model: GPT-5.4-mini
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.857
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.569
+    pass rate     : 53% (16/30)
+  Tool Correctness
+    average score : 0.700
+    pass rate     : 67% (20/30)
+
+Model: Claude-Haiku-4.5
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.813
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.534
+    pass rate     : 47% (14/30)
+  Tool Correctness
+    average score : 0.677
+    pass rate     : 53% (16/30)
+
+Model: DeepSeek-V4-Pro
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.287
+    pass rate     : 30% (9/30)
+  Task Completion
+    average score : 0.497
+    pass rate     : 50% (15/30)
+  Tool Correctness
+    average score : 0.250
+    pass rate     : 23% (7/30)
+
+Model: DeepSeek-V3.2
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.967
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.273
+    pass rate     : 17% (5/30)
+  Tool Correctness
+    average score : 0.496
+    pass rate     : 23% (7/30)
+
+==============================================================
+METHODOLOGICAL NOTE
+==============================================================
+Report judge models separately and discuss variance as a methodological limitation.
