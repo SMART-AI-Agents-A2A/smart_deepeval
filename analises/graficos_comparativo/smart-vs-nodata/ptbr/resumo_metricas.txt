@@ -1,0 +1,120 @@
+==============================================================
+RESUMO DA AVALIACAO - API SMART com DeepEval
+==============================================================
+
+O QUE CADA METRICA SIGNIFICA
+----------------------------------------
+
+G-Eval [GEval]
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+Task Completion
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+Tool Correctness
+  Avalia um aspecto da execucao do modelo ou da qualidade da resposta.
+
+==============================================================
+RESULTADOS POR MODELO
+==============================================================
+
+Modelo: GPT-5.4-mini [SMART]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.857
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.569
+    pass rate     : 53% (16/30)
+  Tool Correctness
+    average score : 0.700
+    pass rate     : 67% (20/30)
+
+Modelo: Claude-Haiku-4.5 [SMART]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.813
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.534
+    pass rate     : 47% (14/30)
+  Tool Correctness
+    average score : 0.677
+    pass rate     : 53% (16/30)
+
+Modelo: DeepSeek-V4-Pro [SMART]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.287
+    pass rate     : 30% (9/30)
+  Task Completion
+    average score : 0.497
+    pass rate     : 50% (15/30)
+  Tool Correctness
+    average score : 0.250
+    pass rate     : 23% (7/30)
+
+Modelo: DeepSeek-V3.2 [SMART]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.967
+    pass rate     : 100% (30/30)
+  Task Completion
+    average score : 0.273
+    pass rate     : 17% (5/30)
+  Tool Correctness
+    average score : 0.496
+    pass rate     : 23% (7/30)
+
+Modelo: GPT-5.4-mini [LLM no data]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.001
+    pass rate     : 0% (0/30)
+  Task Completion
+    average score : 0.135
+    pass rate     : 0% (0/30)
+  Tool Correctness
+    average score : 0.000
+    pass rate     : 0% (0/30)
+
+Modelo: Claude-Haiku-4.5 [LLM no data]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.019
+    pass rate     : 0% (0/30)
+  Task Completion
+    average score : 0.145
+    pass rate     : 0% (0/30)
+  Tool Correctness
+    average score : 0.000
+    pass rate     : 0% (0/30)
+
+Modelo: DeepSeek-V4-Pro [LLM no data]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.011
+    pass rate     : 0% (0/30)
+  Task Completion
+    average score : 0.140
+    pass rate     : 0% (0/30)
+  Tool Correctness
+    average score : 0.000
+    pass rate     : 0% (0/30)
+
+Modelo: DeepSeek-V3.2 [LLM no data]
+----------------------------------------
+  G-Eval [GEval]
+    average score : 0.004
+    pass rate     : 0% (0/30)
+  Task Completion
+    average score : 0.166
+    pass rate     : 0% (0/30)
+  Tool Correctness
+    average score : 0.000
+    pass rate     : 0% (0/30)
+
+==============================================================
+NOTA METODOLOGICA
+==============================================================
+Reporte os modelos juizes separadamente e discuta a variancia como limitacao metodologica.
