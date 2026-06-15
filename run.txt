@@ -1,6 +1,17 @@
 python -m app.main `
   --dataset .\app\db\db.json `
   --limit 30 `
+  --export-csv .\outputs\12062025_2\gpt54mini_response.csv `
+  --export-metrics-csv .\outputs\12062025_2\gpt54mini_metrics.csv `
+  --debug-json .\outputs\12062025\gpt54mini_debug.json
+
+
+##############################################
+
+
+python -m app.main `
+  --dataset .\app\db\db.json `
+  --limit 30 `
   --export-csv .\outputs\12062025\gpt54mini_response.csv `
   --export-metrics-csv .\outputs\12062025\gpt54mini_metrics.csv `
   --debug-json .\outputs\12062025\gpt54mini_debug.json
@@ -40,18 +51,18 @@ python -m app.main `
   python -m app.main `
   --dataset .\app\db\db.json `
   --limit 30 `
-  --export-csv .\outputs\12062025\deepseekv4pro_response.csv `
-  --export-metrics-csv .\outputs\12062025\deepseekv4pro_metrics.csv `
-  --debug-json .\outputs\12062025\deepseekv4pro_debug.json
+  --export-csv .\outputs\12062025_2\deepseekv4pro_response.csv `
+  --export-metrics-csv .\outputs\12062025_2\deepseekv4pro_metrics.csv `
+  --debug-json .\outputs\12062025_2\deepseekv4pro_debug.json
   
 ##############################################
 
   python -m app.main `
    --dataset .\app\db\db.json `
    --limit 30 `
-   --export-csv .\outputs\12062025\ deepseekv32_response.csv `
-   --export-metrics-csv .\outputs\12062025\ deepseekv32_metrics.csv `
-   --debug-json .\outputs\12062025\ deepseekv32_debug.json
+   --export-csv .\outputs\12062025_2\ deepseekv32_response.csv `
+   --export-metrics-csv .\outputs\12062025_2\ deepseekv32_metrics.csv `
+   --debug-json .\outputs\12062025_2\ deepseekv32_debug.json
 
 ##############################################
 
