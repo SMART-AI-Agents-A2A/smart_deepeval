@@ -1,0 +1,27 @@
+$csv = @(
+  ".\outputs\12062025\claudehaiku45_metrics.csv",
+  ".\outputs\12062025\deepseekv32_metrics.csv",
+  ".\outputs\12062025\deepseekv4pro_metrics.csv",
+  ".\outputs\12062025\gpt54mini_metrics.csv",
+  ".\outputs\12062025_2\claudehaiku45_metrics.csv",
+  ".\outputs\12062025_2\deepseekv32_metrics.csv",
+  ".\outputs\12062025_2\deepseekv4pro_metrics.csv",
+  ".\outputs\12062025_2\gpt54mini_metrics.csv"
+)
+
+$labels = @(
+  "claudehaiku45::Proposed",
+  "deepseekv32::Proposed",
+  "deepseekv4pro::Proposed",
+  "gpt54mini::Proposed",
+  "claudehaiku45::LLM Without Proposed",
+  "deepseekv32::LLM Without Proposed",
+  "deepseekv4pro::LLM Without Proposed",
+  "gpt54mini::LLM Without Proposed"
+)
+
+python .\generate_graphs.py `
+  --csv $csv `
+  --labels $labels `
+  --out-dir .\analises\graphs `
+  --overwrite
