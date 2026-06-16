@@ -200,8 +200,6 @@ class Saver:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def save(self, fig: plt.Figure, stem: str) -> None:
-        # Keep enough reserved space at the top so the title is not clipped
-        # in PNG/EPS exports.
         fig.tight_layout(rect=(0, 0, 1, 0.92))
         for ext in ("png", "eps"):
             path = self.output_dir / f"{stem}.{ext}"
@@ -259,7 +257,7 @@ def plot_metric(df: pd.DataFrame, metric_name: str, saver: Saver) -> None:
 
     fig_width = max(8, len(models) * 2.4)
     fig, ax = plt.subplots(figsize=(fig_width, 5.6))
-    fig.suptitle(f"{metric_name} by Model and Approach", fontsize=15, fontweight="bold", y=0.985)
+    fig.suptitle(f"{metric_name}", fontsize=16, y=0.985)
 
     all_means: list[float] = []
     all_errors: list[float] = []
@@ -316,7 +314,7 @@ def plot_tools(df: pd.DataFrame, saver: Saver) -> None:
     width = 0.72 / len(series)
 
     fig, ax = plt.subplots(figsize=(max(10, len(groups) * 1.8), 6.1))
-    fig.suptitle("Tool Correctness Aggregate - Tool Usage", fontsize=15, fontweight="bold", y=0.985)
+    fig.suptitle("Tool Correctness Aggregate - Tool Usage", fontsize=16, y=0.985)
 
     all_tops = []
     for i, key in enumerate(series):
@@ -369,7 +367,7 @@ def plot_passed_failed(df: pd.DataFrame, saver: Saver) -> None:
     width = 0.34
 
     fig, ax = plt.subplots(figsize=(max(10, len(groups) * 1.8), 6.1))
-    fig.suptitle("Pass/Fail Aggregate - All Metrics", fontsize=15, fontweight="bold", y=0.985)
+    fig.suptitle("Pass/Fail Aggregate", fontsize=16, y=0.985)
 
     for i, key in enumerate(series):
         means = []
